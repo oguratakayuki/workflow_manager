@@ -1,0 +1,11 @@
+= simple_form_for(@request) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :job_id
+    = f.input :zen_user_id
+    = f.input :title
+    = f.input :description
+
+  .form-actions
+    = f.button :submit, class: 'btn btn-primary'

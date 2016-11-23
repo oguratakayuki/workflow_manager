@@ -1,0 +1,27 @@
+h1 Listing requests
+
+table
+  thead
+    tr
+      th Job
+      th Zen user
+      th Title
+      th Description
+      th
+      th
+      th
+
+  tbody
+    - @requests.each do |request|
+      tr
+        td = request.job_id
+        td = request.zen_user_id
+        td = request.title
+        td = request.description
+        td = link_to 'Show', request
+        td = link_to 'Edit', edit_request_path(request)
+        td = link_to 'Destroy', request, data: { confirm: 'Are you sure?' }, method: :delete
+
+br
+
+= link_to 'New Request', new_request_path

@@ -1,0 +1,18 @@
+p#notice = notice
+
+p
+  strong Job:
+  = @request.job_id
+p
+  strong Zen user:
+  = @request.zen_user_id
+p
+  strong Title:
+  = @request.title
+p
+  strong Description:
+  = @request.description
+
+= link_to 'Edit', edit_request_path(@request)
+'|
+= link_to 'Back', requests_path
