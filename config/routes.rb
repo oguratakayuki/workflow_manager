@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  resources :flow_grants
+  resources :flows
+  resources :jobs
   resources :requests
   devise_for :users
   get 'home/index'

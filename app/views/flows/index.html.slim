@@ -1,0 +1,21 @@
+h1 Listing flows
+
+table
+  thead
+    tr
+      th Name
+      th
+      th
+      th
+
+  tbody
+    - @flows.each do |flow|
+      tr
+        td = flow.name
+        td = link_to 'Show', flow
+        td = link_to 'Edit', edit_flow_path(flow)
+        td = link_to 'Destroy', flow, data: { confirm: 'Are you sure?' }, method: :delete
+
+br
+
+= link_to 'New Flow', new_flow_path

@@ -1,0 +1,1 @@
+json.array! @flow_grants, partial: 'flow_grants/flow_grant', as: :flow_grant

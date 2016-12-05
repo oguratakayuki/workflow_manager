@@ -1,0 +1,7 @@
+ja:
+  enumerize:
+    flow_grants:
+      grant_type:
+        sytem: 'システム'
+        manager: 'マネージャー'
+ 

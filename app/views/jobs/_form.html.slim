@@ -1,0 +1,9 @@
+= simple_form_for(@job) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :name
+    = f.input :flow_id
+
+  .form-actions
+    = f.button :submit

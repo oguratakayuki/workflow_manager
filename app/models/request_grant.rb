@@ -1,0 +1,2 @@
+class RequestGrant < ApplicationRecord
+end

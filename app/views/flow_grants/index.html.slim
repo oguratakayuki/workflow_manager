@@ -1,0 +1,23 @@
+h1 Listing flow_grants
+
+table
+  thead
+    tr
+      th Order
+      th Grant type
+      th
+      th
+      th
+
+  tbody
+    - @flow_grants.each do |flow_grant|
+      tr
+        td = flow_grant.order
+        td = flow_grant.grant_type
+        td = link_to 'Show', flow_grant
+        td = link_to 'Edit', edit_flow_grant_path(flow_grant)
+        td = link_to 'Destroy', flow_grant, data: { confirm: 'Are you sure?' }, method: :delete
+
+br
+
+= link_to 'New Flow grant', new_flow_grant_path
