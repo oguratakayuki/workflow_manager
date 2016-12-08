@@ -1,4 +1,7 @@
 ja:
+  activerecord:
+    models:
+      request: '申請'
   enumerize:
     flow_grants:
       grant_type:

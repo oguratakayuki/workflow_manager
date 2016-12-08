@@ -2,10 +2,10 @@
   = f.error_notification
 
   .form-inputs
-    = f.input :job_id
-    = f.input :zen_user_id
+    = f.input :zen_user_id, as: :hidden, input_html: { value: current_user.id }
     = f.input :title
     = f.input :description
+    = f.association :job
 
   .form-actions
     = f.button :submit, class: 'btn btn-primary'
