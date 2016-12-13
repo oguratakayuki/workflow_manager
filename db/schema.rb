@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161123110319) do
+ActiveRecord::Schema.define(version: 20161212233431) do
 
   create_table "flow_flow_grants", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "flow_id"
@@ -50,7 +50,7 @@ ActiveRecord::Schema.define(version: 20161123110319) do
 
   create_table "requests", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "job_id"
-    t.integer  "zen_user_id"
+    t.integer  "user_id"
     t.string   "title"
     t.text     "description", limit: 65535
     t.datetime "created_at",                null: false
