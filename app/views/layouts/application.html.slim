@@ -30,7 +30,26 @@ html[lang="en"]
         | Example page header
         small 
           | Subtext for header
-    .demo-layout.mdl-layout.mdl-layout--fixed-header.mdl-js-layout.mdl-color--grey-100
-      .demo-ribbon
-      = yield
+    ul.breadcrumb
+      li
+        a[href="#"]
+          | Home
+      li
+        a[href="#"]
+          | Library
+      li.active
+        | Data
+    .row
+      .col-md-3
+        .sidebar-nav.affix[role="complementary"]
+          ul.nav
+            li
+              a[href="#"]
+                | 申請
+            li
+              a[href="#bottom"]
+                | ユーザー管理
+      .col-md-8
+        .jumbotron
+          = yield
     script[src="https://code.getmdl.io/1.2.1/material.min.js"]

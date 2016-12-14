@@ -13,11 +13,15 @@ Job.seed do |j|
   j.name = '物品の購入(2000円以下)'
   j.flow = Flow.first
 end
-User.seed do |u|
-  u.email = "test@example.com"
-  u.password = "111111"
-  u.password_confirmation = "111111"
+%w!admin operator!.each do |role|
+  User.seed do |u|
+    u.email = "#{role}@example.com"
+    u.role = role
+    u.password = "111111"
+    u.password_confirmation = "111111"
+  end
 end
+
 Request.seed do |r|
   r.title = '掃除用具の購入許可申請'
   r.description = '本部で大掃除に使う'
