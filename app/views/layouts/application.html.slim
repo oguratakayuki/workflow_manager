@@ -25,6 +25,11 @@ html[lang="en"]
     style
       |  #view-source { position: fixed; display: block; right: 0; bottom: 0; margin-right: 40px; margin-bottom: 40px; z-index: 900; } 
   body
+    .page-header
+      h1
+        | Example page header
+        small 
+          | Subtext for header
     .demo-layout.mdl-layout.mdl-layout--fixed-header.mdl-js-layout.mdl-color--grey-100
       .demo-ribbon
       = yield

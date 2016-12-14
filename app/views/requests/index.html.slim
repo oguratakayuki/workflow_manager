@@ -15,7 +15,7 @@ table
     - @requests.each do |request|
       tr
         td = request.job_id
-        td = request.zen_user_id
+        td = request.user_id
         td = request.title
         td = request.description
         td = link_to 'Show', request

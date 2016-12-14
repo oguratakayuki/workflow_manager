@@ -2,7 +2,7 @@
   = f.error_notification
 
   .form-inputs
-    = f.input :zen_user_id, as: :hidden, input_html: { value: current_user.id }
+    = f.input :user_id, as: :hidden, input_html: { value: current_user.id }
     = f.input :title
     = f.input :description
     = f.association :job
