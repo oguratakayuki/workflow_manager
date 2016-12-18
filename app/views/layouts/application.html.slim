@@ -25,31 +25,34 @@ html[lang="en"]
     style
       |  #view-source { position: fixed; display: block; right: 0; bottom: 0; margin-right: 40px; margin-bottom: 40px; z-index: 900; } 
   body
-    .page-header
-      h1
-        | Example page header
-        small 
-          | Subtext for header
-    ul.breadcrumb
-      li
-        a[href="#"]
-          | Home
-      li
-        a[href="#"]
-          | Library
-      li.active
-        | Data
-    .row
-      .col-md-3
-        .sidebar-nav.affix[role="complementary"]
-          ul.nav
-            li
-              a[href="#"]
-                | 申請
-            li
-              a[href="#bottom"]
-                | ユーザー管理
-      .col-md-8
-        .jumbotron
-          = yield
+    .container
+      .row
+        .page-header
+          h1
+            | Example page header
+            small 
+              | Subtext for header
+      .row
+        ul.breadcrumb
+          li
+            a[href="#"]
+              | Home
+          li
+            a[href="#"]
+              | Library
+          li.active
+            | Data
+      .row
+        .col-md-3
+          .sidebar-nav
+            ul.nav
+              li
+                a[href="#"]
+                  | 申請
+              li
+                a[href="#"]
+                  | ユーザー管理
+        .col-md-8
+          .jumbotron
+            = yield
     script[src="https://code.getmdl.io/1.2.1/material.min.js"]

@@ -4,7 +4,8 @@ class RequestsController < ApplicationController
   # GET /requests
   # GET /requests.json
   def index
-    @requests = Request.all
+    @requests = Request.where(user: current_user)
+    @approval_requests = Request.join(:request_grants).where(role: user.role)
   end
 
   # GET /requests/1
@@ -25,6 +26,7 @@ class RequestsController < ApplicationController
   # POST /requests.json
   def create
     @request = Request.new(request_params)
+    RequestFlowPolicy.new(@request).save
 
     respond_to do |format|
       if @request.save

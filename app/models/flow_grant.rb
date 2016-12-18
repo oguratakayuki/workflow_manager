@@ -1,4 +1,5 @@
 class FlowGrant < ApplicationRecord
   extend Enumerize
-  enumerize :grant_type, in: [:system, :manager], scope: true
+  enumerize :role, in: [:system, :manager], scope: true
+  has_many :request_grants
 end
