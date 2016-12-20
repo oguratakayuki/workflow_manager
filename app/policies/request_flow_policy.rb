@@ -8,7 +8,7 @@ class RequestFlowPolicy
   end
   def pass_next
     if request_grant = @request.request_grants.with_status(:not_active).order(:order).first
-      request_grant.activate!
+      request_grant.status = :reviewing
     else
       requst.pass_to_executor_or_creator
     end

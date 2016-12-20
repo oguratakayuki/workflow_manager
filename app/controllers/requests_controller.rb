@@ -5,7 +5,7 @@ class RequestsController < ApplicationController
   # GET /requests.json
   def index
     @requests = Request.where(user: current_user)
-    @approval_requests = Request.join(:request_grants).where(role: user.role)
+    @approval_requests = Request.joins(:request_grants).merge(RequestGrant.where(role: current_user.role))
   end
 
   # GET /requests/1
@@ -26,7 +26,7 @@ class RequestsController < ApplicationController
   # POST /requests.json
   def create
     @request = Request.new(request_params)
-    RequestFlowPolicy.new(@request).save
+    RequestFlowPolicy.new(@request).setup_request_grants
 
     respond_to do |format|
       if @request.save
