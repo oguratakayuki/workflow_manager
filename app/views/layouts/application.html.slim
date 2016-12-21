@@ -29,7 +29,7 @@ html[lang="en"]
       .row
         .page-header
           h1
-            | Example page header
+            | 承認管理
             small 
               | Subtext for header
       .row
@@ -47,11 +47,14 @@ html[lang="en"]
           .sidebar-nav
             ul.nav
               li
-                a[href="#"]
-                  | 申請
+                = link_to '申請', requests_path
               li
                 a[href="#"]
                   | ユーザー管理
+              li
+                = link_to  '承認フロー管理', jobs_path
+              li
+                = link_to  'logout', destroy_user_session_path
         .col-md-8
           .jumbotron
             = yield

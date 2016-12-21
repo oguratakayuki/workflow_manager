@@ -2,9 +2,20 @@ ja:
   activerecord:
     models:
       request: '申請'
+    attributes:
+      request:
+        user: '申請者'
+        title: 'タイトル'
+        status: 'ステータス'
   enumerize:
-    flow_grants:
+    flow_grant:
       role:
         sytem: 'システム'
         manager: 'マネージャー'
+        president: '社長'
+    request_grant:
+      role:
+        sytem: 'システム'
+        manager: 'マネージャー'
+        president: '社長'
  

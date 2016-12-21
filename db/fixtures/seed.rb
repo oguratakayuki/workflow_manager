@@ -1,19 +1,36 @@
-FlowGrant.grant_type.values.each do |grant_type|
+FlowGrant.role.values.each.with_index do |role, index|
   FlowGrant.seed do |c|
-    c.grant_type = grant_type
+    c.role = role
+    c.order = index
   end
 end
 f = Flow.new
 f.name = 'system,managerの承認が必要なflow'
-f.flow_grants << FlowGrant.with_grant_type('system').first
-f.flow_grants << FlowGrant.with_grant_type('manager').first
+f.flow_grants << FlowGrant.with_role('system').first
+f.flow_grants << FlowGrant.with_role('manager').first
 f.save
+
+f = Flow.new
+f.name = '社長決済が必要なflow'
+f.flow_grants << FlowGrant.with_role('system').first
+f.flow_grants << FlowGrant.with_role('manager').first
+f.flow_grants << FlowGrant.with_role('president').first
+f.save
+
 
 Job.seed do |j|
   j.name = '物品の購入(2000円以下)'
   j.flow = Flow.first
 end
-%w!admin operator!.each do |role|
+
+Job.seed do |j|
+  j.name = '高い買い物(50000円以上)'
+  j.flow = Flow.last
+end
+
+
+
+FlowGrant.role.values.each do |role|
   User.seed do |u|
     u.email = "#{role}@example.com"
     u.role = role

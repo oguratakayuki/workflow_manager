@@ -5,7 +5,7 @@ class RequestsController < ApplicationController
   # GET /requests.json
   def index
     @requests = Request.where(user: current_user)
-    @approval_requests = Request.joins(:request_grants).merge(RequestGrant.where(role: current_user.role))
+    @approval_requests = Request.joins(:request_grants).merge(RequestGrant.where(role: current_user.role, status: :reviewing  ))
   end
 
   # GET /requests/1
@@ -26,16 +26,10 @@ class RequestsController < ApplicationController
   # POST /requests.json
   def create
     @request = Request.new(request_params)
-    RequestFlowPolicy.new(@request).setup_request_grants
-
-    respond_to do |format|
-      if @request.save
-        format.html { redirect_to @request, notice: 'Request was successfully created.' }
-        format.json { render :show, status: :created, location: @request }
-      else
-        format.html { render :new }
-        format.json { render json: @request.errors, status: :unprocessable_entity }
-      end
+    if RequestFlowPolicy.new(request: @request).setup_request_grants
+      redirect_to requests_path, notice: '申請が完了しました'
+    else
+      render :new
     end
   end
 
@@ -71,6 +65,6 @@ class RequestsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def request_params
-      params.require(:request).permit(:job_id, :zen_user_id, :title, :description)
+      params.require(:request).permit(:job_id, :user_id, :title, :description)
     end
 end
