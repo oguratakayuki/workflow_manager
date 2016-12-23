@@ -1,7 +1,6 @@
 FlowGrant.role.values.each.with_index do |role, index|
   FlowGrant.seed do |c|
     c.role = role
-    c.order = index
   end
 end
 f = Flow.new
@@ -33,6 +32,7 @@ end
 FlowGrant.role.values.each do |role|
   User.seed do |u|
     u.email = "#{role}@example.com"
+    u.name = "#{role}太郎"
     u.role = role
     u.password = "111111"
     u.password_confirmation = "111111"

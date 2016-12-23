@@ -1,12 +1,10 @@
-= simple_form_for(@request) do |f|
+= simple_form_for([@request, @request_grant]) do |f|
   = f.error_notification
 
   .form-inputs
-    = f.association :job
-    = link_to '新規jobを登録', new_job_path
     = f.input :user_id, as: :hidden, input_html: { value: current_user.id }
-    = f.input :title
-    = f.input :description
+    = f.select :status, RequestGrant.status.options
+    = f.input :comment
 
   .form-actions
     = f.button :submit, class: 'btn btn-primary'

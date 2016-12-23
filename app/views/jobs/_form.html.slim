@@ -3,7 +3,8 @@
 
   .form-inputs
     = f.input :name
-    = f.input :flow_id
+    - if current_user.role.value == 'President'
+      = f.input :flow_id
 
   .form-actions
     = f.button :submit

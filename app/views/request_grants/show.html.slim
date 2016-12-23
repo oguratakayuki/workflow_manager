@@ -1,9 +1,9 @@
 p
   strong Job:
-  = @request.job_id
+  = @request.job.name
 p
-  strong Zen user:
-  = @request.user_id
+  strong user:
+  = @request.user.name
 p
   strong Title:
   = @request.title
@@ -12,6 +12,7 @@ p
   = @request.description
 
 - if RequestFlowPolicy.new(request: @request).reviewable?(current_user)
+  == render 'form'
 
 = link_to 'Edit', edit_request_path(@request)
 '|

@@ -15,7 +15,11 @@ ja:
         president: '社長'
     request_grant:
       role:
-        sytem: 'システム'
+        system: 'システム'
         manager: 'マネージャー'
         president: '社長'
- 
+        admin: '管理者'
+      status:
+        reviewing: '審査中'
+        rejected: '却下'
+        granted: '承認'

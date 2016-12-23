@@ -4,5 +4,5 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
-  enumerize :role, in: [:operator, :manager, :president, :admin], scope: true
+  enumerize :role, in: [:operator, :manager, :president, :admin, :system], scope: true
 end

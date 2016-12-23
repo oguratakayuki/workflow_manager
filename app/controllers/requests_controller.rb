@@ -1,11 +1,12 @@
 class RequestsController < ApplicationController
-  before_action :set_request, only: [:show, :edit, :update, :destroy]
+  before_action :set_request, only: [:show, :update, :destroy, :reject, :grant, :review, :report]
 
   # GET /requests
   # GET /requests.json
   def index
     @requests = Request.where(user: current_user)
-    @approval_requests = Request.joins(:request_grants).merge(RequestGrant.where(role: current_user.role, status: :reviewing  ))
+    @reviewable_requests = Request.reviewable_by_role(current_user.role)
+    @executable_requests = Request.executable_request_grant(current_user)
   end
 
   # GET /requests/1
@@ -13,13 +14,24 @@ class RequestsController < ApplicationController
   def show
   end
 
+  def review
+    render :show
+  end
+
+  def reject
+    RequestFlowPolicy.new(request: @request).reject_by(current_user)
+  end
+
+  def grant
+    RequestFlowPolicy.new(request: @request).reject_by(current_user)
+  end
+
   # GET /requests/new
   def new
     @request = Request.new
   end
 
-  # GET /requests/1/edit
-  def edit
+  def report
   end
 
   # POST /requests
@@ -67,4 +79,14 @@ class RequestsController < ApplicationController
     def request_params
       params.require(:request).permit(:job_id, :user_id, :title, :description)
     end
+
+    def request_params
+      params.require(:request).permit(:status, evidences_attributes: [
+        :_destroy,
+        :id,
+        :file_name,
+        ])
+    end
+
+
 end

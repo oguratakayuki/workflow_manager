@@ -16,7 +16,11 @@ gem 'coffee-rails', '~> 4.2'
 gem 'seed-fu', '~> 2.3'
 gem 'enumerize'
 gem 'cancan'
-gem 'therubyracer', platforms: :ruby
+gem 'active_decorator'
+gem 'nested_form'
+gem 'carrierwave'
+
+#gem 'therubyracer', platforms: :ruby
 
 
 
@@ -43,7 +47,6 @@ gem 'devise'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
-  gem 'pry-byebug'
 end
 
 group :development do
