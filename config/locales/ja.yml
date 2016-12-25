@@ -2,17 +2,22 @@ ja:
   activerecord:
     models:
       request: '申請'
+      job:     '承認フロー'
     attributes:
       request:
         user: '申請者'
         title: 'タイトル'
         status: 'ステータス'
+      job:
+        need_evidence: '証明資料提出'
   enumerize:
     flow_grant:
       role:
-        sytem: 'システム'
+        operator: 'オペレーター'
         manager: 'マネージャー'
         president: '社長'
+        admin: 'システム管理者'
+        sytem: 'システム'
     request_grant:
       role:
         system: 'システム'

@@ -1,10 +1,37 @@
-= simple_form_for(@job) do |f|
-  = f.error_notification
+= nested_form_for(@job) do |f|
+  .form-group
+    = f.label :name, class: 'control-label'
+    = f.text_field :name, class: 'form-control'
+  .form-group
+    = f.label :need_evidence, Job.human_attribute_name(:need_evidence), class: 'control-label'
+    = f.select :need_evidence, [['あれば', false], ['必須', true]], class: 'form-control'
 
-  .form-inputs
-    = f.input :name
-    - if current_user.role.value == 'President'
-      = f.input :flow_id
+
+  h2 フロー
+  - if RequestFlowPolicy.flow_editable?(@job, current_user)
+    .list-group
+      = f.fields_for :approval_flows do |a|
+        .list-group-item
+          = a.select :role, User.role.options
+          '
+          = a.text_field :position, as: :hidden
+          '
+          = a.link_to_remove "削除"
+    .form-inputs
+      = f.link_to_add "申請ルート追加", :approval_flows
+  - else
+    .list-group
+      - @job.approval_flows.each do |approval_flow|
+        .list-group-item
+          .list-group-item-heading
+            = approval_flow.role.try(:value)
+          .list-group-item-text
+            .label.label-info 担当
+            '
+            = User.with_role(approval_flow.role).map(&:name).join(',')
+            button.close[type="button" data-dismiss="alert" aria-label="Close"]
+              span[aria-hidden="true"] = '&times;'.html_safe
+
 
   .form-actions
     = f.button :submit

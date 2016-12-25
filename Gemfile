@@ -19,6 +19,7 @@ gem 'cancan'
 gem 'active_decorator'
 gem 'nested_form'
 gem 'carrierwave'
+gem 'acts_as_list'
 
 #gem 'therubyracer', platforms: :ruby
 

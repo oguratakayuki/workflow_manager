@@ -1,8 +1,9 @@
 class RequestFlowPolicy
   include ActiveModel::Model
   attr_accessor :request
+
   def setup_request_grants
-    @request.request_grants = @request.job.flow.copy_need_grants
+    @request.request_grants = @request.job.copy_need_grants
     @request.save
     pass_next
   end
@@ -11,6 +12,11 @@ class RequestFlowPolicy
     request_grant.save
     @request.status = request_grant.status if request_grant.status == 'rejected'
     pass_next
+  end
+
+  def self.flow_editable?(job, user)
+    true if user.role.value == 'President'
+    true if job.approval_flows == []
   end
 
   def reject_by(user)

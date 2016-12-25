@@ -1,1 +1,0 @@
-json.partial! "flow_grants/flow_grant", flow_grant: @flow_grant
