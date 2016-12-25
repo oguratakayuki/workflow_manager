@@ -9,9 +9,9 @@
 
   h2 フロー
   - if RequestFlowPolicy.flow_editable?(@job, current_user)
-    .list-group
+    .list-group.sortable
       = f.fields_for :approval_flows do |a|
-        .list-group-item
+        .list-group-item.item[data-position="#{approval_flow.position}"]
           = a.select :role, User.role.options
           '
           = a.text_field :position, as: :hidden
@@ -19,10 +19,12 @@
           = a.link_to_remove "削除"
     .form-inputs
       = f.link_to_add "申請ルート追加", :approval_flows
+
   - else
-    .list-group
+    .list-group.sortable
       - @job.approval_flows.each do |approval_flow|
-        .list-group-item
+        .list-group-item.item[data-position="#{approval_flow.position}"]
+          span.ui-icon.ui-icon-arrowthick-2-n-s
           .list-group-item-heading
             = approval_flow.role.try(:value)
           .list-group-item-text

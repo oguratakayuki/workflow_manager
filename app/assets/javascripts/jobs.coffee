@@ -4,5 +4,7 @@
 
 jQuery ($) ->
 
-  $('#job_flow_id').change (e) ->
-    console.log($(this).val())
+  $('.sortable').sortable
+    items: '.item'
+    update: (e, ui) ->
+      console.log(ui.item.data('position'))

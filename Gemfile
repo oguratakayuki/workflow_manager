@@ -20,6 +20,7 @@ gem 'active_decorator'
 gem 'nested_form'
 gem 'carrierwave'
 gem 'acts_as_list'
+gem 'jquery-ui-rails'
 
 #gem 'therubyracer', platforms: :ruby
 
