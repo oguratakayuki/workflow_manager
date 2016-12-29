@@ -1,38 +1,38 @@
 
-Job.seed do |j|
+Flow.seed do |j|
   j.name = '物品の購入(2000円以下)'
 end
 
 ApprovalFlow.seed do |a|
   a.position = 1
   a.role = 'system'
-  a.job = Job.find(1)
+  a.flow = Flow.find(1)
 end
 ApprovalFlow.seed do |a|
   a.position = 2
   a.role = 'manager'
-  a.job = Job.find(1)
+  a.flow = Flow.find(1)
 end
 
 
-Job.seed do |j|
+Flow.seed do |j|
   j.name = '高い買い物(50000円以上)'
 end
 
 ApprovalFlow.seed do |a|
   a.position = 1
   a.role = 'system'
-  a.job = Job.find(2)
+  a.flow = Flow.find(2)
 end
 ApprovalFlow.seed do |a|
   a.position = 2
   a.role = 'manager'
-  a.job = Job.find(2)
+  a.flow = Flow.find(2)
 end
 ApprovalFlow.seed do |a|
   a.position = 3
   a.role = 'president'
-  a.job = Job.find(2)
+  a.flow = Flow.find(2)
 end
 
 (1..3).to_a.each do |index|

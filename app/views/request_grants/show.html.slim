@@ -1,12 +1,9 @@
 p
-  strong Job:
-  = @request.job.name
+  strong Title:
+  = @request.title
 p
   strong user:
   = @request.user.name
-p
-  strong Title:
-  = @request.title
 p
   strong Description:
   = @request.description
@@ -14,6 +11,4 @@ p
 - if RequestFlowPolicy.new(request: @request).reviewable?(current_user)
   == render 'form'
 
-= link_to 'Edit', edit_request_path(@request)
-'|
 = link_to 'Back', requests_path

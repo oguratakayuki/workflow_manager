@@ -16,7 +16,7 @@ table.table.table-striped.table-hover
   tbody
     - @requests.each do |request|
       tr
-        td = request.job.try(:title)
+        td = request.flow.try(:title)
         td = request.user.name
         td = request.title
         td = request.description
@@ -43,7 +43,7 @@ table.table.table-striped.table-hover
     - @reviewable_requests.each do |request|
       tr
         td = request.title
-        td = request.job.name
+        td = request.flow.name
         td = request.user.name
         td = request.status
         td

@@ -1,55 +1,25 @@
-h2 申請済み一覧
+h2 = t RequestGrant.model_name.human
 
 table.table.table-striped.table-hover
   thead
     tr
-      th Job
+      th = t Request.human_attribute_name(:title)
       th = t Request.human_attribute_name(:user)
-      th Title
-      th Description
+      th = t Request.human_attribute_name(:description)
       th = t Request.human_attribute_name(:status)
-      th
-      th
-      th
-      th
+      th Action
 
   tbody
-    - @requests.each do |request|
+    - @request_grants.each do |request_grant|
       tr
-        td = request.job_id
-        td = request.user.name
-        td = request.title
-        td = request.description
-        td = request.status
-
-        td = link_to 'Show', request
-        td = link_to 'Edit', edit_request_path(request)
-        td = link_to 'Destroy', request, data: { confirm: 'Are you sure?' }, method: :delete
+        td = request_grant.request.title
+        td = request_grant.request.user.name
+        td = request_grant.request.description
+        td = request_grant.request.status
+        td 
+          = link_to '承認操作', review_request_request_grant_path(request_grant.request, request_grant), class: 'btn btn-default'
 
 br
-
-h2 承認待ち一覧
-table.table.table-striped.table-hover
-  thead
-    tr
-      th Job
-      th = t Request.human_attribute_name(:user)
-      th Title
-      th = t Request.human_attribute_name(:status)
-      th action
-
-  tbody
-    - @reviewable_requests.each do |request|
-      tr
-        td = request.title
-        td = request.job.name
-        td = request.user.name
-        td = request.status
-        td
-          = link_to '確認', review_request_path(request) , class: 'btn btn-default'
-          = link_to '承認', grant_request_path(request) , class: 'btn btn-default',  data: { confirm: 'Are you sure?' }
-          = link_to '却下', reject_request_path(request) , class: 'btn btn-default',  data: { confirm: 'Are you sure?' }
-
 #bulk_insert_bookmarks_modal.modal.fade[role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"]
  .modal-dialog[role="document"]
    .modal-content
@@ -66,5 +36,3 @@ table.table.table-striped.table-hover
 
 
 
-
-= link_to 'New Request', new_request_path

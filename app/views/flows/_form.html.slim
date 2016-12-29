@@ -1,15 +1,15 @@
-= nested_form_for(@job) do |f|
+= nested_form_for(@flow) do |f|
   .form-group
     = f.label :name, class: 'control-label'
     = f.text_field :name, class: 'form-control'
   .form-group
-    = f.label :need_evidence, Job.human_attribute_name(:need_evidence), class: 'control-label'
+    = f.label :need_evidence, Flow.human_attribute_name(:need_evidence), class: 'control-label'
     = f.select :need_evidence, [['あれば', false], ['必須', true]], class: 'form-control'
 
 
   h2 フロー
   .list-group.sortable
-    = f.fields_for :approval_flows, @job.approval_flows.order(:position) do |a|
+    = f.fields_for :approval_flows, @flow.approval_flows.order(:position) do |a|
       .list-group-item.item[data-position="#{a.object.position}"]
         = a.select :role, User.role.options
         '

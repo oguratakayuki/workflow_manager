@@ -2,8 +2,8 @@
   = f.error_notification
 
   .form-inputs
-    = f.association :job
-    = link_to '新規jobを登録', new_job_path
+    = f.association :flow
+    = link_to '新規flowを登録', new_flow_path
     = f.input :user_id, as: :hidden, input_html: { value: current_user.id }
     = f.input :title
     = f.input :description

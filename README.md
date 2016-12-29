@@ -11,6 +11,19 @@ Things you may want to cover:
 
 flowと紐づかないrequestを管理者のみflowを作成して紐づけられる機能を作る
 
+request.category作成,category(, sub_category)_を決めるとjobが決まるよにする
+
+request_flow = RequestFlow.generate_by_categries(request.categories)
+
+request_approval_flow
+  category_id
+  sub_category_id
+  job_id
+
+->category_id,sub_category_idをもとにjob_idを取得する
+
+
+
 * Ruby version
 
 * System dependencies

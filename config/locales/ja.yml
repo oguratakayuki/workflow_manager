@@ -2,13 +2,15 @@ ja:
   activerecord:
     models:
       request: '申請'
-      job:     '承認フロー'
+      request_grant: '承認依頼'
+      flow:     '承認フロー'
     attributes:
       request:
         user: '申請者'
+        flow: '承認フロー'
         title: 'タイトル'
         status: 'ステータス'
-      job:
+      flow:
         need_evidence: '証明資料提出'
   enumerize:
     flow_grant:
@@ -28,3 +30,4 @@ ja:
         reviewing: '審査中'
         rejected: '却下'
         granted: '承認'
+        flow_not_defined: '承認フロー審査中です'

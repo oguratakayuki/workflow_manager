@@ -47,12 +47,16 @@ html[lang="en"]
           .sidebar-nav
             ul.nav
               li
-                = link_to '申請', requests_path
+                = link_to '申請(進行中)', requests_path
+              li
+                = link_to t(RequestGrant.model_name.human), request_grants_path
               li
                 a[href="#"]
                   | ユーザー管理
               li
-                = link_to  '承認フロー管理', jobs_path
+                = link_to  '承認フロー管理', flows_path
+              li
+                = link_to  '作業履歴', flows_path
               li
                 = link_to  'logout', destroy_user_session_path, method: :delete
         .col-md-8

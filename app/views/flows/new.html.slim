@@ -1,8 +1,8 @@
-h1 New job
+h1 New flow
 
 == render 'form'
 
-/= nested_form_for(@job) do |f|
+/= nested_form_for(@flow) do |f|
   .form-inputs
     = f.select :status, Request.status.options
   = f.fields_for :evidences do |e_f|
@@ -18,4 +18,4 @@ h1 New job
 
 
 
-= link_to 'Back', jobs_path
+= link_to 'Back', flows_path

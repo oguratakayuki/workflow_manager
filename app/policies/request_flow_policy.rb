@@ -3,9 +3,19 @@ class RequestFlowPolicy
   attr_accessor :request
 
   def setup_request_grants
-    @request.request_grants = @request.job.copy_need_grants
-    @request.save
-    pass_next
+    if @request.flow
+      @request.request_grants = @request.flow.copy_need_grants
+      @request.status = :reviewing
+    else
+      @request.status = :flow_not_defined
+    end
+    if @request.valid?
+      @request.save
+      pass_next
+      true
+    else
+      false
+    end
   end
 
   def update_request_grant(request_grant)
@@ -14,9 +24,9 @@ class RequestFlowPolicy
     pass_next
   end
 
-  def self.flow_editable?(job, user)
+  def self.flow_editable?(flow, user)
     true if user.role.value == 'President'
-    true if job.approval_flows == []
+    true if flow.approval_flows == []
   end
 
   def reject_by(user)
@@ -39,11 +49,21 @@ class RequestFlowPolicy
   def pass_next
     if rejected?
       @request.update_attributes(status: 'rejected')
-    elsif request_grant = @request.next_request_grant
-      request_grant.update_attributes(status: :reviewing)
+    elsif next_flow_step_exists?
+      @request.next_request_grant.update_attributes(status: :reviewing)
+    elsif approval_flow_not_defined?
+      #do nothing.wait for defining flow
     else
       @request.update_attributes(status: 'executable')
     end
+  end
+
+  def next_flow_step_exists?
+    @request.next_request_grant
+  end
+
+  def approval_flow_not_defined?
+    @request.status == :flow_not_defined
   end
 
   def rejected?
