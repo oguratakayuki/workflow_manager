@@ -8,32 +8,17 @@
 
 
   h2 フロー
-  - if RequestFlowPolicy.flow_editable?(@job, current_user)
-    .list-group.sortable
-      = f.fields_for :approval_flows do |a|
-        .list-group-item.item[data-position="#{approval_flow.position}"]
-          = a.select :role, User.role.options
-          '
-          = a.text_field :position, as: :hidden
-          '
-          = a.link_to_remove "削除"
+  .list-group.sortable
+    = f.fields_for :approval_flows, @job.approval_flows.order(:position) do |a|
+      .list-group-item.item[data-position="#{a.object.position}"]
+        = a.select :role, User.role.options
+        '
+        = a.text_field :position, as: :hidden, class: 'approval_flow_positions'
+        '
+        = a.link_to_remove "削除"
+        button.close[type="button" data-dismiss="alert" aria-label="Close"]
+          span[aria-hidden="true"] = '&times;'.html_safe
     .form-inputs
       = f.link_to_add "申請ルート追加", :approval_flows
-
-  - else
-    .list-group.sortable
-      - @job.approval_flows.each do |approval_flow|
-        .list-group-item.item[data-position="#{approval_flow.position}"]
-          span.ui-icon.ui-icon-arrowthick-2-n-s
-          .list-group-item-heading
-            = approval_flow.role.try(:value)
-          .list-group-item-text
-            .label.label-info 担当
-            '
-            = User.with_role(approval_flow.role).map(&:name).join(',')
-            button.close[type="button" data-dismiss="alert" aria-label="Close"]
-              span[aria-hidden="true"] = '&times;'.html_safe
-
-
   .form-actions
     = f.button :submit
