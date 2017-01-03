@@ -1,20 +1,19 @@
 h1 Listing flows
 
-table
+table.table.table-striped.table-hover
   thead
     tr
-      th Name
-      th
-      th
-      th
+      th = t Flow.human_attribute_name(:name)
+      th Actions
 
   tbody
     - @flows.each do |flow|
       tr
         td = flow.name
-        td = link_to 'Show', flow
-        td = link_to 'Edit', edit_flow_path(flow)
-        td = link_to 'Destroy', flow, data: { confirm: 'Are you sure?' }, method: :delete
+        td
+          = link_to 'Show', flow, class: 'btn btn-default'
+          = link_to 'Edit', edit_flow_path(flow), class: 'btn btn-default'
+          = link_to 'Destroy', flow, data: { confirm: 'Are you sure?' }, method: :delete, class: 'btn btn-default'
 
 br
 

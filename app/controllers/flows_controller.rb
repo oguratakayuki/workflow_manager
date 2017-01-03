@@ -69,6 +69,8 @@ class FlowsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def flow_params
-      params.require(:flow).permit(:name, :need_evidence, approval_flows_attributes: [:id, :role, :position, :_destroy])
+      params.require(:flow).permit(:name, :need_evidence, 
+        approval_flows_attributes: [:id, :role, :position, :_destroy], 
+        executors_attributes: [:id, :role, :user_id, :_destroy])
     end
 end

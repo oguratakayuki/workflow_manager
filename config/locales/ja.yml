@@ -4,30 +4,45 @@ ja:
       request: '申請'
       request_grant: '承認依頼'
       flow:     '承認フロー'
+      user: 'ユーザー'
     attributes:
       request:
         user: '申請者'
         flow: '承認フロー'
         title: 'タイトル'
         status: 'ステータス'
+        description: '詳細'
       flow:
         need_evidence: '証明資料提出'
+      evidence:
+        file_name: '証明資料'
+        comment: '資料脚注'
+      user:
+        email: 'メールアドレス'
+        password: '新しいパスワード'
+        password_confirmation: '新しいパスワード(確認用)'
+        current_password: '現在のパスワード'
+      flow_executor:
+        role: '担当部署'
+        user: '担当者'
   enumerize:
-    flow_grant:
-      role:
-        operator: 'オペレーター'
-        manager: 'マネージャー'
-        president: '社長'
-        admin: 'システム管理者'
-        sytem: 'システム'
+    role:
+      operator: 'オペレーター'
+      system: 'システム'
+      manager: 'マネージャー'
+      president: '社長'
+      admin: '管理者'
+    request:
+      status:
+        not_submitted: '未提出'
+        flow_not_defined: '承認フロー審査中です'
+        reviewing: '審査中'
+        rejected: '却下'
+        granted: '承認済み'
+        wait_for_execution: '承認済み(作業待ち)'
+        finished: '完了'
     request_grant:
-      role:
-        system: 'システム'
-        manager: 'マネージャー'
-        president: '社長'
-        admin: '管理者'
       status:
         reviewing: '審査中'
         rejected: '却下'
         granted: '承認'
-        flow_not_defined: '承認フロー審査中です'

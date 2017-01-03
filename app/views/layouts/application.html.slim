@@ -44,10 +44,29 @@ html[lang="en"]
             | Data
       .row
         .col-md-3
-          .sidebar-nav
+          - if user_signed_in?
+            .sidebar-nav
+              .profile-sidebar
+                .profile-userpic
+                  img.img-responsive[src="http://example.com/profile_user.jpg" alt=""]
+                .profile-usertitle
+                  .profile-usertitle-name
+                    = current_user.name
+                  .profile-usertitle-job
+                    = current_user.role_text
+                .profile-userbuttons
+                  = link_to "編集", edit_user_registration_path, class: 'button btn btn-info btn-sm', type: "button"
+                  = link_to  'logout', destroy_user_session_path, method: :delete, class: 'button btn btn-danger btn-sm', type: "button"
+
+
             ul.nav
               li
                 = link_to '申請(進行中)', requests_path
+              li
+                = link_to '作業依頼', executable_requests_path
+              li
+                = link_to '承認フロー未設定申請', flow_not_defined_requests_path
+
               li
                 = link_to t(RequestGrant.model_name.human), request_grants_path
               li
@@ -59,7 +78,7 @@ html[lang="en"]
                 = link_to  '作業履歴', flows_path
               li
                 = link_to  'logout', destroy_user_session_path, method: :delete
-        .col-md-8
+        .col-md-9
           .jumbotron
             = yield
     script[src="https://code.getmdl.io/1.2.1/material.min.js"]

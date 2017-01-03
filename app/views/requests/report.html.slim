@@ -1,36 +1,46 @@
-h1 Editing request
+h2 完了報告
+span.help-block 以下の内容について作業が完了していれば送信ボタンを押してステータスを終了に更新できます
+span.help-block 必要に応じて証明資料を添付してください
 
-p
-  strong Flow:
-  = @request.flow_id
-p
-  strong User:
-  = @request.user_id
-p
-  strong Title:
-  = @request.title
-p
-  strong Description:
-  = @request.description
+.list-group
+  a.list-group-item
+    h4.list-group-item-heading
+      | User
+    p.list-group-item-text
+      = @request.user.name
+    h4.list-group-item-heading
+      | Title
+    p.list-group-item-text
+      = @request.title
+    h4.list-group-item-heading
+      | Description:
+    p.list-group-item-text
+      = @request.description
 
-= nested_form_for(@request) do |f|
-  .form-inputs
-    = f.select :status, Request.status.options
-  = f.fields_for :evidences do |e_f|
-    .form-inputs
-      = e_f.file_field :file_name
-    .form-inputs
-      = e_f.text_field :comment
-    .form-actions
-      = e_f.link_to_remove "削除"
-  .form-inputs
-    = f.link_to_add "資料追加", :evidences
 
+= simple_nested_form_for(@request, url: report_request_path(@request), method: :put,  html: { multipart: true }) do |f|
+  = f.simple_fields_for :evidences do |e_f|
+    .panel.panel-default
+      .panel-body
+        p
+          label = Evidence.human_attribute_name(:file_name)
+          .input-group
+            = image_tag e_f.object.file_name.thumb if e_f.object.file_name?
+            = e_f.file_field :file_name
+        p
+          label = Evidence.human_attribute_name(:comment)
+            = e_f.check_box :remove_file_name
+            | 画像削除
+        = e_f.text_area :comment, class: 'form-control'
+        br
+        = e_f.link_to_remove "削除", class: 'btn btn-warning'
+  '
+  = f.link_to_add "資料追加", :evidences, class: 'btn btn-primary'
+  br
+  br
   .form-actions
-    = f.button :submit, class: 'btn btn-primary'
+    = f.button :submit, class: 'btn btn-primary', value: '送信', data: { confirm: 'この申請を完了ステータスにしてよろしいですか?' }
 
-
-= link_to 'Show', @request
-'|
-= link_to 'Back', requests_path
+br
+= link_to 'Back', requests_path, class: 'btn btn-primary'
 

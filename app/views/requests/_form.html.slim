@@ -2,11 +2,10 @@
   = f.error_notification
 
   .form-inputs
-    = f.association :flow
-    = link_to '新規flowを登録', new_flow_path
     = f.input :user_id, as: :hidden, input_html: { value: current_user.id }
     = f.input :title
     = f.input :description
+    = f.association :flow
 
   .form-actions
     = f.button :submit, class: 'btn btn-primary'

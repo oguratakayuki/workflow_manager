@@ -22,7 +22,7 @@ request_approval_flow
 
 ->category_id,sub_category_idをもとにjob_idを取得する
 
-
+終了ステータスのrequestを非表示に(displayable)
 
 * Ruby version
 

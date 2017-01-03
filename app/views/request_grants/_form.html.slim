@@ -3,7 +3,7 @@
 
   .form-inputs
     = f.input :user_id, as: :hidden, input_html: { value: current_user.id }
-    = f.select :status, RequestGrant.status.options
+    = f.select :status, RequestGrant.status.options.reject{|t| !t[1].in?([ 'rejected','granted'])  }, include_blank: true
     = f.input :comment
 
   .form-actions

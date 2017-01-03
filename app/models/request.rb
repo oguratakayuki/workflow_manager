@@ -5,21 +5,24 @@ class Request < ApplicationRecord
   has_many :request_grants
   has_many :evidences
   scope :reviewable_by_role, ->(role) { joins(:request_grants).merge(RequestGrant.with_role(role).with_status('reviewing')) }
-  enumerize :status, in: [:flow_not_defined, :reviewing, :rejected, :executable, :executed], scope: true
-  accepts_nested_attributes_for :evidences
+  scope :executable, ->(user) { where(status: :wait_for_execution).joins(flow: :executors).merge(FlowExecutor.by_user(user)) }
+  enumerize :status, in: [:not_submitted, :flow_not_defined, :reviewing, :rejected, :executable, :executed, :finished], scope: true
+  accepts_nested_attributes_for :evidences, allow_destroy: true
 
   def next_request_grant
     request_grants.with_status(:not_judged).order(:position).first
   end
-  def reviewable?(user)
-    reviewable_request_grant
-  end
-  def reviewable_request_grant
-    request_grants.with_role(user.role).with_status('reviewing').first
+
+  def current_request_grant
+    request_grants.with_status(:reviewing).order(:position).first
   end
 
-  def self.executable_request_grant(user)
-    where(status: 'executable').joins(flow: :executor).merge(FlowExecutor.where(user: user).or(FlowExecutor.where(role: user.role)))
+
+  def reviewable?(user)
+    reviewable_request_grant(user)
+  end
+  def reviewable_request_grant(user)
+    request_grants.with_role(user.role).with_status('reviewing').first
   end
 
 end

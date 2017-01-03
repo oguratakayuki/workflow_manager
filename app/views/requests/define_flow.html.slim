@@ -1,0 +1,29 @@
+h1 =Request.model_name.human
+span.help-block この申請は承認フローが選択されていません。承認フローを選択または作成してください
+
+.list-group
+  a.list-group-item
+    h4.list-group-item-heading
+      = Request.human_attribute_name(:user)
+    p.list-group-item-text
+      = @request.user.name
+    h4.list-group-item-heading
+      = Request.human_attribute_name(:title)
+    p.list-group-item-text
+      = @request.title
+    h4.list-group-item-heading
+      = Request.human_attribute_name(:description)
+    p.list-group-item-text
+      = @request.description
+
+= simple_form_for(@request, url: update_flow_request_path(@request), method: :put) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.association :flow
+    = link_to '新規flowを登録', new_flow_path
+
+  .form-actions
+    = f.button :submit, class: 'btn btn-primary'
+
+= link_to 'Back', requests_path

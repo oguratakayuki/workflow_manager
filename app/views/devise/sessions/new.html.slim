@@ -1,0 +1,17 @@
+#login-modal.modal.show[tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"]
+  .modal-dialog
+    .loginmodal-container
+      h1
+        | Login to Your Account
+      br
+      = simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
+        = f.input :email, required: false, autofocus: true
+        = f.input :password, required: false
+        = f.button :submit, "Log in", class: 'login loginmodal-submit'
+      .login-help
+        a[href="#"]
+          | Register
+        |  - 
+        a[href="#"]
+          | Forgot Password
+      = render "devise/shared/links"

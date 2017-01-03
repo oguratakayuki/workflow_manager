@@ -1,18 +1,22 @@
-p
-  strong Job:
-  = @request.flow_id
-p
-  strong Zen user:
-  = @request.user_id
-p
-  strong Title:
-  = @request.title
-p
-  strong Description:
-  = @request.description
+.list-group
+  a.list-group-item
+    h4.list-group-item-heading
+      strong = Request.human_attribute_name(:flow)
+    p.list-group-item-text
+      = @request.flow.try(:title)
+    h4.list-group-item-heading
+      strong = Request.human_attribute_name(:user)
+    p.list-group-item-text
+      = @request.user.name
+    h4.list-group-item-heading
+      strong = Request.human_attribute_name(:title)
+    p.list-group-item-text
+      = @request.title
+    h4.list-group-item-heading
+      strong = Request.human_attribute_name(:description)
+    p.list-group-item-text
+      = @request.description
 
 - if RequestFlowPolicy.new(request: @request).reviewable?(current_user)
 
-= link_to 'Edit', edit_request_path(@request)
-'|
 = link_to 'Back', requests_path
