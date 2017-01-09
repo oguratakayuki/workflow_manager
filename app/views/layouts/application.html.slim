@@ -66,9 +66,12 @@ html[lang="en"]
                 = link_to '作業依頼', executable_requests_path
               li
                 = link_to '承認フロー未設定申請', flow_not_defined_requests_path
-
               li
-                = link_to t(RequestGrant.model_name.human), request_grants_path
+                = link_to  request_grants_path do
+                  = t(RequestGrant.model_name.human)
+                  - if @user_reviewable_count > 0
+                    '
+                    span.badge = @user_reviewable_count
               li
                 a[href="#"]
                   | ユーザー管理
@@ -80,5 +83,10 @@ html[lang="en"]
                 = link_to  'logout', destroy_user_session_path, method: :delete
         .col-md-9
           .jumbotron
+            - flash.each do |key, value|
+              div[class="alert alert-info"]
+                a.close[href="#" data-dismiss="alert"]
+                  | ×
+                = value
             = yield
     script[src="https://code.getmdl.io/1.2.1/material.min.js"]

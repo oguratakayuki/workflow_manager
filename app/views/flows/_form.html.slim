@@ -6,8 +6,7 @@
     = f.label :need_evidence, Flow.human_attribute_name(:need_evidence), class: 'control-label'
     = f.select :need_evidence, [['あれば', false], ['必須', true]], class: 'form-control'
 
-
-  h2 申請ルート
+  h2 = ApprovalFlow.model_name.human
   .list-group.sortable
     = f.simple_fields_for :approval_flows, @flow.approval_flows.order(:position) do |a|
       .list-group-item.item[data-position="#{a.object.position}"]

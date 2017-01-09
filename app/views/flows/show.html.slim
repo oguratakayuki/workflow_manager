@@ -1,9 +1,33 @@
-p#notice = notice
+.list-group
+  a.list-group-item
+    h4.list-group-item-heading
+      strong = Flow.human_attribute_name(:name)
+    p.list-group-item-text
+      = @flow.name
+    h4.list-group-item-heading
+      strong = Flow.human_attribute_name(:need_evidence)
+    p.list-group-item-text
+      = @flow.need_evidence_text
 
-p
-  strong Name:
-  = @flow.name
-
+  - if @flow.approval_flows.present?
+    h2 = ApprovalFlow.model_name.human
+    .list-group
+      - @flow.approval_flows.order(:position).each do |approval_flow|
+        .list-group-item
+          = approval_flow.position
+          '
+          = approval_flow.role_text
+  - if @flow.executors.present?
+    h2 = FlowExecutor.model_name.human
+    .list-group
+      - @flow.executors.each do |executor|
+        .list-group-item
+          - if executor.role
+            = executor.role_text
+            '
+          - if executor.user
+            = executor.user.name
+ 
 = link_to 'Edit', edit_flow_path(@flow)
 '|
 = link_to 'Back', flows_path

@@ -4,7 +4,7 @@ class RequestsController < ApplicationController
   # GET /requests
   # GET /requests.json
   def index
-    @requests = Request.where(user: current_user)
+    @requests = Request.where(user: current_user).editable
   end
 
   def executable

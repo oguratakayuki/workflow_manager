@@ -1,4 +1,4 @@
-= simple_form_for(@request) do |f|
+= simple_nested_form_for(@request) do |f|
   = f.error_notification
 
   .form-inputs
@@ -6,6 +6,28 @@
     = f.input :title
     = f.input :description
     = f.association :flow
+
+  = f.simple_fields_for :costs do |c|
+    .panel.panel-default
+      .panel-body
+        p
+          .input-group
+            = c.input :price
+        p
+          .input-group
+            = c.input :cost_price_type, as: :select
+        p
+          .input-group
+            = c.input :time_required
+        p
+          .input-group
+            = c.input :person_number
+        br
+        = c.link_to_remove "削除", class: 'btn btn-warning'
+  '
+  = f.link_to_add "経費情報追加", :costs, class: 'btn btn-primary'
+  br
+  br
 
   .form-actions
     = f.button :submit, class: 'btn btn-primary'

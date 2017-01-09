@@ -8,21 +8,11 @@ jQuery ($) ->
     $('.modal').modal('show')
 
   $('.modal-dialog form input[type="submit"]').click (e) ->
-    console.log 'fuga'
     $('.modal').modal('hide')
 
   $("#bookmark-import-form").on("ajax:success", (e, data, status, xhr) ->
     #$("#new_article").append xhr.responseText
-    console.log 'success!!!!'
-    console.log xhr.responseText
-    console.log data
   ).on "ajax:error", (e, xhr, status, error) ->
     toastr.success('importを開始しました')
-    console.log 'fail!!!!'
-    console.log e
-    console.log xhr
-    console.log status
-    console.log error
-    console.log xhr.responseText
 
 

@@ -3,7 +3,7 @@ class RequestGrantsController < ApplicationController
   before_action :set_request_grant, only: [:review, :update]
 
   def index
-    @request_grants = RequestGrant.with_role(current_user.role).with_status('reviewing')
+    @request_grants = RequestGrant.user_reviewable(current_user)
   end
 
 

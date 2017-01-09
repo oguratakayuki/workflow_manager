@@ -17,6 +17,23 @@
     p.list-group-item-text
       = @request.description
 
+  - if @request.request_grants.present?
+    h2 承認状況
+    .list-group
+      - @request.request_grants.order(:position).each do |request_grant|
+        - request_grant = ActiveDecorator::Decorator.instance.decorate(request_grant)
+        .list-group-item
+          = request_grant.position
+          '
+          = request_grant.role_text
+          '
+          = request_grant.user.try(:name)
+          '
+          span[class="#{request_grant.status_label_class}"]
+            = request_grant.status_text
+
+
+
 - if RequestFlowPolicy.new(request: @request).reviewable?(current_user)
 
-= link_to 'Back', requests_path
+= link_to 'Back', requests_path, class: 'btn btn-default'

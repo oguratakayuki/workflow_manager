@@ -1,12 +1,18 @@
-p
-  strong Title:
-  = @request.title
-p
-  strong user:
-  = @request.user.name
-p
-  strong Description:
-  = @request.description
+.list-group
+  a.list-group-item
+    h4.list-group-item-heading
+      strong = Request.human_attribute_name(:user)
+    p.list-group-item-text
+      = @request.user.name
+    h4.list-group-item-heading
+      strong = Request.human_attribute_name(:title)
+    p.list-group-item-text
+      = @request.title
+    h4.list-group-item-heading
+      strong = Request.human_attribute_name(:description)
+    p.list-group-item-text
+      = @request.description
+
 - if RequestFlowPolicy.new(request: @request).reviewable?(current_user)
   == render 'form'
 

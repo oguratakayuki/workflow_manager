@@ -5,6 +5,9 @@ ja:
       request_grant: '承認依頼'
       flow:     '承認フロー'
       user: 'ユーザー'
+      approval_flow:     '申請ルート'
+      flow_executor: '実作業者'
+      request_cost: '経費情報'
     attributes:
       request:
         user: '申請者'
@@ -25,6 +28,11 @@ ja:
       flow_executor:
         role: '担当部署'
         user: '担当者'
+      request_cost:
+        price: 価格
+        cost_price_type: 費用種別
+        time_required: 人的コスト(時間)
+        person_number: 人的コスト(人数)
   enumerize:
     role:
       operator: 'オペレーター'
@@ -38,11 +46,26 @@ ja:
         flow_not_defined: '承認フロー審査中です'
         reviewing: '審査中'
         rejected: '却下'
-        granted: '承認済み'
+        granted: '承認'
         wait_for_execution: '承認済み(作業待ち)'
         finished: '完了'
     request_grant:
       status:
+        not_judged: '未審査'
         reviewing: '審査中'
         rejected: '却下'
-        granted: '承認'
+        granted: '承認済み'
+    request_cost:
+      cost_price_type:
+        one_time: '一回払い'
+        monthly:  '各月'
+        each_year: '各年'
+  devise:
+    sessions:
+      user:
+        signed_in: ログインしました
+        signed_out: ログアウトしました
+    failure:
+      user:
+        unauthenticated: 'ログインしないと実行できません'
+        not_found_in_database: 'ログインに失敗しました。アカウント情報をご確認ください'

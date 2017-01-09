@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :shops
   resources :flow_grants
   resources :flows
   resources :jobs
