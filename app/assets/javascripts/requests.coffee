@@ -15,4 +15,17 @@ jQuery ($) ->
   ).on "ajax:error", (e, xhr, status, error) ->
     toastr.success('importを開始しました')
 
+  $('.request_costs_cost_price_type').change ->
+    console.log('hoge')
 
+$(document).on('nested:fieldAdded', (event) ->
+  target = event.target
+  $(target).find('.request_costs_initial_cost').hide()
+  $(target).find('.request_costs_cost_price_type').val('one_time')
+  if $('.request_costs_cost_price_type').length > 0
+    $(event.target).find('.request_costs_cost_price_type').change (event) ->
+      if $(event.target).val() == 'one_time'
+        $(target).find('.request_costs_initial_cost').hide()
+      else
+        $(target).find('.request_costs_initial_cost').show()
+)

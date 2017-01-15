@@ -31,6 +31,7 @@ ja:
       request_cost:
         price: 価格
         cost_price_type: 費用種別
+        initial_cost: 初期費用
         time_required: 人的コスト(時間)
         person_number: 人的コスト(人数)
   enumerize:

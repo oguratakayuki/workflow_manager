@@ -41,6 +41,8 @@ gem 'slim-rails'
 gem 'simple_form'
 gem 'bootstrap-sass'
 gem 'devise'
+gem 'gretel'
+
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 3.0'
 # Use ActiveModel has_secure_password

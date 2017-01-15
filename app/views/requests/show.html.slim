@@ -1,3 +1,4 @@
+- breadcrumb :request, @request
 .list-group
   a.list-group-item
     h4.list-group-item-heading
@@ -16,6 +17,32 @@
       strong = Request.human_attribute_name(:description)
     p.list-group-item-text
       = @request.description
+
+  - if @request.costs.present?
+    h2 = RequestCost.model_name.human
+    .list-group
+      - @request.costs.each do |cost|
+        a.list-group-item
+          h4.list-group-item-heading
+            strong = RequestCost.human_attribute_name(:cost_price_type)
+          p.list-group-item-text
+            = cost.cost_price_type_text
+          h4.list-group-item-heading
+            strong = RequestCost.human_attribute_name(:initial_cost)
+          p.list-group-item-text
+            = cost.initial_cost
+          h4.list-group-item-heading
+            strong = RequestCost.human_attribute_name(:price)
+          p.list-group-item-text
+            = cost.price
+          h4.list-group-item-heading
+            strong = RequestCost.human_attribute_name(:time_required)
+          p.list-group-item-text
+            = cost.time_required
+          h4.list-group-item-heading
+            strong = RequestCost.human_attribute_name(:person_number)
+          p.list-group-item-text
+            = cost.person_number
 
   - if @request.request_grants.present?
     h2 承認状況

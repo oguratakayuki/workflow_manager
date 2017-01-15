@@ -25,8 +25,8 @@ class RequestFlowPolicy
     #TODO notifier
   end
 
-  def withdraw!
-    raise UnpermittedRequest unless withdrawable?
+  def withdraw!(user)
+    raise UnpermittedRequest unless withdrawable?(user)
     Request.transaction do
       @request.update_attributes(flow: nil, status: :not_submitted)
       @request.request_grants.destroy_all
@@ -40,8 +40,6 @@ class RequestFlowPolicy
       #TODO notifier
     end
   end
-
-
 
   def update_request_grant(request_grant)
     Request.transaction do
@@ -65,7 +63,7 @@ class RequestFlowPolicy
   end
 
   def withdrawable?(user)
-    @request.status.in?(%i!flow_not_defined reviewing!) && user == @request.user
+    @request.status.in?(%w!flow_not_defined reviewing!) && user == @request.user
   end
 
   def submitable?(user)

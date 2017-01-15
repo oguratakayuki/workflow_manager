@@ -1,5 +1,5 @@
 class RequestsController < ApplicationController
-  before_action :set_request, only: [:show, :edit, :update, :destroy, :reject, :grant, :review, :report, :define_flow, :update_flow, :withdraw]
+  before_action :set_request, only: [:show, :edit, :update, :destroy, :reject, :grant, :review, :report, :define_flow, :update_flow, :withdraw, :submit]
 
   # GET /requests
   # GET /requests.json
@@ -52,7 +52,7 @@ class RequestsController < ApplicationController
 
 
   def withdraw
-    RequestFlowPolicy.new(request: @request).withdraw!
+    RequestFlowPolicy.new(request: @request).withdraw!(current_user)
     redirect_to requests_path, notice: '申請を取り消しました'
   end
 
@@ -128,7 +128,16 @@ class RequestsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def request_params
-      params.require(:request).permit(:flow_id, :user_id, :title, :description)
+      params.require(:request).permit(:flow_id, :user_id, :title, :description,
+        costs_attributes: [
+        :_destroy,
+        :initial_cost,
+        :price,
+        :time_required,
+        :person_number, 
+        :cost_price_type
+        ]
+      )
     end
 
     def define_flow_params

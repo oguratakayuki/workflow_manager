@@ -12,10 +12,13 @@
       .panel-body
         p
           .input-group
-            = c.input :price
+            = c.input :cost_price_type, as: :select, input_html: { class: 'request_costs_cost_price_type' }
         p
           .input-group
-            = c.input :cost_price_type, as: :select
+            = c.input :initial_cost, input_html: { class: 'request_costs_initial_cost' }
+        p
+          .input-group
+            = c.input :price, input_html: { class: 'request_costs_price' }
         p
           .input-group
             = c.input :time_required
