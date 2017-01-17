@@ -1,3 +1,4 @@
+require 'csv'
 class ShopsController < ApplicationController
   before_action :set_shop, only: [:show, :edit, :update, :destroy]
 
@@ -19,6 +20,17 @@ class ShopsController < ApplicationController
 
   # GET /shops/1/edit
   def edit
+  end
+
+  def csv_import
+    if request.post?
+      file = params[:file]
+      CSV.foreach(file.path, headers: true) do |row|
+        shop = Shop.find_or_create_by(external_id: row['external_id'])
+        shop.update_attributes(name: row['name'])
+      end
+      redirect_to shops_path, notice: 'Importに成功しました'
+    end
   end
 
   # POST /shops

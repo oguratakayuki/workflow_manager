@@ -33,15 +33,6 @@ html[lang="en"]
             small 
               | Subtext for header
       .row
-        /ul.breadcrumb
-          li
-            a[href="#"]
-              | Home
-          li
-            a[href="#"]
-              | Library
-          li.active
-            | Data
         - breadcrumbs.tap do |links|
           - if links.any?
             ul.breadcrumb
@@ -49,7 +40,6 @@ html[lang="en"]
                 - active =  link.current? ? "active" : ''
                 li[class="#{active}"]
                   = link_to link.text, link.url
-
       .row
         .col-md-3
           - if user_signed_in?
@@ -65,8 +55,6 @@ html[lang="en"]
                 .profile-userbuttons
                   = link_to "編集", edit_user_registration_path, class: 'button btn btn-info btn-sm', type: "button"
                   = link_to  'logout', destroy_user_session_path, method: :delete, class: 'button btn btn-danger btn-sm', type: "button"
-
-
             ul.nav
               li
                 = link_to '申請(進行中)', requests_path
@@ -81,14 +69,15 @@ html[lang="en"]
                     '
                     span.badge = @user_reviewable_count
               li
-                a[href="#"]
-                  | ユーザー管理
+                = link_to 'ユーザー管理', users_path
               li
                 = link_to  '承認フロー管理', flows_path
               li
                 = link_to  '作業履歴', flows_path
               li
                 = link_to  'logout', destroy_user_session_path, method: :delete
+              li
+                = link_to  '店舗管理', shops_path
         .col-md-9
           .jumbotron
             - flash.each do |key, value|

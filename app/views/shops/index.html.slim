@@ -1,23 +1,26 @@
 h1 Listing shops
 
-table
+table.table.table-striped.table-hover
   thead
     tr
       th Name
       th Description
-      th
-      th
-      th
+      th Actions
 
   tbody
     - @shops.each do |shop|
       tr
         td = shop.name
         td = shop.description
-        td = link_to 'Show', shop
-        td = link_to 'Edit', edit_shop_path(shop)
-        td = link_to 'Destroy', shop, data: { confirm: 'Are you sure?' }, method: :delete
+        td
+          = link_to 'Show', shop, class: 'btn btn-default'
+          '
+          = link_to 'Edit', edit_shop_path(shop), class: 'btn btn-default'
+          '
+          = link_to 'Destroy', shop, data: { confirm: 'Are you sure?' }, method: :delete, class: 'btn btn-default'
 
 br
 
-= link_to 'New Shop', new_shop_path
+= link_to '登録', new_shop_path, class: 'btn btn-default'
+'
+= link_to 'CSVインポート', csv_import_shops_path, class: 'btn btn-default'

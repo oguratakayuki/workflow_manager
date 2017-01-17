@@ -1,0 +1,7 @@
+.page-header
+  h2 UserデータのCSVインポート
+= form_tag(csv_import_users_path, method: :post, multipart: true, class: "navbar-form navbar-left") do 
+  .form-group
+    = file_field_tag :file, class: 'form-control'
+    '
+    = submit_tag '送信', class: 'btn btn-primary'

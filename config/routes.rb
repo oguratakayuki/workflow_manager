@@ -1,5 +1,14 @@
 Rails.application.routes.draw do
-  resources :shops
+
+  resources :users, only: [:index, :show] do
+    get 'csv_import', on: :collection
+    post 'csv_import', on: :collection
+  end
+
+  resources :shops do
+    get 'csv_import', on: :collection
+    post 'csv_import', on: :collection
+  end
   resources :flow_grants
   resources :flows
   resources :jobs

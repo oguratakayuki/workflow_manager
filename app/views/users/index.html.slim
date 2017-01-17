@@ -1,0 +1,17 @@
+h1 Users#index
+
+table.table.table-striped.table-hover
+  thead
+    tr
+      th Id
+      th Name
+      th Action
+
+  tbody
+    - @users.each do |user|
+      tr
+        td = user.id
+        td = user.name
+        td 
+          = link_to '詳細', user, class: 'btn btn-default'
+= link_to 'CSVインポート', csv_import_users_path, class: 'btn btn-default'
