@@ -5,7 +5,8 @@
     = f.input :user_id, as: :hidden, input_html: { value: current_user.id }
     = f.input :title
     = f.input :description
-    = f.association :flow
+    = f.association :category
+    = f.association :sub_category
 
   = f.simple_fields_for :costs do |c|
     .panel.panel-default

@@ -47,9 +47,24 @@ end
   end
 end
 
+(1..3).to_a.each do |index|
+  Category.seed do |category|
+    category.name = "カテゴリ#{index}"
+  end
+end
+(1..3).to_a.each do |index|
+  SubCategory.seed do |sub_category|
+    sub_category.category_id = index
+    sub_category.name = "サブカテゴリ#{index}"
+  end
+end
+
 Request.seed do |r|
   r.title = '掃除用具の購入許可申請'
   r.description = '本部で大掃除に使う'
   r.user = User.first
+  category = Category.first
+  r.category = category 
+  r.sub_category = category.sub_categories.first
 end
 

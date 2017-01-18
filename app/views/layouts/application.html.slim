@@ -69,13 +69,11 @@ html[lang="en"]
                     '
                     span.badge = @user_reviewable_count
               li
-                = link_to 'ユーザー管理', users_path
-              li
                 = link_to  '承認フロー管理', flows_path
               li
                 = link_to  '作業履歴', flows_path
               li
-                = link_to  'logout', destroy_user_session_path, method: :delete
+                = link_to  'カテゴリ管理', categories_path
               li
                 = link_to  '店舗管理', shops_path
         .col-md-9

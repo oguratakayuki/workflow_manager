@@ -2,6 +2,8 @@ class Request < ApplicationRecord
   extend Enumerize
   belongs_to :flow
   belongs_to :user
+  belongs_to :category
+  belongs_to :sub_category
   has_many :request_grants
   has_many :costs, class_name: 'RequestCost'
   has_many :evidences
