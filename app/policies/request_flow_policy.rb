@@ -8,7 +8,9 @@ class RequestFlowPolicy
       @request.request_grants = @request.flow.copy_need_grants
       @request.status = :reviewing
     else
-      @request.status = :flow_not_defined
+      unless decide_flow
+        @request.status = :flow_not_defined
+      end
     end
     if @request.valid?
       @request.save
@@ -100,5 +102,12 @@ class RequestFlowPolicy
     @request.request_grants.with_status('rejected').first
   end
 
+  def decide_flow
+    #category, sub_category,shop,brand
+    #category が id = 3 のとき model, id ,type, equal, not_equal
+    #parent
+      #childs model_name(type), model_id, equal(not_equal), 
+
+  end
 
 end

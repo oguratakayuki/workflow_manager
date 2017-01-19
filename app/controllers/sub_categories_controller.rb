@@ -6,7 +6,7 @@ class SubCategoriesController < ApplicationController
   # GET /sub_categories.json
   def index
     @sub_categories = @category.sub_categories
-    render json: @sub_categories.map {|t| {t.id.to_sym => t.name}
+    render json: @sub_categories.map {|t| [t.id,t.name] }
   end
 
   # GET /sub_categories/1

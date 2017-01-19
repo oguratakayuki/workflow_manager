@@ -4,14 +4,17 @@ ja:
       request: '申請'
       request_grant: '承認依頼'
       flow:     '承認フロー'
+      category: 'カテゴリ'
+      subcategory: 'サブカテゴリ'
       user: 'ユーザー'
-      approval_flow:     '申請ルート'
+      approval_flow: '申請ルート'
       flow_executor: '実作業者'
       request_cost: '経費情報'
     attributes:
       request:
         user: '申請者'
         flow: '承認フロー'
+        category: 'カテゴリ'
         title: 'タイトル'
         status: 'ステータス'
         description: '詳細'
