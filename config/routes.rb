@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
 
-  resources :sub_categories
-  resources :categories
+  resources :categories do
+    resources :sub_categories
+  end
 
   resources :shops do
     get 'csv_import', on: :collection

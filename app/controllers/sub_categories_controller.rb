@@ -1,10 +1,12 @@
 class SubCategoriesController < ApplicationController
+  before_action :set_category
   before_action :set_sub_category, only: [:show, :edit, :update, :destroy]
 
   # GET /sub_categories
   # GET /sub_categories.json
   def index
-    @sub_categories = SubCategory.all
+    @sub_categories = @category.sub_categories
+    render json: @sub_categories.map {|t| {t.id.to_sym => t.name}
   end
 
   # GET /sub_categories/1
@@ -63,9 +65,15 @@ class SubCategoriesController < ApplicationController
 
   private
     # Use callbacks to share common setup or constraints between actions.
-    def set_sub_category
-      @sub_category = SubCategory.find(params[:id])
+    def set_category
+      @category = Category.find(params[:category_id])
     end
+
+    def set_sub_category
+      @sub_category = @category.sub_category.find(params[:id])
+    end
+
+
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def sub_category_params
