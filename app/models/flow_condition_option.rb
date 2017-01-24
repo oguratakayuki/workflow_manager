@@ -1,0 +1,2 @@
+class FlowConditionOption < ApplicationRecord
+end
