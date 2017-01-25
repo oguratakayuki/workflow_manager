@@ -1,0 +1,37 @@
+= simple_nested_form_for(@flow_condition_group) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :user_id, as: :hidden, input_html: { value: current_user.id }
+    = f.input :title
+    = f.input :description
+    = f.association :category
+    = f.association :sub_category
+
+  = f.simple_fields_for :costs do |c|
+    .panel.panel-default
+      .panel-body
+        p
+          .input-group
+            = c.input :cost_price_type, as: :select, input_html: { class: 'request_costs_cost_price_type' }
+        p
+          .input-group
+            = c.input :initial_cost, input_html: { class: 'request_costs_initial_cost' }
+        p
+          .input-group
+            = c.input :price, input_html: { class: 'request_costs_price' }
+        p
+          .input-group
+            = c.input :time_required
+        p
+          .input-group
+            = c.input :person_number
+        br
+        = c.link_to_remove "削除", class: 'btn btn-warning'
+  '
+  = f.link_to_add "経費情報追加", :costs, class: 'btn btn-primary'
+  br
+  br
+
+  .form-actions
+    = f.button :submit, class: 'btn btn-primary'

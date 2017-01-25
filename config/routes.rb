@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
 
-  resources :flow_conditions
+  resources :flow_condition_groups
   resources :categories do
     resources :sub_categories
   end

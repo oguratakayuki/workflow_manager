@@ -1,0 +1,27 @@
+h1 Listing flow_condition
+
+table.table.table-striped.table-hover
+  thead
+    tr
+      th Id
+      th Flow
+      th Relation
+      th Actions
+
+  tbody
+    - @flow_condition_groups.each do |flow_condition_group|
+      tr
+        td = flow_condition_group.id
+        td = flow_condition_group.flow.name
+        td = flow_condition_group.relation
+        td
+          = link_to 'Show', flow_condition_group, class: 'btn btn-default'
+          '
+          = link_to 'Edit', edit_flow_condition_group_path(flow_condition_group), class: 'btn btn-default'
+          '
+          = link_to 'Destroy', flow_condition_group, data: { confirm: 'Are you sure?' }, method: :delete, class: 'btn btn-default'
+
+br
+
+= link_to '登録', new_flow_condition_group_path, class: 'btn btn-default'
+'

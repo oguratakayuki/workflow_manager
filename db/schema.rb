@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170124112656) do
+ActiveRecord::Schema.define(version: 20170125120813) do
 
   create_table "approval_flows", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "flow_id"
@@ -36,6 +36,7 @@ ActiveRecord::Schema.define(version: 20170124112656) do
   end
 
   create_table "flow_condition_groups", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "flow_id"
     t.integer  "parent_id"
     t.string   "relation"
     t.datetime "created_at", null: false
