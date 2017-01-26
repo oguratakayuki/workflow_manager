@@ -5,5 +5,6 @@ class FlowConditionGroup < ApplicationRecord
   belongs_to :parent, class_name: 'FlowConditionGroup', foreign_key: :id
   has_many :flow_conditions
   belongs_to :flow
-  enumerize :relation_type, in: %w!and or!, scope: true
+  enumerize :relation_type, in: %w!and or!
+  accepts_nested_attributes_for :flow_conditions, allow_destroy: true
 end

@@ -1,35 +1,38 @@
 = simple_nested_form_for(@flow_condition_group) do |f|
   = f.error_notification
-
   .form-inputs
-    = f.input :user_id, as: :hidden, input_html: { value: current_user.id }
-    = f.input :title
-    = f.input :description
-    = f.association :category
-    = f.association :sub_category
-
-  = f.simple_fields_for :costs do |c|
+    = f.association :flow
+    = f.input :relation_type, as: :select
+  = f.simple_fields_for :flow_conditions do |fc|
     .panel.panel-default
       .panel-body
-        p
-          .input-group
-            = c.input :cost_price_type, as: :select, input_html: { class: 'request_costs_cost_price_type' }
-        p
-          .input-group
-            = c.input :initial_cost, input_html: { class: 'request_costs_initial_cost' }
-        p
-          .input-group
-            = c.input :price, input_html: { class: 'request_costs_price' }
-        p
-          .input-group
-            = c.input :time_required
-        p
-          .input-group
-            = c.input :person_number
-        br
-        = c.link_to_remove "削除", class: 'btn btn-warning'
+        .row
+          .col-md-4
+            |  比較種別
+            = fc.input :relation_type, as: :select, label: false
+          .col-md-4
+            |  比較方法
+            = fc.input :compare_type, as: :select, label: false
+        .row
+          .col-md-12
+            = fc.simple_fields_for :flow_condition_options do |o|
+              .row
+                .col-md-4
+                  |  比較対象
+                  = o.input :relation_id, as: :select, label: false
+                .col-md-4
+                  br
+                  = o.link_to_remove "削除", class: 'btn btn-warning'
+            br
+            '
+            = fc.link_to_add "条件報追加", :flow_condition_options, class: 'btn btn-primary', style: 'margin-bottom: 10px;'
+            br
+            '
+        .row
+          .col-md-12
+            = fc.link_to_remove "削除", class: 'btn btn-warning'
   '
-  = f.link_to_add "経費情報追加", :costs, class: 'btn btn-primary'
+  = f.link_to_add "条件報追加", :flow_conditions, class: 'btn btn-primary'
   br
   br
 
