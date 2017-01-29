@@ -22,6 +22,16 @@ crumb :flow do |flow|
   parent :flows
 end
 
+crumb :flow_condition_groups do
+  link "承認フロー一覧", flow_condition_groups_path
+  parent :root
+end
+
+crumb :flow_condition_group do |flow_condition_group|
+  link flow_condition_group.flow.name, flow_condition_group_path(flow_condition_group)
+  parent :flow_condition_groups
+end
+
 
 
 

@@ -1,0 +1,8 @@
+- breadcrumb :flow_condition_group, @flow_condition_group
+.list-group
+  a.list-group-item
+    h4.list-group-item-heading
+      strong = Flow.human_attribute_name(:name)
+    p.list-group-item-text
+      = @flow_condition_group.flow.name
+
