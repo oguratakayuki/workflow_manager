@@ -1,5 +1,5 @@
 jQuery ($) ->
-  update_select_box_option = (selectbox, options) ->
+  @update_select_box_option = (selectbox, options) ->
     selectbox.find('option').remove()
     selectbox.append($('<option>').prop('selected',true) )
     isSelected = true
@@ -10,5 +10,6 @@ jQuery ($) ->
             .text(temp[1])
         selectbox.append($option)
     )
+    console.log selectbox
 
 
