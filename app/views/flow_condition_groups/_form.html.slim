@@ -1,0 +1,43 @@
+= simple_nested_form_for(@flow_condition_group, defaults: {input_html:  {class: 'flow_condition_group_form' } }) do |f|
+  = f.error_notification
+  .form-inputs
+    = f.association :flow
+    = f.input :relation_type, as: :select
+  = f.simple_fields_for :flow_conditions do |fc|
+    .panel.panel-default
+      .panel-body
+        .row
+          .col-md-4
+            |  比較種別
+            = fc.input :relation_type, as: :select, 
+              label: false, 
+              input_html: {class: 'flow_condition_group_relation_type' }, 
+              collection: FlowCondition.relation_type.options.delete_if{|k,v| v == 'sub_category' }
+          .col-md-4
+            |  比較方法
+            = fc.input :compare_type, as: :select, label: false, input_html: {class: 'flow_condition_group_compare_type' }
+        .row
+          .col-md-12
+            = fc.simple_fields_for :flow_condition_options do |o|
+              .row
+                .col-md-4
+                  |  比較対象
+                  = o.input :relation_id, as: :select, label: false, input_html: {class: 'flow_condition_relation_id' }
+                .col-md-4
+                  br
+                  = o.link_to_remove "削除", class: 'btn btn-warning'
+            br
+            '
+            = fc.link_to_add "比較対象追加", :flow_condition_options, {class: 'btn btn-primary flow_condition_option_add_button', style: 'margin-bottom: 10px;'}
+            br
+            '
+        .row
+          .col-md-12
+            = fc.link_to_remove "削除", class: 'btn btn-warning flow_condition_option_remove_button'
+  '
+  = f.link_to_add "条件報追加", :flow_conditions, class: 'btn btn-primary flow_condition_add_button'
+  br
+  br
+
+  .form-actions
+    = f.button :submit, class: 'btn btn-primary'

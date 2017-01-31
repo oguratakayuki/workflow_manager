@@ -1,10 +1,16 @@
 class FlowConditionGroupsController < ApplicationController
   before_action :set_flow_condition_gourp, only: [:show, :edit, :update]
+  def new
+    @flow_condition_group = FlowConditionGroup.new
+  end
   def index
     @flow_condition_groups = FlowConditionGroup.roots
   end
 
   def show
+  end
+
+  def edit
   end
 
   def update
