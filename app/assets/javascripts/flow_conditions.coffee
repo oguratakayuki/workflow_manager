@@ -21,10 +21,12 @@ $(document).on('nested:fieldAdded', (event) ->
           if $(@).closest('.row').find('.flow_condition_group_relation_type').val() && $(@).closest('.row').find('.flow_condition_group_compare_type').val()
             console.log 'hoge4'
             if $(@).closest('.row').find('.flow_condition_group_relation_type').val() == 'category'
-              console.log 'hoge5'
               if $(@).closest('.row').find('.flow_condition_group_compare_type').val() == 'eq'
-                console.log 'hoge6'
                 $(@).closest('.panel-body').find('.flow_condition_option_add_button').show()
+            else if $(@).closest('.row').find('.flow_condition_group_relation_type').val() == 'price'
+              $(@).closest('.panel-body').find('.flow_condition_option_add_button').show()
+
+
           else if $(@).closest('.row').find('.flow_condition_group_relation_type').val() == '' \
           || $(@).closest('.row').find('.flow_condition_group_compare_type').val() == ''
             #どちらかが空になったらoptionの追加ボタンを隠してすでに追加された要素を削除
@@ -47,4 +49,12 @@ $(document).on('nested:fieldAdded', (event) ->
                   console.log("AJAX Error: #{textStatus}")
                 success: (data, textStatus, jqXHR) =>
                   update_select_box_option(parent.find('.flow_condition_relation_id'), data)
+          if $.inArray(parent.find('.flow_condition_group_relation_type').val(), ['price'])
+            $("<input>", {
+              type: 'text',
+              class: '.flow_condition_group_relation_type'
+            }).insertAfter(parent.find('.flow_condition_relation_id')).prev().remove()
+          else
+            console.log $.inArray(parent.find('.flow_condition_group_relation_type').val(), ['price'])
+
 )
