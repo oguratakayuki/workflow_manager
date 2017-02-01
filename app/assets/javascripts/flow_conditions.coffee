@@ -25,23 +25,32 @@ $(document).on('nested:fieldAdded', (event) ->
                 $(@).closest('.panel-body').find('.flow_condition_option_add_button').show()
             else if $(@).closest('.row').find('.flow_condition_group_relation_type').val() == 'price'
               $(@).closest('.panel-body').find('.flow_condition_option_add_button').show()
-
-
           else if $(@).closest('.row').find('.flow_condition_group_relation_type').val() == '' \
           || $(@).closest('.row').find('.flow_condition_group_compare_type').val() == ''
             #どちらかが空になったらoptionの追加ボタンを隠してすでに追加された要素を削除
             $(@).closest('.panel-body').find('.flow_condition_option_add_button').hide()
             $(@).closest('.panel-body').find('.flow_condition_relation_id').val(null)
-
     else if condition_option_is_added(event.target)
       #optionが追加された時はajaxでoptionのデータを取得する
       target = event.target
       parent = $(target).closest('.panel-body')
+      #optionsが追加された場合親要素(flow_condition)のrelation_type(category,price,initial_cost)の変更をできなくする
+      parent.find('.flow_condition_group_relation_type').prop('disabled', true)
+      $("input", {
+        class: '.help-block',
+        text: 'hogehoge'
+      }).insertAfter(
+        parent.find('.flow_condition_group_relation_type')
+      )
+      console.log('hogessss')
+
+
+
       if parent.length
         if parent.find('.flow_condition_group_relation_type').val() && parent.find('.flow_condition_group_compare_type').val()
           if parent.find('.flow_condition_group_relation_type').val() == 'category'
             if parent.find('.flow_condition_group_compare_type').val() == 'eq'
-              url = "/categories"
+              url = '/categories'
               $.ajax url,
                 type: 'GET'
                 dataType: 'json'
@@ -49,7 +58,8 @@ $(document).on('nested:fieldAdded', (event) ->
                   console.log("AJAX Error: #{textStatus}")
                 success: (data, textStatus, jqXHR) =>
                   update_select_box_option(parent.find('.flow_condition_relation_id'), data)
-          if $.inArray(parent.find('.flow_condition_group_relation_type').val(), ['price'])
+          if $.inArray(parent.find('.flow_condition_group_relation_type').val(), ['price','initial_cost']) != -1
+            #price,initial_constなどのときはtextボックスを出す
             $("<input>", {
               type: 'text',
               class: '.flow_condition_group_relation_type'
@@ -58,3 +68,8 @@ $(document).on('nested:fieldAdded', (event) ->
             console.log $.inArray(parent.find('.flow_condition_group_relation_type').val(), ['price'])
 
 )
+$(document).on('nested:fieldRemoved', (event) ->
+  if $(event.currentTarget.activeElement).data('association') == 'flow_condition_options'
+    $('.flow_condition_group_relation_type').prop('disabled', false)
+)
+
