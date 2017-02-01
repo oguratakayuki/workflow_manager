@@ -23,6 +23,7 @@
                 .col-md-4
                   |  比較対象
                   = o.input :relation_id, as: :select, label: false, input_html: {class: 'flow_condition_relation_id' }
+                  = o.input :compare_value, label: false, input_html: {class: 'flow_condition_compare_value' }
                 .col-md-4
                   br
                   = o.link_to_remove "削除", class: 'btn btn-warning'

@@ -2,15 +2,15 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 jQuery ($) ->
-  @condition_is_added = (elem) ->
-    $(elem).find('.flow_condition_option_add_button').length == 1
-  @condition_option_is_added = (elem) ->
-    $(elem).find('.flow_condition_option_add_button').length == 0
+  @condition_is_added = (event) ->
+    return $(event.currentTarget.activeElement).data('association') == 'flow_conditions' ? true : false
+  @condition_option_is_added = (event) ->
+    return $(event.currentTarget.activeElement).data('association') == 'flow_condition_options' ? true : false
 
 $(document).on('nested:fieldAdded', (event) ->
   #実行制御
   if $('.flow_condition_group_form').length
-    if condition_is_added(event.target)
+    if condition_is_added(event)
       #初期状態では隠す
       $(event.target).find('.flow_condition_option_add_button').hide()
       if $('.flow_condition_group_form').length
@@ -30,7 +30,7 @@ $(document).on('nested:fieldAdded', (event) ->
             #どちらかが空になったらoptionの追加ボタンを隠してすでに追加された要素を削除
             $(@).closest('.panel-body').find('.flow_condition_option_add_button').hide()
             $(@).closest('.panel-body').find('.flow_condition_relation_id').val(null)
-    else if condition_option_is_added(event.target)
+    else if condition_option_is_added(event)
       #optionが追加された時はajaxでoptionのデータを取得する
       target = event.target
       parent = $(target).closest('.panel-body')
@@ -57,12 +57,12 @@ $(document).on('nested:fieldAdded', (event) ->
                 error: (jqXHR, textStatus, errorThrown) ->
                   console.log("AJAX Error: #{textStatus}")
                 success: (data, textStatus, jqXHR) =>
-                  update_select_box_option(parent.find('.flow_condition_relation_id'), data)
+                  update_select_box_option(parent.find('.flow_condition_relation_id').last(), data)
           if $.inArray(parent.find('.flow_condition_group_relation_type').val(), ['price','initial_cost']) != -1
             #price,initial_constなどのときはtextボックスを出す
             $("<input>", {
               type: 'text',
-              class: '.flow_condition_group_relation_type'
+              class: '.flow_condition_group_option_compare_value'
             }).insertAfter(parent.find('.flow_condition_relation_id')).prev().remove()
           else
             console.log $.inArray(parent.find('.flow_condition_group_relation_type').val(), ['price'])
@@ -70,6 +70,8 @@ $(document).on('nested:fieldAdded', (event) ->
 )
 $(document).on('nested:fieldRemoved', (event) ->
   if $(event.currentTarget.activeElement).data('association') == 'flow_condition_options'
-    $('.flow_condition_group_relation_type').prop('disabled', false)
+    $link = $(event.target).siblings('a.add_nested_fields')
+    if $link.siblings('div.fields:visible').length == 0
+      $('.flow_condition_group_relation_type').prop('disabled', false)
 )
 
