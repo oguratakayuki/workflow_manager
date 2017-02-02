@@ -1,0 +1,2 @@
+class RequestMonthlyMoneyCost < RequestMoneyCost
+end

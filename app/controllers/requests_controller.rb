@@ -136,7 +136,40 @@ class RequestsController < ApplicationController
         :time_required,
         :person_number, 
         :cost_price_type
-        ]
+        ], 
+        initial_money_cost_attributes: [
+        :_destroy,
+        :cost_value,
+        :annotation,
+        ], 
+        monthly_money_cost_attributes: [
+        :_destroy,
+        :cost_value,
+        :annotation,
+        ], 
+        annual_money_cost_attributes: [
+        :_destroy,
+        :cost_value,
+        :annotation,
+        ], 
+        initial_human_cost_attributes: [
+        :_destroy,
+        :time_required,
+        :number_of_people,
+        :annotation,
+        ], 
+        monthly_human_cost_attributes: [
+        :_destroy,
+        :time_required,
+        :number_of_people,
+        :annotation,
+        ], 
+        annual_human_cost_attributes: [
+        :_destroy,
+        :time_required,
+        :number_of_people,
+        :annotation,
+        ], 
       )
     end
 

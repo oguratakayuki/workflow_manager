@@ -64,6 +64,13 @@ ja:
         one_time: '一回払い'
         monthly:  '各月'
         each_year: '各年'
+    flow_condition:
+      relation_type:
+        shop: '店舗'
+        category: 'カテゴリ'
+        sub_category: 'サブカテゴリ'
+        price: '価格'
+        initial_cost: '初期費用'
   devise:
     sessions:
       user:

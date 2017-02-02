@@ -42,9 +42,6 @@ $(document).on('nested:fieldAdded', (event) ->
       }).insertAfter(
         parent.find('.flow_condition_group_relation_type')
       )
-      console.log('hogessss')
-
-
 
       if parent.length
         if parent.find('.flow_condition_group_relation_type').val() && parent.find('.flow_condition_group_compare_type').val()
@@ -58,15 +55,13 @@ $(document).on('nested:fieldAdded', (event) ->
                   console.log("AJAX Error: #{textStatus}")
                 success: (data, textStatus, jqXHR) =>
                   update_select_box_option(parent.find('.flow_condition_relation_id').last(), data)
-          if $.inArray(parent.find('.flow_condition_group_relation_type').val(), ['price','initial_cost']) != -1
+          if $.inArray(parent.find('.flow_condition_group_relation_type').val(), ['price','initial_cost', 'time_required', 'personal_number']) != -1
             #price,initial_constなどのときはtextボックスを出す
-            $("<input>", {
-              type: 'text',
-              class: '.flow_condition_group_option_compare_value'
-            }).insertAfter(parent.find('.flow_condition_relation_id')).prev().remove()
+            $('.flow_condition_relation_id').hide()
+            $('.flow_condition_compare_value').show()
           else
-            console.log $.inArray(parent.find('.flow_condition_group_relation_type').val(), ['price'])
-
+            $('.flow_condition_relation_id').show()
+            $('.flow_condition_compare_value').hide()
 )
 $(document).on('nested:fieldRemoved', (event) ->
   if $(event.currentTarget.activeElement).data('association') == 'flow_condition_options'

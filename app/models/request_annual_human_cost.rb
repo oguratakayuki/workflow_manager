@@ -1,0 +1,2 @@
+class RequestAnnualHumanCost < RequestHumanCost
+end

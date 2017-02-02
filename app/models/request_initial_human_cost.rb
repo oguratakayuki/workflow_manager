@@ -1,0 +1,2 @@
+class RequestInitialHumanCost < RequestHumanCost
+end

@@ -1,0 +1,2 @@
+class RequestInitialMoneyCost < RequestMoneyCost
+end
