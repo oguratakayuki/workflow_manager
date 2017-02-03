@@ -26,6 +26,23 @@ class FlowConditionGroupsController < ApplicationController
   end
 
 
+  def create
+    @flow_condition_group = FlowConditionGroup.new(flow_condition_group_params)
+
+    respond_to do |format|
+      if @flow_condition_group.save
+        format.html { redirect_to @flow_condition_group, notice: 'Flow was successfully created.' }
+        format.json { render :show, status: :created, location: @flow_condition_group }
+      else
+        format.html { render :new }
+        format.json { render json: @flow_condition_group.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+
+
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_flow_condition_gourp
@@ -41,7 +58,9 @@ class FlowConditionGroupsController < ApplicationController
         :relation_type,
         :compare_type,
           flow_condition_options_attributes: [
+            :id,
             :relation_id, 
+            :compare_value,
             :_destroy
           ]
         ]

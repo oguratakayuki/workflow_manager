@@ -22,7 +22,10 @@
               .row
                 .col-md-4
                   |  比較対象
-                  = o.input :relation_id, as: :select, label: false, input_html: {class: 'flow_condition_relation_id' }
+                  .form-group.select.optional.flow_condition_group_flow_conditions_relation_id
+                    - debugger
+                    = o.input :relation_id , label: false, input_html: {class: 'flow_condition_relation_id form-control select optional ' } do
+                      = o.select :relation_id, Category.all.map{|t| [t.name, t.id] }
                   = o.input :compare_value, label: false, input_html: {class: 'flow_condition_compare_value' }
                 .col-md-4
                   br
