@@ -4,7 +4,7 @@
     = f.association :flow
     = f.input :relation_type, as: :select
   = f.simple_fields_for :flow_conditions do |fc|
-    .panel.panel-default
+    .panel.panel-default.flow_condition
       .panel-body
         .row
           .col-md-4
@@ -12,19 +12,18 @@
             = fc.input :relation_type, as: :select, 
               label: false, 
               input_html: {class: 'flow_condition_group_relation_type' }, 
-              collection: FlowCondition.relation_type.options.delete_if{|k,v| v == 'sub_category' }
+              collection: FlowCondition.relation_type.options
           .col-md-4
             |  比較方法
             = fc.input :compare_type, as: :select, label: false, input_html: {class: 'flow_condition_group_compare_type' }
         .row
           .col-md-12
             = fc.simple_fields_for :flow_condition_options do |o|
-              .row
+              .row.flow_condition_option
                 .col-md-4
                   |  比較対象
                   .form-group.select.optional.flow_condition_group_flow_conditions_relation_id
-                    - debugger
-                    = o.input :relation_id , label: false, input_html: {class: 'flow_condition_relation_id form-control select optional ' } do
+                    = o.input :relation_id , label: false, input_html: {class: 'flow_condition_relation_id form-control select optional' } do
                       = o.select :relation_id, Category.all.map{|t| [t.name, t.id] }
                   = o.input :compare_value, label: false, input_html: {class: 'flow_condition_compare_value' }
                 .col-md-4

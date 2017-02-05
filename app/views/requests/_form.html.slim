@@ -7,31 +7,6 @@
     = f.input :description
     = f.association :category
     = f.association :sub_category
-
-  = f.simple_fields_for :costs do |c|
-    .panel.panel-default
-      .panel-body
-        p
-          .input-group
-            = c.input :cost_price_type, as: :select, input_html: { class: 'request_costs_cost_price_type' }
-        p
-          .input-group
-            = c.input :initial_cost, input_html: { class: 'request_costs_initial_cost' }
-        p
-          .input-group
-            = c.input :price, input_html: { class: 'request_costs_price' }
-        p
-          .input-group
-            = c.input :time_required
-        p
-          .input-group
-            = c.input :person_number
-        br
-        = c.link_to_remove "削除", class: 'btn btn-warning'
-  '
-  = f.link_to_add "経費情報追加", :costs, class: 'btn btn-primary'
-  br
-
   = f.simple_fields_for :initial_money_cost do |c|
     .panel.panel-default
       .panel-body
@@ -43,10 +18,8 @@
             = c.input :annotation
         br
         = c.link_to_remove "削除", class: 'btn btn-warning'
-  '
   = f.link_to_add "初期費用追加", :initial_money_cost, class: 'btn btn-primary'
   br
-
   = f.simple_fields_for :monthly_money_cost do |c|
     .panel.panel-default
       .panel-body
@@ -58,10 +31,8 @@
             = c.input :annotation
         br
         = c.link_to_remove "削除", class: 'btn btn-warning'
-  '
   = f.link_to_add "月間費用追加", :monthly_money_cost, class: 'btn btn-primary'
   br
-
   = f.simple_fields_for :annual_money_cost do |c|
     .panel.panel-default
       .panel-body
@@ -73,10 +44,8 @@
             = c.input :annotation
         br
         = c.link_to_remove "削除", class: 'btn btn-warning'
-  '
   = f.link_to_add "年間費用追加", :annual_money_cost, class: 'btn btn-primary'
   br
-
   = f.simple_fields_for :initial_human_cost do |c|
     .panel.panel-default
       .panel-body
@@ -91,10 +60,8 @@
             = c.input :annotation
         br
         = c.link_to_remove "削除", class: 'btn btn-warning'
-  '
   = f.link_to_add "初期人的費用追加", :initial_human_cost, class: 'btn btn-primary'
   br
-
   = f.simple_fields_for :monthly_human_cost do |c|
     .panel.panel-default
       .panel-body
@@ -109,10 +76,8 @@
             = c.input :annotation
         br
         = c.link_to_remove "削除", class: 'btn btn-warning'
-  '
   = f.link_to_add "月間人的費用追加", :monthly_human_cost, class: 'btn btn-primary'
   br
-
   = f.simple_fields_for :annual_human_cost do |c|
     .panel.panel-default
       .panel-body
@@ -127,7 +92,6 @@
             = c.input :annotation
         br
         = c.link_to_remove "削除", class: 'btn btn-warning'
-  '
   = f.link_to_add "年間人的費用追加", :annual_human_cost, class: 'btn btn-primary'
   br
 

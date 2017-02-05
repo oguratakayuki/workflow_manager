@@ -1,5 +1,5 @@
 class SubCategoriesController < ApplicationController
-  before_action :set_category
+  before_action :set_category, except: [:list]
   before_action :set_sub_category, only: [:show, :edit, :update, :destroy]
 
   # GET /sub_categories
@@ -7,6 +7,10 @@ class SubCategoriesController < ApplicationController
   def index
     @sub_categories = @category.sub_categories
     render json: @sub_categories.map {|t| [t.id,t.name] }
+  end
+
+  def list
+    render json: @categories = SubCategory.joins(:category).merge(Category.where(params[:category_ids])).map {|t| [t.id,t.name] }
   end
 
   # GET /sub_categories/1

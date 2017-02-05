@@ -6,6 +6,11 @@ jQuery ($) ->
     return $(event.currentTarget.activeElement).data('association') == 'flow_conditions' ? true : false
   @condition_option_is_added = (event) ->
     return $(event.currentTarget.activeElement).data('association') == 'flow_condition_options' ? true : false
+  if $('.flow_condition_group_form').length
+    $('.flow_condition').each ->
+      if $(@).find('.flow_condition_group_relation_type').val() == '' || $(@).find('.flow_condition_group_compare_type').val() == ''
+        #初期状態では隠す
+        $(@).find('.flow_condition_option_add_button').hide()
 
 $(document).on('nested:fieldAdded', (event) ->
   #実行制御
@@ -14,13 +19,10 @@ $(document).on('nested:fieldAdded', (event) ->
       #初期状態では隠す
       $(event.target).find('.flow_condition_option_add_button').hide()
       if $('.flow_condition_group_form').length
-        console.log 'hoge2'
         #変更時の挙動を追加
         $('.flow_condition_group_relation_type,.flow_condition_group_compare_type').change ->
-          console.log 'hoge3'
           if $(@).closest('.row').find('.flow_condition_group_relation_type').val() && $(@).closest('.row').find('.flow_condition_group_compare_type').val()
-            console.log 'hoge4'
-            if $(@).closest('.row').find('.flow_condition_group_relation_type').val() == 'category'
+            if $.inArray($(@).closest('.row').find('.flow_condition_group_relation_type').val(),  ['category', 'sub_category']) > -1
               if $(@).closest('.row').find('.flow_condition_group_compare_type').val() == 'eq'
                 $(@).closest('.panel-body').find('.flow_condition_option_add_button').show()
             else if $(@).closest('.row').find('.flow_condition_group_relation_type').val() == 'price'
@@ -42,19 +44,50 @@ $(document).on('nested:fieldAdded', (event) ->
       }).insertAfter(
         parent.find('.flow_condition_group_relation_type')
       )
-
       if parent.length
         if parent.find('.flow_condition_group_relation_type').val() && parent.find('.flow_condition_group_compare_type').val()
           if parent.find('.flow_condition_group_relation_type').val() == 'category'
-            if parent.find('.flow_condition_group_compare_type').val() == 'eq'
-              url = '/categories'
-              $.ajax url,
-                type: 'GET'
-                dataType: 'json'
-                error: (jqXHR, textStatus, errorThrown) ->
-                  console.log("AJAX Error: #{textStatus}")
-                success: (data, textStatus, jqXHR) =>
-                  update_select_box_option(parent.find('.flow_condition_relation_id').last(), data)
+            url = '/categories'
+            $.ajax url,
+              type: 'GET'
+              dataType: 'json'
+              error: (jqXHR, textStatus, errorThrown) ->
+                console.log("AJAX Error: #{textStatus}")
+              success: (data, textStatus, jqXHR) =>
+                update_select_box_option(parent.find('.flow_condition_relation_id').last(), data)
+          if parent.find('.flow_condition_group_relation_type').val() == 'sub_category'
+            #sub_category追加時にはcategoryで選択中のものを取得してselectboxの条件を追加する
+            category = $('.flow_condition_group_relation_type').filter ->
+              return $(@).val() == 'category'
+            relation_type = $(category).closest('.panel-body').find('.flow_condition_group_relation_type:disabled').val()
+            #category_ids = $(category).closest('.panel-body').find('.flow_condition_relation_id').map -> return $(@).val()
+            #reduceの直前のfindが間違っている模様
+            console.log $(category)
+            console.log $(category).closest('.panel-body')
+            category_ids = Array.from($(category).closest('.panel-body')
+              .find('.flow_condition_option').reduce ->
+                return $(@).find('input[type=hidden]').val() != 1
+              .map -> return find('select').val()
+            )
+
+
+
+
+            if category_ids.length == 0
+              category_ids = Array.from([$(category).closest('.panel-body').find('.flow_condition_compare_value').val()])
+            console.log category_ids.length
+            url = '/sub_categories'
+            $.ajax url,
+              type: 'GET'
+              dataType: 'json'
+              data: category_ids: category_ids
+              error: (jqXHR, textStatus, errorThrown) ->
+                console.log("AJAX Error: #{textStatus}")
+              success: (data, textStatus, jqXHR) =>
+                console.log parent.find('.flow_condition_group_flow_conditions_relation_id select')
+                update_select_box_option(parent.find('.flow_condition_group_flow_conditions_relation_id select'), data)
+
+
           if $.inArray(parent.find('.flow_condition_group_relation_type').val(), ['price','initial_cost', 'time_required', 'personal_number']) != -1
             #price,initial_constなどのときはtextボックスを出す
             $('.flow_condition_relation_id').hide()
