@@ -65,7 +65,7 @@ ja:
         monthly:  '各月'
         each_year: '各年'
     flow_condition:
-      relation_type:
+      related_model:
         shop: '店舗'
         category: 'カテゴリ'
         sub_category: 'サブカテゴリ'

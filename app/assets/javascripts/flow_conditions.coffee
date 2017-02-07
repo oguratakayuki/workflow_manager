@@ -8,7 +8,7 @@ jQuery ($) ->
     return $(event.currentTarget.activeElement).data('association') == 'flow_condition_options' ? true : false
   if $('.flow_condition_group_form').length
     $('.flow_condition').each ->
-      if $(@).find('.flow_condition_group_relation_type').val() == '' || $(@).find('.flow_condition_group_compare_type').val() == ''
+      if $(@).find('.flow_condition_related_model').val() == '' || $(@).find('.flow_condition_group_compare_type').val() == ''
         #初期状態では隠す
         $(@).find('.flow_condition_option_add_button').hide()
 
@@ -20,14 +20,15 @@ $(document).on('nested:fieldAdded', (event) ->
       $(event.target).find('.flow_condition_option_add_button').hide()
       if $('.flow_condition_group_form').length
         #変更時の挙動を追加
-        $('.flow_condition_group_relation_type,.flow_condition_group_compare_type').change ->
-          if $(@).closest('.row').find('.flow_condition_group_relation_type').val() && $(@).closest('.row').find('.flow_condition_group_compare_type').val()
-            if $.inArray($(@).closest('.row').find('.flow_condition_group_relation_type').val(),  ['category', 'sub_category']) > -1
-              if $(@).closest('.row').find('.flow_condition_group_compare_type').val() == 'eq'
-                $(@).closest('.panel-body').find('.flow_condition_option_add_button').show()
-            else if $(@).closest('.row').find('.flow_condition_group_relation_type').val() == 'price'
+        $('.flow_condition_related_model,.flow_condition_group_compare_type').change ->
+          #両方データが入ったらinput boxを出す
+          if $(@).closest('.row').find('.flow_condition_related_model').val() && $(@).closest('.row').find('.flow_condition_group_compare_type').val()
+            if $.inArray($(@).closest('.row').find('.flow_condition_related_model').val(),  ['category', 'sub_category']) > -1
               $(@).closest('.panel-body').find('.flow_condition_option_add_button').show()
-          else if $(@).closest('.row').find('.flow_condition_group_relation_type').val() == '' \
+            else if $.inArray($(@).closest('.row').find('.flow_condition_related_model').val(), ['price','initial_cost', 'time_required', 'personal_number']) != -1
+              #input boxを出す条件
+              $(@).closest('.panel-body').find('.flow_condition_option_add_button').show()
+          else if $(@).closest('.row').find('.flow_condition_related_model').val() == '' \
           || $(@).closest('.row').find('.flow_condition_group_compare_type').val() == ''
             #どちらかが空になったらoptionの追加ボタンを隠してすでに追加された要素を削除
             $(@).closest('.panel-body').find('.flow_condition_option_add_button').hide()
@@ -37,16 +38,16 @@ $(document).on('nested:fieldAdded', (event) ->
       target = event.target
       parent = $(target).closest('.panel-body')
       #optionsが追加された場合親要素(flow_condition)のrelation_type(category,price,initial_cost)の変更をできなくする
-      parent.find('.flow_condition_group_relation_type').prop('disabled', true)
+      parent.find('.flow_condition_related_model').prop('disabled', true)
       $("input", {
         class: '.help-block',
         text: 'hogehoge'
       }).insertAfter(
-        parent.find('.flow_condition_group_relation_type')
+        parent.find('.flow_condition_related_model')
       )
       if parent.length
-        if parent.find('.flow_condition_group_relation_type').val() && parent.find('.flow_condition_group_compare_type').val()
-          if parent.find('.flow_condition_group_relation_type').val() == 'category'
+        if parent.find('.flow_condition_related_model').val() && parent.find('.flow_condition_group_compare_type').val()
+          if parent.find('.flow_condition_related_model').val() == 'category'
             url = '/categories'
             $.ajax url,
               type: 'GET'
@@ -55,11 +56,11 @@ $(document).on('nested:fieldAdded', (event) ->
                 console.log("AJAX Error: #{textStatus}")
               success: (data, textStatus, jqXHR) =>
                 update_select_box_option(parent.find('.flow_condition_relation_id').last(), data)
-          if parent.find('.flow_condition_group_relation_type').val() == 'sub_category'
+          if parent.find('.flow_condition_related_model').val() == 'sub_category'
             #sub_category追加時にはcategoryで選択中のものを取得してselectboxの条件を追加する
-            category = $('.flow_condition_group_relation_type').filter ->
+            category = $('.flow_condition_related_model').filter ->
               return $(@).val() == 'category'
-            relation_type = $(category).closest('.panel-body').find('.flow_condition_group_relation_type:disabled').val()
+            relation_type = $(category).closest('.panel-body').find('.flow_condition_related_model:disabled').val()
             category_ids = $(category).closest('.panel-body').find('.flow_condition_option select:visible')
               .map -> return $(@).val()
               .toArray()
@@ -73,12 +74,14 @@ $(document).on('nested:fieldAdded', (event) ->
               error: (jqXHR, textStatus, errorThrown) ->
                 console.log("AJAX Error: #{textStatus}")
               success: (data, textStatus, jqXHR) =>
-                update_select_box_option(parent.find('.flow_condition_group_flow_conditions_relation_id select'), data)
-          if $.inArray(parent.find('.flow_condition_group_relation_type').val(), ['price','initial_cost', 'time_required', 'personal_number']) != -1
+                update_select_box_option(parent.find('.flow_condition_group_flow_conditions_relation_id select').last(), data)
+          if $.inArray(parent.find('.flow_condition_related_model').val(), ['price','initial_cost', 'time_required', 'personal_number']) != -1
+            console.log 'hoge'
             #price,initial_constなどのときはtextボックスを出す
-            $('.flow_condition_relation_id').hide()
-            $('.flow_condition_compare_value').show()
+            parent.find('.flow_condition_group_flow_conditions_relation_id select').hide()
+            parent.find('.flow_condition_compare_value').show()
           else
+            console.log 'fuga'
             $('.flow_condition_relation_id').show()
             $('.flow_condition_compare_value').hide()
 )
@@ -86,6 +89,6 @@ $(document).on('nested:fieldRemoved', (event) ->
   if $(event.currentTarget.activeElement).data('association') == 'flow_condition_options'
     $link = $(event.target).siblings('a.add_nested_fields')
     if $link.siblings('div.fields:visible').length == 0
-      $('.flow_condition_group_relation_type').prop('disabled', false)
+      $('.flow_condition_related_model').prop('disabled', false)
 )
 

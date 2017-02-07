@@ -52,7 +52,7 @@ class FlowConditionGroupsController < ApplicationController
         :id,
         :flow_condition_group_id,
         :_destroy,
-        :relation_type,
+        :related_model,
         :compare_type,
           flow_condition_options_attributes: [
             :id,

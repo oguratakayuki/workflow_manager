@@ -9,10 +9,10 @@
         .row
           .col-md-4
             |  比較種別
-            = fc.input :relation_type, as: :select, 
+            = fc.input :related_model, as: :select, 
               label: false, 
-              input_html: {class: 'flow_condition_group_relation_type' }, 
-              collection: FlowCondition.relation_type.options
+              input_html: {class: 'flow_condition_related_model' }, 
+              collection: FlowCondition.related_model.options
           .col-md-4
             |  比較方法
             = fc.input :compare_type, as: :select, label: false, input_html: {class: 'flow_condition_group_compare_type' }
