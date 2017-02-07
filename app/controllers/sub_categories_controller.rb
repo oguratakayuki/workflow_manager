@@ -10,7 +10,7 @@ class SubCategoriesController < ApplicationController
   end
 
   def list
-    render json: @categories = SubCategory.joins(:category).merge(Category.where(params[:category_ids])).map {|t| [t.id,t.name] }
+    render json: @categories = SubCategory.joins(:category).merge(Category.where(id: params[:category_ids])).map {|t| [t.id,t.name] }
   end
 
   # GET /sub_categories/1

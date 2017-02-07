@@ -60,22 +60,11 @@ $(document).on('nested:fieldAdded', (event) ->
             category = $('.flow_condition_group_relation_type').filter ->
               return $(@).val() == 'category'
             relation_type = $(category).closest('.panel-body').find('.flow_condition_group_relation_type:disabled').val()
-            #category_ids = $(category).closest('.panel-body').find('.flow_condition_relation_id').map -> return $(@).val()
-            #reduceの直前のfindが間違っている模様
-            console.log $(category)
-            console.log $(category).closest('.panel-body')
-            category_ids = Array.from($(category).closest('.panel-body')
-              .find('.flow_condition_option').reduce ->
-                return $(@).find('input[type=hidden]').val() != 1
-              .map -> return find('select').val()
-            )
-
-
-
-
+            category_ids = $(category).closest('.panel-body').find('.flow_condition_option select:visible')
+              .map -> return $(@).val()
+              .toArray()
             if category_ids.length == 0
               category_ids = Array.from([$(category).closest('.panel-body').find('.flow_condition_compare_value').val()])
-            console.log category_ids.length
             url = '/sub_categories'
             $.ajax url,
               type: 'GET'
@@ -84,10 +73,7 @@ $(document).on('nested:fieldAdded', (event) ->
               error: (jqXHR, textStatus, errorThrown) ->
                 console.log("AJAX Error: #{textStatus}")
               success: (data, textStatus, jqXHR) =>
-                console.log parent.find('.flow_condition_group_flow_conditions_relation_id select')
                 update_select_box_option(parent.find('.flow_condition_group_flow_conditions_relation_id select'), data)
-
-
           if $.inArray(parent.find('.flow_condition_group_relation_type').val(), ['price','initial_cost', 'time_required', 'personal_number']) != -1
             #price,initial_constなどのときはtextボックスを出す
             $('.flow_condition_relation_id').hide()
