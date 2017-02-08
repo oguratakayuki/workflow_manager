@@ -16,6 +16,7 @@
 //= require jquery-ui
 //= require bootstrap
 //= require jquery_nested_form
+//= require jquery.selection.js 
 //= require common.js
 //= require_tree .
 //= require turbolinks

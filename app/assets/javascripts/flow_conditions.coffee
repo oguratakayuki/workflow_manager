@@ -11,6 +11,14 @@ jQuery ($) ->
       if $(@).find('.flow_condition_related_model').val() == '' || $(@).find('.flow_condition_group_compare_type').val() == ''
         #初期状態では隠す
         $(@).find('.flow_condition_option_add_button').hide()
+      if $(@).find('.flow_condition_related_model').val() != '' &&  $(@).find('.flow_condition_group_compare_type').val() != ''
+        #既存レコードをチェックして使わない項目は非表示に
+        if $.inArray($(@).closest('.row').find('.flow_condition_related_model').val(),  ['category', 'sub_category']) > -1
+          $(@).closest('.row').find('.flow_condition_compare_value').hide()
+        if $.inArray($(@).closest('.row').find('.flow_condition_related_model').val(), ['price','initial_cost', 'time_required', 'personal_number']) != -1
+          $(@).closest('.row').find('.flow_condition_group_flow_conditions_relation_id select').hide()
+
+
 
 $(document).on('nested:fieldAdded', (event) ->
   #実行制御
@@ -38,7 +46,7 @@ $(document).on('nested:fieldAdded', (event) ->
       target = event.target
       parent = $(target).closest('.panel-body')
       #optionsが追加された場合親要素(flow_condition)のrelation_type(category,price,initial_cost)の変更をできなくする
-      parent.find('.flow_condition_related_model').prop('disabled', true)
+      parent.find('.flow_condition_related_model').disableSelection()
       $("input", {
         class: '.help-block',
         text: 'hogehoge'
@@ -60,7 +68,7 @@ $(document).on('nested:fieldAdded', (event) ->
             #sub_category追加時にはcategoryで選択中のものを取得してselectboxの条件を追加する
             category = $('.flow_condition_related_model').filter ->
               return $(@).val() == 'category'
-            relation_type = $(category).closest('.panel-body').find('.flow_condition_related_model:disabled').val()
+            relation_type = $(category).closest('.panel-body').find('.flow_condition_related_model[unselectable=on]').val()
             category_ids = $(category).closest('.panel-body').find('.flow_condition_option select:visible')
               .map -> return $(@).val()
               .toArray()
@@ -89,6 +97,6 @@ $(document).on('nested:fieldRemoved', (event) ->
   if $(event.currentTarget.activeElement).data('association') == 'flow_condition_options'
     $link = $(event.target).siblings('a.add_nested_fields')
     if $link.siblings('div.fields:visible').length == 0
-      $('.flow_condition_related_model').prop('disabled', false)
+      $('.flow_condition_related_model').enableSelection()
 )
 
