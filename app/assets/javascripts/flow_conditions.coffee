@@ -1,11 +1,14 @@
 # Place all the behaviors and hooks related to the matching controller here.
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
-$(document).on 'ready turbolinks:load', ->
+jQuery ($) ->
   @condition_is_added = (event) ->
     return $(event.currentTarget.activeElement).data('association') == 'flow_conditions' ? true : false
   @condition_option_is_added = (event) ->
     return $(event.currentTarget.activeElement).data('association') == 'flow_condition_options' ? true : false
+
+
+$(document).on 'ready turbolinks:load', ->
   if $('.flow_condition_group_form').length
     $('.flow_condition').each ->
       if $(@).find('.flow_condition_related_model').val() == '' || $(@).find('.flow_condition_group_compare_type').val() == ''
@@ -90,6 +93,7 @@ $(document).on('nested:fieldAdded', (event) ->
                 update_select_box_option(parent.find('.flow_condition_group_flow_conditions_relation_id select').last(), data)
           if $.inArray(parent.find('.flow_condition_related_model').val(), ['price','initial_cost', 'time_required', 'personal_number']) != -1
             #price,initial_constなどのときはtextボックスを出す
+            console.log('here')
             parent.find('.flow_condition_group_flow_conditions_relation_id select').val(null).hide()
             parent.find('.flow_condition_compare_value').show()
           else

@@ -107,7 +107,8 @@ class RequestFlowPolicy
   #matchしなければ次へ次へと
   def scan_flow_conditions(flow_condition_groups)
     flow_condition_groups.each do |flow_condition_group|
-      if conditions_matched?(flow_condition_group.condtions, flow_condition_group.relation_type)
+      if conditions_matched?(flow_condition_group.flow_conditions, flow_condition_group.relation_type)
+        Rails.logger.debug 'conditions matched'
         if flow_condition_group.child_groups
           if scan_flow_conditions(flow_condition_group.child_groups, flow_condition_group.relation_type)
             return flow_condition_group
@@ -119,6 +120,7 @@ class RequestFlowPolicy
           return flow_condition_group
         end
       else
+        Rails.logger.debug 'conditions not matched'
         #not matched
         next
       end
@@ -130,19 +132,19 @@ class RequestFlowPolicy
   def conditions_matched? flow_conditions, and_or
     matched_count = 0
     flow_conditions.each do |flow_condition|
-      if const = Object.const_get(flow_condition.relation_type.capitalize) rescue NameError
+      if const = Object.const_get(flow_condition.relation_type.capitalize) rescue nil 
         #categoryが
-        options = flow_conditon.options.pluck(:relation_id)
+        options = flow_condition.flow_condition_options.pluck(:relation_id)
         is_matched = case flow_condition.compare_type
         when 'eq' then
           #1とeqのとき
-          @request.__send__(flow_condition.relation_type) == const.find(options.first)
+          @request.__send__(flow_condition.related_model) == const.find(options.first)
         when 'not_eq' then
-          @request.__send__(flow_condition.relation_type) != const.find(options.first)
+          @request.__send__(flow_condition.related_model) != const.find(options.first)
         when 'in' then
-          @request.__send__(flow_condition.relation_type) == const.where(id: options)
+          @request.__send__(flow_condition.related_model) == const.where(id: options)
         when 'not_in' then
-          @request.__send__(flow_condition.relation_type) != const.where(id: options)
+          @request.__send__(flow_condition.related_model) != const.where(id: options)
         else
           false
         end
