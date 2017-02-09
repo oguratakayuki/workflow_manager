@@ -1,7 +1,7 @@
 # Place all the behaviors and hooks related to the matching controller here.
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
-jQuery ($) ->
+$(document).on 'ready turbolinks:load', ->
   @condition_is_added = (event) ->
     return $(event.currentTarget.activeElement).data('association') == 'flow_conditions' ? true : false
   @condition_option_is_added = (event) ->
@@ -13,10 +13,10 @@ jQuery ($) ->
         $(@).find('.flow_condition_option_add_button').hide()
       if $(@).find('.flow_condition_related_model').val() != '' &&  $(@).find('.flow_condition_group_compare_type').val() != ''
         #既存レコードをチェックして使わない項目は非表示に
-        if $.inArray($(@).closest('.row').find('.flow_condition_related_model').val(),  ['category', 'sub_category']) > -1
-          $(@).closest('.row').find('.flow_condition_compare_value').hide()
-        if $.inArray($(@).closest('.row').find('.flow_condition_related_model').val(), ['price','initial_cost', 'time_required', 'personal_number']) != -1
-          $(@).closest('.row').find('.flow_condition_group_flow_conditions_relation_id select').hide()
+        if $.inArray($(@).find('.flow_condition_related_model').val(),  ['category', 'sub_category']) > -1
+          $(@).find('.flow_condition_compare_value').hide()
+        if $.inArray($(@).find('.flow_condition_related_model').val(), ['price','initial_cost', 'time_required', 'personal_number']) != -1
+          $(@).find('.flow_condition_group_flow_conditions_relation_id select').hide()
 
 
 
@@ -31,7 +31,7 @@ $(document).on('nested:fieldAdded', (event) ->
         $('.flow_condition_related_model,.flow_condition_group_compare_type').change ->
           #両方データが入ったらinput boxを出す
           if $(@).closest('.row').find('.flow_condition_related_model').val() && $(@).closest('.row').find('.flow_condition_group_compare_type').val()
-            if $.inArray($(@).closest('.row').find('.flow_condition_related_model').val(),  ['category', 'sub_category']) > -1
+            if $.inArray($(@).closest('.row').find('.flow_condition_related_model').val(),  ['category', 'sub_category','shop']) > -1
               $(@).closest('.panel-body').find('.flow_condition_option_add_button').show()
             else if $.inArray($(@).closest('.row').find('.flow_condition_related_model').val(), ['price','initial_cost', 'time_required', 'personal_number']) != -1
               #input boxを出す条件
@@ -41,6 +41,7 @@ $(document).on('nested:fieldAdded', (event) ->
             #どちらかが空になったらoptionの追加ボタンを隠してすでに追加された要素を削除
             $(@).closest('.panel-body').find('.flow_condition_option_add_button').hide()
             $(@).closest('.panel-body').find('.flow_condition_relation_id').val(null)
+            $(@).closest('.panel-body').parent.find('.flow_condition_compare_value').val(null)
     else if condition_option_is_added(event)
       #optionが追加された時はajaxでoptionのデータを取得する
       target = event.target
@@ -56,6 +57,8 @@ $(document).on('nested:fieldAdded', (event) ->
       if parent.length
         if parent.find('.flow_condition_related_model').val() && parent.find('.flow_condition_group_compare_type').val()
           if parent.find('.flow_condition_related_model').val() == 'category'
+            #compare_valueは使わないので値を空にして,見えなくする
+            parent.find('.flow_condition_compare_value').val(null).hide()
             url = '/categories'
             $.ajax url,
               type: 'GET'
@@ -65,6 +68,8 @@ $(document).on('nested:fieldAdded', (event) ->
               success: (data, textStatus, jqXHR) =>
                 update_select_box_option(parent.find('.flow_condition_relation_id').last(), data)
           if parent.find('.flow_condition_related_model').val() == 'sub_category'
+            #compare_valueは使わないので値を空にして,見えなくする
+            parent.find('.flow_condition_compare_value').val(null).hide()
             #sub_category追加時にはcategoryで選択中のものを取得してselectboxの条件を追加する
             category = $('.flow_condition_related_model').filter ->
               return $(@).val() == 'category'
@@ -84,12 +89,10 @@ $(document).on('nested:fieldAdded', (event) ->
               success: (data, textStatus, jqXHR) =>
                 update_select_box_option(parent.find('.flow_condition_group_flow_conditions_relation_id select').last(), data)
           if $.inArray(parent.find('.flow_condition_related_model').val(), ['price','initial_cost', 'time_required', 'personal_number']) != -1
-            console.log 'hoge'
             #price,initial_constなどのときはtextボックスを出す
-            parent.find('.flow_condition_group_flow_conditions_relation_id select').hide()
+            parent.find('.flow_condition_group_flow_conditions_relation_id select').val(null).hide()
             parent.find('.flow_condition_compare_value').show()
           else
-            console.log 'fuga'
             $('.flow_condition_relation_id').show()
             $('.flow_condition_compare_value').hide()
 )

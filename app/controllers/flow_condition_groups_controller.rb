@@ -1,5 +1,5 @@
 class FlowConditionGroupsController < ApplicationController
-  before_action :set_flow_condition_gourp, only: [:show, :edit, :update]
+  before_action :set_flow_condition_gourp, only: [:show, :edit, :update, :destroy]
   def new
     @flow_condition_group = FlowConditionGroup.new
   end
@@ -25,7 +25,6 @@ class FlowConditionGroupsController < ApplicationController
     end
   end
 
-
   def create
     @flow_condition_group = FlowConditionGroup.new(flow_condition_group_params)
 
@@ -39,6 +38,15 @@ class FlowConditionGroupsController < ApplicationController
       end
     end
   end
+
+  def destroy
+    @flow_condition_group.destroy
+    respond_to do |format|
+      format.html { redirect_to flow_condition_groups_url, notice: 'FlowConditionGroup was successfully destroyed.' }
+      format.json { head :no_content }
+    end
+  end
+
 
   private
     # Use callbacks to share common setup or constraints between actions.
