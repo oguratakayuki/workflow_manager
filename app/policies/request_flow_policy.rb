@@ -3,20 +3,17 @@ class RequestFlowPolicy
   class UnpermittedRequest < StandardError;end
   attr_accessor :request
 
-  def setup_request_grants
-    if @request.flow
-      @request.request_grants = @request.flow.copy_need_grants
-      @request.status = :reviewing
-    else
-      if flow = scan_flow_conditions(FlowConditionGroup.only_root)
+  def save_request_and_select_flow
+    if @request.save
+      if flow = find_flow(FlowConditionGroup.only_root)
         @request.flow = flow
+        @request.status = :reviewing
+        @request.request_grants = flow.copy_need_grants
+        @request.save
+        pass_next
       else
-        @request.status = :flow_not_defined
+        @request.update_attributes(status: :flow_not_defined)
       end
-    end
-    if @request.valid?
-      @request.save
-      pass_next
       true
     else
       false
@@ -25,7 +22,8 @@ class RequestFlowPolicy
 
   def submit!
     raise UnpermittedRequest unless submitable?
-    setup_request_grants
+    #setup_request_grants
+    save_request_and_select_flow
     #TODO notifier
   end
 
@@ -104,54 +102,106 @@ class RequestFlowPolicy
     @request.request_grants.with_status('rejected').first
   end
 
+  def find_flow(root_flow_condition_groups)
+    flow = root_flow_condition_groups.detect {|root_flow_condition_group| scan_flow_conditions root_flow_condition_group}.try(:flow)
+  end
   #matchしなければ次へ次へと
-  def scan_flow_conditions(flow_condition_groups)
-    flow_condition_groups.each do |flow_condition_group|
-      if conditions_matched?(flow_condition_group.flow_conditions, flow_condition_group.relation_type)
-        Rails.logger.debug 'conditions matched'
-        if flow_condition_group.child_groups
-          if scan_flow_conditions(flow_condition_group.child_groups, flow_condition_group.relation_type)
-            return flow_condition_group
-          else
-            #not matched
-            next
-          end
-        else
-          return flow_condition_group
+  def scan_flow_conditions(flow_condition_group)
+    if conditions_matched?(flow_condition_group.flow_conditions, flow_condition_group.relation_type)
+      Rails.logger.debug 'Policy: conditions matched'
+      if flow_condition_group.childs
+        #子レコードがあればチェック
+        Rails.logger.debug "Policy:  flow_condition_group has childs: id =  #{flow_condition_group.id}"
+        #if scan_flow_conditions(flow_condition_group.childs, flow_condition_group.relation_type)
+        flow_condition_group.childs.each do |flow_condition_group|
+          return false if scan_flow_conditions(flow_condition_group) == false
         end
-      else
-        Rails.logger.debug 'conditions not matched'
-        #not matched
-        next
       end
+      return true
+    else
+      Rails.logger.debug 'Policy: conditions not matched'
+      #not matched
     end
     #何もマッチしなかったのでここで終了
-    return nil
+    false
   end
 
   def conditions_matched? flow_conditions, and_or
     matched_count = 0
     flow_conditions.each do |flow_condition|
-      if const = Object.const_get(flow_condition.relation_type.capitalize) rescue nil 
+
+      if const = Object.const_get(flow_condition.related_model.camelize) rescue nil 
+        Rails.logger.debug "Policy: in condition_matched?: const = #{const.inspect}"
         #categoryが
-        options = flow_condition.flow_condition_options.pluck(:relation_id)
+        options = flow_condition.flow_condition_options.pluck(:relation_id).map(&:to_i)
         is_matched = case flow_condition.compare_type
         when 'eq' then
           #1とeqのとき
-          @request.__send__(flow_condition.related_model) == const.find(options.first)
+          ret = @request.__send__(flow_condition.related_model) == const.find(options.first)
+          Rails.logger.debug "Policy: in condition_matched?: type eq, ret  = #{ret}"
+          ret
         when 'not_eq' then
-          @request.__send__(flow_condition.related_model) != const.find(options.first)
+          ret = @request.__send__(flow_condition.related_model) != const.find(options.first)
+          Rails.logger.debug "Policy: in condition_matched?: type not eq, ret  = #{ret}"
+          ret
         when 'in' then
-          @request.__send__(flow_condition.related_model) == const.where(id: options)
+          if related_model = @request.__send__(flow_condition.related_model)
+            ret = related_model.id.in?(options)
+            Rails.logger.debug "hree" + @request.__send__(flow_condition.related_model).id.inspect
+            Rails.logger.debug "hree" + options.inspect
+          else
+            ret = false
+          end
+          Rails.logger.debug "Policy: in condition_matched?: type in, ret  = #{ret}"
+          ret
         when 'not_in' then
-          @request.__send__(flow_condition.related_model) != const.where(id: options)
+          if related_model = @request.__send__(flow_condition.related_model)
+            ret = !related_model.id.in?(options)
+            Rails.logger.debug "hree" + @request.__send__(flow_condition.related_model).id.inspect
+            Rails.logger.debug "hree" + options.inspect
+          else
+            ret = false
+          end
+          Rails.logger.debug "Policy: in condition_matched?: type not in, ret  = #{ret}"
         else
+          Rails.logger.debug "Policy: in condition_matched?: type undefined return false"
           false
         end
       else
-        #price,initial_cost
-        #under construction
-        is_matched = true
+        related_type = flow_condition.related_model.to_sym
+        if related_type.in?(%i(price initial_cost))
+          values = flow_condition.flow_condition_options.pluck(:compare_value).map(&:to_i)
+          Rails.logger.debug "Policy: in condition_matched?: values  = #{values.inspect}"
+          is_matched = case flow_condition.compare_type
+          when 'eq' then
+            #1とeqのとき
+            ret = @request.associated_value(related_type) == values.first
+            Rails.logger.debug "Policy: in condition_matched?: type eq, ret  = #{ret}"
+            ret
+          when 'not_eq' then
+            ret = @request.associated_value(related_type) != values.first
+            Rails.logger.debug "Policy: in condition_matched?: type not eq, ret  = #{ret}"
+            ret
+          when 'in' then
+            ret = @request.associated_value(related_type).in?(values)
+            Rails.logger.debug "hree" + @request.__send__(flow_condition.related_model).id.inspect
+            Rails.logger.debug "hree" + options.inspect
+            Rails.logger.debug "Policy: in condition_matched?: type in, ret  = #{ret}"
+            ret
+          when 'not_in' then
+            ret = @request.associated_value(related_type).in?(values)
+            Rails.logger.debug "Policy: in condition_matched?: type not in, ret  = #{ret}"
+            ret
+          else
+            Rails.logger.debug "Policy: in condition_matched?: type undefined return false"
+            false
+          end
+        end
+        #Rails.logger.debug "Policy: in condition_matched?: under construction"
+        #debugger
+        ##price,initial_cost
+        ##under construction
+        #is_matched = true
       end
       matched_count = matched_count + 1 if is_matched
     end

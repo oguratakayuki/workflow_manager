@@ -34,7 +34,7 @@ class RequestsController < ApplicationController
 
   def update_flow
     @request.assign_attributes(define_flow_params)
-    if RequestFlowPolicy.new(request: @request).setup_request_grants
+    if RequestFlowPolicy.new(request: @request).save_request_and_select_flow
       redirect_to @request, notice: 'Request was successfully updated.'
     else
       render :edit
@@ -57,7 +57,7 @@ class RequestsController < ApplicationController
   end
 
   def submit
-    RequestFlowPolicy.new(request: @request).setup_request_grants
+    RequestFlowPolicy.new(request: @request).save_request_and_select_flow
     redirect_to requests_path, notice: '申請を提出しました'
   end
 
@@ -89,7 +89,7 @@ class RequestsController < ApplicationController
   # POST /requests.json
   def create
     @request = Request.new(request_params)
-    if RequestFlowPolicy.new(request: @request).setup_request_grants
+    if RequestFlowPolicy.new(request: @request).save_request_and_select_flow
       redirect_to requests_path, notice: '申請が完了しました'
     else
       render :new

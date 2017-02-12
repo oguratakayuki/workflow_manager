@@ -4,7 +4,7 @@ class FlowConditionGroupsController < ApplicationController
     @flow_condition_group = FlowConditionGroup.new
   end
   def index
-    @flow_condition_groups = FlowConditionGroup.roots
+    @flow_condition_groups = FlowConditionGroup.only_root
   end
 
   def show
@@ -51,7 +51,7 @@ class FlowConditionGroupsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_flow_condition_gourp
-      @flow_condition_group = FlowConditionGroup.roots.find(params[:id])
+      @flow_condition_group = FlowConditionGroup.only_root.find(params[:id])
     end
 
     def flow_condition_group_params

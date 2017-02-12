@@ -10,7 +10,7 @@ class Request < ApplicationRecord
   has_many :initial_human_cost, class_name: 'RequestInitialHumanCost'
   has_many :monthly_human_cost, class_name: 'RequestMonthlyHumanCost'
   has_many :annual_human_cost,  class_name: 'RequestAnnualHumanCost'
-  has_many :initial_money_cost, class_name: 'RequestInitialMoneyCost'
+  has_one :initial_money_cost, class_name: 'RequestInitialMoneyCost'
   has_many :monthly_money_cost, class_name: 'RequestMonthlyMoneyCost'
   has_many :annual_money_cost,  class_name: 'RequestAnnualMoneyCost'
 
@@ -29,6 +29,16 @@ class Request < ApplicationRecord
   accepts_nested_attributes_for :monthly_money_cost, allow_destroy: true
   accepts_nested_attributes_for :annual_money_cost,  allow_destroy: true
 
+  def unsaved_initial_costs
+    initial_human_cost.select{|t| t if  t.new_record? }
+  end
+
+  def associated_value(name)
+    case name
+    when :initial_money_cost then
+      initial_money_cost.try(:cost_value)
+    end
+  end
 
   def next_request_grant
     request_grants.with_status(:not_judged).order(:position).first
