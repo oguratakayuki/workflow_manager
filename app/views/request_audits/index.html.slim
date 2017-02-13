@@ -1,0 +1,21 @@
+table.table.table-hover
+  thead
+    tr
+      th Type
+      th When
+      th Who
+      th What Changed
+    - @audits.order(:created_at).each do |audit|
+      tr
+        td= audit.action
+        td= audit.created_at
+        td= audit.user.name
+        td
+          - audit.audited_changes.each_with_index do |v,k|
+            b= v[0].titleize
+            | from
+            b= v.first
+            br
+            | to
+            b= v.last
+            br

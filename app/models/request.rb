@@ -1,5 +1,6 @@
 class Request < ApplicationRecord
   extend Enumerize
+  audited
   belongs_to :flow
   belongs_to :user
   belongs_to :category

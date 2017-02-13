@@ -26,6 +26,7 @@ Rails.application.routes.draw do
       get 'review', on: :member
     end
   end
+  resources :request_audits
   resources :request_grants
   devise_for :users
   get 'home/index'

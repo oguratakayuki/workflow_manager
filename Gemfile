@@ -22,6 +22,8 @@ gem 'carrierwave', '~> 1.0'
 gem 'rmagick', require: 'RMagick'
 gem 'acts_as_list'
 gem 'jquery-ui-rails'
+gem "audited", "~> 4.3"
+gem "rails-observers", github: 'rails/rails-observers'
 
 #gem 'therubyracer', platforms: :ruby
 
