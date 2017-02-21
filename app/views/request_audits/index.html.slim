@@ -9,7 +9,7 @@ table.table.table-hover
       tr
         td= audit.action
         td= audit.created_at
-        td= audit.user.name
+        td= audit.try(:user).try(:name)
         td
           - audit.audited_changes.each_with_index do |v,k|
             b= v[0].titleize

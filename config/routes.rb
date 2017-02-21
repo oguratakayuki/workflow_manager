@@ -11,7 +11,9 @@ Rails.application.routes.draw do
     post 'csv_import', on: :collection
   end
   resources :flow_grants
-  resources :flows
+  resources :flows do
+    post 'change_default', on: :member
+  end
   resources :jobs
   resources :requests do
     get 'executable', on: :collection

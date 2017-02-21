@@ -1,5 +1,5 @@
 class FlowsController < ApplicationController
-  before_action :set_flow, only: [:show, :edit, :update, :destroy]
+  before_action :set_flow, only: [:show, :edit, :update, :destroy, :change_default]
 
   # GET /flows
   # GET /flows.json
@@ -59,6 +59,12 @@ class FlowsController < ApplicationController
       format.html { redirect_to flows_url, notice: 'Flow was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  def change_default
+    Flow.update_all(is_default: false)
+    @flow.update_attributes(is_default: true)
+    redirect_to flows_url, notice: "[#{@flow.name}]をデフォルトに設定しました"
   end
 
   private
