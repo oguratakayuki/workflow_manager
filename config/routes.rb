@@ -21,6 +21,7 @@ Rails.application.routes.draw do
     put 'submit', on: :member
     get 'report', on: :member
     put 'report', on: :member
+    get 'audit', on: :member
     get 'define_flow', on: :member
     put 'update_flow', on: :member
     put 'withdraw', on: :member

@@ -1,10 +1,14 @@
 class RequestsController < ApplicationController
-  before_action :set_request, only: [:show, :edit, :update, :destroy, :reject, :grant, :review, :report, :define_flow, :update_flow, :withdraw, :submit]
+  before_action :set_request, only: [:show, :edit, :update, :destroy, :reject, :grant, :review, :report, :define_flow, :update_flow, :withdraw, :submit, :audit]
 
   # GET /requests
   # GET /requests.json
   def index
     @requests = Request.where(user: current_user).editable
+  end
+
+  def audit
+    @audits = @request.audits.order(:created_at)
   end
 
   def executable
@@ -138,33 +142,40 @@ class RequestsController < ApplicationController
         :cost_price_type
         ], 
         initial_money_cost_attributes: [
+        :id,
+        :request_id,
         :_destroy,
         :cost_value,
         :annotation,
         ], 
         monthly_money_cost_attributes: [
+        :id,
         :_destroy,
         :cost_value,
         :annotation,
         ], 
         annual_money_cost_attributes: [
+        :id,
         :_destroy,
         :cost_value,
         :annotation,
         ], 
         initial_human_cost_attributes: [
+        :id,
         :_destroy,
         :time_required,
         :number_of_people,
         :annotation,
         ], 
         monthly_human_cost_attributes: [
+        :id,
         :_destroy,
         :time_required,
         :number_of_people,
         :annotation,
         ], 
         annual_human_cost_attributes: [
+        :id,
         :_destroy,
         :time_required,
         :number_of_people,

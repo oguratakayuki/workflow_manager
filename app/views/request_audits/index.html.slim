@@ -11,7 +11,7 @@ table.table.table-hover
         td= audit.created_at
         td= audit.try(:user).try(:name)
         td
-          - audit.audited_changes.each_with_index do |v,k|
+          - audit.changes.each_with_index do |v,k|
             b= v[0].titleize
             | from
             b= v.first

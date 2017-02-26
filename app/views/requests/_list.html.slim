@@ -18,6 +18,9 @@ table.table.table-striped.table-hover
         td = request.status_message
         td 
           = link_to '詳細', request, class: 'btn btn-default'
+          '
+          = link_to 'log', audit_request_path(request), class: 'btn btn-default'
+          '
           - if RequestFlowPolicy.new(request: request).withdrawable?(current_user)
             '
             = link_to '申請を取り消す', withdraw_request_path(request), data: { confirm: '申請を取り消すと今までの承認がリセットされますがよろしいですか?' }, method: :put, class: 'btn btn-danger'

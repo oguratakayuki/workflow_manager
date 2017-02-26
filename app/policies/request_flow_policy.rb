@@ -103,7 +103,9 @@ class RequestFlowPolicy
   end
 
   def find_flow(root_flow_condition_groups)
-    flow = root_flow_condition_groups.detect {|root_flow_condition_group| scan_flow_conditions root_flow_condition_group}.try(:flow)
+    unless flow = root_flow_condition_groups.detect {|root_flow_condition_group| scan_flow_conditions root_flow_condition_group}.try(:flow)
+      flow = Flow.default.first
+    end
   end
   #matchしなければ次へ次へと
   def scan_flow_conditions(flow_condition_group)

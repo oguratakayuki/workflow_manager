@@ -1,6 +1,5 @@
 class Request < ApplicationRecord
   extend Enumerize
-  audited
   belongs_to :flow
   belongs_to :user
   belongs_to :category
@@ -14,6 +13,9 @@ class Request < ApplicationRecord
   has_one :initial_money_cost, class_name: 'RequestInitialMoneyCost'
   has_many :monthly_money_cost, class_name: 'RequestMonthlyMoneyCost'
   has_many :annual_money_cost,  class_name: 'RequestAnnualMoneyCost'
+
+  audited associated_with: :category
+  has_associated_audits
 
   has_many :evidences
   scope :reviewable_by_role, ->(role) { joins(:request_grants).merge(RequestGrant.with_role(role).with_status('reviewing')) }
