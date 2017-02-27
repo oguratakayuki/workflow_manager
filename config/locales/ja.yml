@@ -13,8 +13,12 @@ ja:
     attributes:
       request:
         user: '申請者'
+        user_id: '申請者'
         flow: '承認フロー'
         category: 'カテゴリ'
+        category_id: 'カテゴリ'
+        sub_category: 'カテゴリ'
+        sub_category_id: 'カテゴリ'
         title: 'タイトル'
         status: 'ステータス'
         description: '詳細'

@@ -24,6 +24,7 @@ gem 'acts_as_list'
 gem 'jquery-ui-rails'
 gem "audited", "~> 4.3"
 gem "rails-observers", github: 'rails/rails-observers'
+gem "font-awesome-rails"
 
 #gem 'therubyracer', platforms: :ruby
 

@@ -11,31 +11,28 @@ table.table.table-hover
         td= audit.created_at
         td= audit.try(:user).try(:name)
         td
-          - audit.audited_changes.each_with_index do |v,k|
-            - if v[1].present?
-              b= Object.const_get(audit.audited_class_names.first).human_attribute_name(v[0]) 
+          - audit2 = AuditDecorator.new(object: audit)
+          - audit2.audited_changes.each_with_index do |v,k|
+            - if v.info_exists?
+              b= v.subject_column_name
               br
-              - if v[1].is_a?(Array)
-                - if Object.const_get(audit.audited_class_names.first).try(v[0])
-                  - if options = Object.const_get(audit.audited_class_names.first).__send__(v[0]).try(:options)
-                    - ret = v[1].map{|t| options.find{|a,b| b == t}.try(:[], 0) }
+              - if v.update_info?
+                - if v.associated?
+                  - if options = v.association_options
+                    - ret = v.associated_before_after
                     b= ret.first || '未設定'
-                    br
-                    | ->
+                    '
+                    i.fa.fa-arrow-right.fa-lg
+                    '
                     b= ret.last || '未設定'
                     br
                 - else
-                  b= v[1].first || '未設定'
+                  b= v.before
+                  '
+                  i.fa.fa-arrow-right.fa-lg
+                  '
+                  b= v.after
                   br
-                  | ->
-                  b= v[1].last || '未設定'
-                  br
-
-                b= v[1].first || '未設定'
-                br
-                | ->
-                b= v[1].last || '未設定'
-                br
               - else
-                b= v[1] || '未設定'
+                b= v.first_value_for_created_record
                 br
