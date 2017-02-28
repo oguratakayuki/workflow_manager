@@ -1,18 +1,24 @@
 class AuditChangeDecorator
   include ActiveModel::Model
-  attr_accessor :column, :raw_before_after, :audit
-  def initialize(*params)
-    debugger
-    super(params)
+  attr_accessor :column, :raw_before_after, :audit, :before, :after
+  def initialize *params
+    if params.first[:raw_before_after].is_a?(Array)
+      @raw_before = params.first[:raw_before_after][0]
+      @raw_after = params.first[:raw_before_after][1]
+    else
+      @first_value_for_created_record = params.first[:raw_before_after]
+    end
+    super *params
   end
+
+
   def info_exists?
-    @before_after[1].present?
+    @raw_before_after.is_a?(Array) || @first_value_for_created_record
   end
   def subject_column_name
     Object.const_get(@audit.auditable_type).human_attribute_name(@column) 
   end
   def update_info?
-    #@before_after[1].is_a?(Array)
     @raw_before && @raw_after
   end
   def associated?
