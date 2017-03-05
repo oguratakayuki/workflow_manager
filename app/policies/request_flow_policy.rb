@@ -60,6 +60,10 @@ class RequestFlowPolicy
     @request.status == 'not_submitted' && user == @request.user
   end
 
+  def self.displayable_requests_by_user(user)
+    Request.displayable_by_user(user)
+  end
+
   def reviewable?(user)
     @request.reviewable?(user)
   end

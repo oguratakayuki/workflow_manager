@@ -1,10 +1,11 @@
 class RequestsController < ApplicationController
   before_action :set_request, only: [:show, :edit, :update, :destroy, :reject, :grant, :review, :report, :define_flow, :update_flow, :withdraw, :submit, :audit]
+  #load_and_authorize_resource
 
   # GET /requests
   # GET /requests.json
   def index
-    @requests = Request.where(user: current_user).editable
+    @requests = RequestFlowPolicy.displayable_requests_by_user(current_user)
   end
 
   def audit
@@ -93,6 +94,7 @@ class RequestsController < ApplicationController
   # POST /requests.json
   def create
     @request = Request.new(request_params)
+    authorize! :create, @request
     if RequestFlowPolicy.new(request: @request).save_request_and_select_flow
       redirect_to requests_path, notice: '申請が完了しました'
     else

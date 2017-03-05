@@ -17,6 +17,22 @@ crumb :flows do
   parent :root
 end
 
+crumb :audit_forms do
+  link I18n.t('activerecord.models.audit_form'), audits_path
+  parent :root
+end
+crumb :shops do
+  link I18n.t('activerecord.models.shop'), shops_path
+  parent :root
+end
+crumb :categories do
+  link I18n.t('activerecord.models.category'), categories_path
+  parent :root
+end
+
+
+
+
 crumb :flow do |flow|
   link flow.name, flow_path(flow)
   parent :flows

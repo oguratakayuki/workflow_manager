@@ -1,0 +1,65 @@
+h1 =AuditForm.model_name.human + t('actions.index')
+- breadcrumb :audit_forms
+
+.jumbotron
+  = simple_form_for(@audit_form, url: audits_path, html: { method: :get, class: 'form-horizontal', role: 'form', name: 'audit' }) do |f|
+    = f.input :audit_type, as: :select, class: 'form-control', collection: AuditForm.audit_type.options
+    = f.input :audit_id, class: 'form-control'
+    = f.submit '検索', class: 'btn btn-primary'
+    '
+    = link_to 'clear', audits_path,  class: 'btn btn-default'
+
+
+table.table.table-striped.table-hover
+  thead
+    tr
+      th 対象
+      th id
+      th title
+  tbody
+    - @results.each do |result|
+      tr
+        td = result.class.model_name.human
+        td = result.id
+        td = result.title
+        td 
+          table.table.table-striped.table-hover
+            thead
+              tr
+                th Type
+                th When
+                th Who
+                th What Changed
+            tbody
+              - result.audits.order(:created_at).each do |audit|
+                tr
+                  td= audit.action
+                  td= audit.created_at
+                  td= audit.try(:user).try(:name)
+                  td
+                    - audit = AuditDecorator.new(object: audit)
+                    - audit.audited_changes.each_with_index do |v,k|
+                      - if v.info_exists?
+                        b= v.subject_column_name
+                        br
+                        - if v.update_info?
+                          - if v.associated?
+                            - if options = v.association_options
+                              - ret = v.associated_before_after
+                              b= ret.first || '未設定'
+                              '
+                              i.fa.fa-arrow-right.fa-lg
+                              '
+                              b= ret.last || '未設定'
+                              br
+                          - else
+                            b= v.before
+                            '
+                            i.fa.fa-arrow-right.fa-lg
+                            '
+                            b= v.after
+                            br
+                        - else
+                          b= v.first_value_for_created_record
+                          br
+

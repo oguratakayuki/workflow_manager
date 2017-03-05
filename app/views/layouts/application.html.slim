@@ -30,8 +30,9 @@ html[lang="en"]
         .page-header
           h1
             | 承認管理
+            '
             small 
-              | Subtext for header
+              | ガンガン行こうぜ
       .row
         - breadcrumbs.tap do |links|
           - if links.any?
@@ -60,24 +61,29 @@ html[lang="en"]
                 = link_to '申請(進行中)', requests_path
               li
                 = link_to '作業依頼', executable_requests_path
-              li
-                = link_to '承認フロー未設定申請', flow_not_defined_requests_path
+              - if can? :define_flow, Flow
+                li
+                  = link_to '承認フロー未設定申請', flow_not_defined_requests_path
               li
                 = link_to  request_grants_path do
                   = t(RequestGrant.model_name.human)
                   - if @user_reviewable_count > 0
                     '
                     span.badge = @user_reviewable_count
-              li
-                = link_to  '承認フロー管理', flows_path
-              li
-                = link_to  '承認フロー管理2', flow_condition_groups_path
-              li
-                = link_to  '作業履歴', flows_path
-              li
-                = link_to  'カテゴリ管理', categories_path
-              li
-                = link_to  '店舗管理', shops_path
+              - if can? :create, Flow
+                li
+                  = link_to  '承認フローパターン一覧', flows_path
+                li
+                  = link_to  '承認フロー選択条件一覧', flow_condition_groups_path
+              - if can? :read, AuditForm
+                li
+                  = link_to  '照査ログ' , audits_path
+              - if can? :read, Category
+                li
+                  = link_to t(Category.model_name.human) , categories_path
+              - if can? :read, Shop
+                li
+                  = link_to t(Shop.model_name.human), shops_path
         .col-md-9
           .jumbotron
             - flash.each do |key, value|

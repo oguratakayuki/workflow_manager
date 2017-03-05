@@ -12,11 +12,11 @@
       .list-group-item.item[data-position="#{a.object.position}"]
         = a.select :role, User.role.options
         '
-        = a.text_field :position, as: :hidden, class: 'approval_flow_positions'
+        = a.input :position, as: :hidden, input_html: {class: 'approval_flow_positions'}
         '
-        = a.link_to_remove "削除"
-        button.close[type="button" data-dismiss="alert" aria-label="Close"]
-          span[aria-hidden="true"] = '&times;'.html_safe
+        = a.link_to_remove do
+          button.close[type="button" data-dismiss="alert" aria-label="Close"]
+            span[aria-hidden="true"] = '&times;'.html_safe
     .form-inputs
       = f.link_to_add "申請ルート追加", :approval_flows
 
@@ -28,9 +28,9 @@
         '
         = executor.association :user
         '
-        = executor.link_to_remove "削除"
-        button.close[type="button" data-dismiss="alert" aria-label="Close"]
-          span[aria-hidden="true"] = '&times;'.html_safe
+        = executor.link_to_remove do
+          button.close[type="button" data-dismiss="alert" aria-label="Close"]
+            span[aria-hidden="true"] = '&times;'.html_safe
     .form-inputs
       = f.link_to_add "申請ルート追加", :executors
 

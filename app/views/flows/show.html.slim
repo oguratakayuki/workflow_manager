@@ -1,3 +1,5 @@
+h1 =Flow.model_name.human + t('actions.show')
+
 - breadcrumb :flow, @flow
 .list-group
   a.list-group-item
@@ -29,6 +31,7 @@
           - if executor.user
             = executor.user.name
  
-= link_to 'Edit', edit_flow_path(@flow)
-'|
-= link_to 'Back', flows_path
+= link_to t('actions.edit'), edit_flow_path(@flow), class: 'btn btn-default'
+'
+= link_to t('actions.back'), flows_path, class: 'btn btn-default'
+

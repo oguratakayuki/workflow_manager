@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  resources :audits
   resources :flow_condition_groups
   resources :categories do
     resources :sub_categories
@@ -9,6 +10,7 @@ Rails.application.routes.draw do
   resources :shops do
     get 'csv_import', on: :collection
     post 'csv_import', on: :collection
+    resources :staffs, controller: 'shop_staffs'
   end
   resources :flow_grants
   resources :flows do

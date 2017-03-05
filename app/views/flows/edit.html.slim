@@ -2,7 +2,7 @@ h1#flow-edit Editing flow
 
 == render 'form'
 
-= link_to 'Show', @flow
-'|
-= link_to 'Back', flows_path
+= link_to t('actions.show'), @flow, class: 'btn btn-default'
+'
+= link_to t('actions.back'), flows_path, class: 'btn btn-default'
 

@@ -1,11 +1,10 @@
 require 'csv'
 class ShopsController < ApplicationController
-  before_action :set_shop, only: [:show, :edit, :update, :destroy]
+  load_and_authorize_resource
 
   # GET /shops
   # GET /shops.json
   def index
-    @shops = Shop.all
   end
 
   # GET /shops/1
@@ -15,7 +14,6 @@ class ShopsController < ApplicationController
 
   # GET /shops/new
   def new
-    @shop = Shop.new
   end
 
   # GET /shops/1/edit
@@ -36,8 +34,6 @@ class ShopsController < ApplicationController
   # POST /shops
   # POST /shops.json
   def create
-    @shop = Shop.new(shop_params)
-
     respond_to do |format|
       if @shop.save
         format.html { redirect_to @shop, notice: 'Shop was successfully created.' }
@@ -74,11 +70,6 @@ class ShopsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_shop
-      @shop = Shop.find(params[:id])
-    end
-
     # Never trust parameters from the scary internet, only allow the white list through.
     def shop_params
       params.require(:shop).permit(:name, :description)

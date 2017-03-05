@@ -6,17 +6,20 @@ jQuery ($) ->
 $(document).on('nested:fieldAdded', (event) ->
   if $('.sortable').length > 0
     $('.sortable').trigger("sortupdate")
-    positions = $('.approval_flow_positions').map ->
+    positions = Array.from($('input:hidden.approval_flow_positions').map ->
       return parseInt(this.value)
     .filter (bb,aa) ->
       return Number.isInteger(aa)
-    next_position = Math.max.apply(null, positions) + 1
-    $(event.target).find('.approval_flow_positions').val(next_position)
-    console.log($(event.target).find('.item'))
+    )
+    if positions.length == 0
+      next_position = 1
+    else
+      next_position = Math.max.apply(null, positions) + 1
+    $(event.target).find('input:hidden.approval_flow_positions').val(next_position)
 )
 
 $(document).on('nested:fieldRemoved', (event) ->
-  $('.approval_flow_positions:visible').each (index, element) ->
+  $('input:hidden.approval_flow_positions').each (index, element) ->
     $(element).val(index+1)
 )
 $(document).on('turbolinks:load', (e) ->
@@ -24,6 +27,6 @@ $(document).on('turbolinks:load', (e) ->
     $('.sortable').sortable
       items: '.item'
       update: (e, ui) ->
-        $('.approval_flow_positions').each (index,b) ->
+        $('input:hidden.approval_flow_positions').each (index,b) ->
           $(b).val(index+1)
 )

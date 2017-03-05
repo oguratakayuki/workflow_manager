@@ -1,4 +1,14 @@
 ja:
+  actions:
+    index: 一覧
+    show: 詳細
+    edit: 編集
+    new: 登録
+    create: 登録
+    edit: 編集
+    update: 更新
+    destroy: 削除
+    back: '戻る'
   activerecord:
     models:
       request: '申請'
@@ -10,6 +20,8 @@ ja:
       approval_flow: '申請ルート'
       flow_executor: '実作業者'
       request_cost: '経費情報'
+      audit_form: '証跡'
+      shop: 店舗
     attributes:
       request:
         user: '申請者'
@@ -41,6 +53,9 @@ ja:
         initial_cost: 初期費用
         time_required: 人的コスト(時間)
         person_number: 人的コスト(人数)
+      audit_form:
+        audit_type: データタイプ
+        audit_id: ID
   enumerize:
     role:
       operator: 'オペレーター'
@@ -48,6 +63,12 @@ ja:
       manager: 'マネージャー'
       president: '社長'
       admin: '管理者'
+    audit_form:
+      audit_type:
+        request: リクエスト
+        shop: ショップ
+        user: ユーザー
+      audit_id: id
     request:
       status:
         not_submitted: '未提出'
@@ -56,6 +77,7 @@ ja:
         rejected: '却下'
         granted: '承認'
         wait_for_execution: '承認済み(作業待ち)'
+        executable: '実行可能'
         finished: '完了'
     request_grant:
       status:
@@ -84,3 +106,15 @@ ja:
       user:
         unauthenticated: 'ログインしないと実行できません'
         not_found_in_database: 'ログインに失敗しました。アカウント情報をご確認ください'
+  simple_form:
+    labels:
+      audit_form:
+        audit_type: データタイプ
+        audit_id: ID
+    options:
+      audit_form:
+        audit_type:
+          request: リクエスト
+          shop: ショップ
+          user: ユーザー
+        audit_id: id
