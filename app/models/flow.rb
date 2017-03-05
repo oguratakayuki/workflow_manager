@@ -1,6 +1,7 @@
 class Flow < ApplicationRecord
   has_many :executors, class_name: 'FlowExecutor'
   has_many :approval_flows, inverse_of: :flow
+  has_one :flow_condition_group
   accepts_nested_attributes_for :approval_flows, allow_destroy: true
   accepts_nested_attributes_for :executors, allow_destroy: true
   scope :default, -> { where(is_default: true) }

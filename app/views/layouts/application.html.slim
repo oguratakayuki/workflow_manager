@@ -72,15 +72,13 @@ html[lang="en"]
                     span.badge = @user_reviewable_count
               - if can? :create, Flow
                 li
-                  = link_to  '承認フローパターン一覧', flows_path
-                li
-                  = link_to  '承認フロー選択条件一覧', flow_condition_groups_path
+                  = link_to  t(Flow.model_name.human), flows_path
               - if can? :read, AuditForm
                 li
                   = link_to  '照査ログ' , audits_path
               - if can? :read, Category
                 li
-                  = link_to t(Category.model_name.human) , categories_path
+                  = link_to t(Category.model_name.human), categories_path
               - if can? :read, Shop
                 li
                   = link_to t(Shop.model_name.human), shops_path

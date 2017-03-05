@@ -34,7 +34,7 @@ table.table.table-striped.table-hover
               - result.audits.order(:created_at).each do |audit|
                 tr
                   td= audit.action
-                  td= audit.created_at
+                  td= audit.created_at.to_s(:published_on)
                   td= audit.try(:user).try(:name)
                   td
                     - audit = AuditDecorator.new(object: audit)

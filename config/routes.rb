@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
 
   resources :audits
-  resources :flow_condition_groups
+  #resources :flow_condition_groups
   resources :categories do
     resources :sub_categories
   end
@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   resources :flow_grants
   resources :flows do
     post 'change_default', on: :member
+    resources :flow_condition_groups
   end
   resources :jobs
   resources :requests do

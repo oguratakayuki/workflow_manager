@@ -1,5 +1,6 @@
-h1 =FlowConditionGroup.model_name.human
+h2 = @flow.name + 'の条件'
 
 == render 'form'
-
-= link_to 'Back', flow_condition_groups_path
+'
+br
+= link_to t('actions.back'), flow_flow_condition_groups_path(@flow), class: 'btn btn-default'

@@ -1,7 +1,7 @@
 class FlowConditionGroupsController < ApplicationController
-  before_action :set_flow_condition_gourp, only: [:show, :edit, :update, :destroy]
+  before_action :set_flow
+  before_action :set_flow_condition_gourp, only: [:show, :edit, :update, :destroy, :new]
   def new
-    @flow_condition_group = FlowConditionGroup.new
   end
   def index
     @flow_condition_groups = FlowConditionGroup.only_root
@@ -16,7 +16,7 @@ class FlowConditionGroupsController < ApplicationController
   def update
     respond_to do |format|
       if @flow_condition_group.update(flow_condition_group_params)
-        format.html { redirect_to @flow_condition_group, notice: 'Category was successfully updated.' }
+        format.html { redirect_to flows_path, notice: 'Category was successfully updated.' }
         format.json { render :show, status: :ok, location: @flow_condition_group }
       else
         format.html { render :edit }
@@ -30,7 +30,7 @@ class FlowConditionGroupsController < ApplicationController
 
     respond_to do |format|
       if @flow_condition_group.save
-        format.html { redirect_to @flow_condition_group, notice: 'Flow was successfully created.' }
+        format.html { redirect_to flows_path, notice: 'Flow was successfully created.' }
         format.json { render :show, status: :created, location: @flow_condition_group }
       else
         format.html { render :new }
@@ -42,7 +42,7 @@ class FlowConditionGroupsController < ApplicationController
   def destroy
     @flow_condition_group.destroy
     respond_to do |format|
-      format.html { redirect_to flow_condition_groups_url, notice: 'FlowConditionGroup was successfully destroyed.' }
+      format.html { redirect_to flow_path, notice: 'FlowConditionGroup was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -50,8 +50,11 @@ class FlowConditionGroupsController < ApplicationController
 
   private
     # Use callbacks to share common setup or constraints between actions.
+    def set_flow
+      @flow = Flow.find(params[:flow_id])
+    end
     def set_flow_condition_gourp
-      @flow_condition_group = FlowConditionGroup.only_root.find(params[:id])
+      @flow_condition_group = @flow.flow_condition_group || @flow.build_flow_condition_group
     end
 
     def flow_condition_group_params

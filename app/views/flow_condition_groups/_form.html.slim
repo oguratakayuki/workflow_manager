@@ -1,7 +1,7 @@
-= simple_nested_form_for(@flow_condition_group, defaults: {input_html:  {class: 'flow_condition_group_form' } }) do |f|
+= simple_nested_form_for([@flow, @flow_condition_group], defaults: {input_html:  {class: 'flow_condition_group_form' } }) do |f|
   = f.error_notification
   .form-inputs
-    = f.association :flow
+    = f.association :flow, as: :hidden
     = f.input :relation_type, as: :select
   = f.simple_fields_for :flow_conditions do |fc|
     .panel.panel-default.flow_condition
@@ -31,16 +31,16 @@
                   = o.link_to_remove "削除", class: 'btn btn-warning'
             br
             '
-            = fc.link_to_add "比較対象追加", :flow_condition_options, {class: 'btn btn-primary flow_condition_option_add_button', style: 'margin-bottom: 10px;'}
+            = fc.link_to_add "比較対象追加", :flow_condition_options, {class: 'btn btn-default flow_condition_option_add_button', style: 'margin-bottom: 10px;'}
             br
             '
         .row
           .col-md-12
             = fc.link_to_remove "削除", class: 'btn btn-warning flow_condition_option_remove_button'
   '
-  = f.link_to_add "条件報追加", :flow_conditions, class: 'btn btn-primary flow_condition_add_button'
+  = f.link_to_add "条件報追加", :flow_conditions, class: 'btn btn-default flow_condition_add_button'
   br
   br
 
   .form-actions
-    = f.button :submit, class: 'btn btn-primary'
+    = f.button :submit, '作成', class: 'btn btn-primary'
