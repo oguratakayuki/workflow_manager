@@ -1,3 +1,4 @@
+.request-form
 = simple_nested_form_for(@request) do |f|
   = f.error_notification
 
@@ -20,7 +21,7 @@
             = c.input :annotation
         br
         = c.link_to_remove "削除", class: 'btn btn-warning'
-  = f.link_to_add "初期費用追加", :initial_money_cost, class: 'btn btn-primary'
+  = f.link_to_add "初期費用追加", :initial_money_cost, class: 'btn btn-primary', data: {limit: 1}
   br
   = f.simple_fields_for :monthly_money_cost do |c|
     .panel.panel-default
@@ -34,7 +35,7 @@
             = c.input :annotation
         br
         = c.link_to_remove "削除", class: 'btn btn-warning'
-  = f.link_to_add "月間費用追加", :monthly_money_cost, class: 'btn btn-primary'
+  = f.link_to_add "月間費用追加", :monthly_money_cost, class: 'btn btn-primary', data: {limit: 1}
   br
   = f.simple_fields_for :annual_money_cost do |c|
     .panel.panel-default
@@ -48,7 +49,7 @@
             = c.input :annotation
         br
         = c.link_to_remove "削除", class: 'btn btn-warning'
-  = f.link_to_add "年間費用追加", :annual_money_cost, class: 'btn btn-primary'
+  = f.link_to_add "年間費用追加", :annual_money_cost, class: 'btn btn-primary', data: {limit: 1}
   br
   = f.simple_fields_for :initial_human_cost do |c|
     .panel.panel-default
@@ -65,7 +66,7 @@
             = c.input :annotation
         br
         = c.link_to_remove "削除", class: 'btn btn-warning'
-  = f.link_to_add "初期人的費用追加", :initial_human_cost, class: 'btn btn-primary'
+  = f.link_to_add "初期人的費用追加", :initial_human_cost, class: 'btn btn-primary', data: {limit: 1}
   br
   = f.simple_fields_for :monthly_human_cost do |c|
     .panel.panel-default
@@ -82,7 +83,7 @@
             = c.input :annotation
         br
         = c.link_to_remove "削除", class: 'btn btn-warning'
-  = f.link_to_add "月間人的費用追加", :monthly_human_cost, class: 'btn btn-primary'
+  = f.link_to_add "月間人的費用追加", :monthly_human_cost, class: 'btn btn-primary', data: {limit: 1}
   br
   = f.simple_fields_for :annual_human_cost do |c|
     .panel.panel-default
@@ -99,7 +100,7 @@
             = c.input :annotation
         br
         = c.link_to_remove "削除", class: 'btn btn-warning'
-  = f.link_to_add "年間人的費用追加", :annual_human_cost, class: 'btn btn-primary'
+  = f.link_to_add "年間人的費用追加", :annual_human_cost, class: 'btn btn-primary', data: {limit: 1}
   br
 
 

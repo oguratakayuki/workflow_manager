@@ -22,7 +22,6 @@ $(document).on 'ready turbolinks:load', ->
           $(@).find('.flow_condition_group_flow_conditions_relation_id select').hide()
 
 
-
 $(document).on('nested:fieldAdded', (event) ->
   #実行制御
   if $('.flow_condition_group_form').length

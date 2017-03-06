@@ -18,14 +18,20 @@ jQuery ($) ->
   $('.request_costs_cost_price_type').change ->
     console.log('hoge')
 
-$(document).on('nested:fieldAdded', (event) ->
-  target = event.target
-  $(target).find('.request_costs_initial_cost').hide()
-  $(target).find('.request_costs_cost_price_type').val('one_time')
-  if $('.request_costs_cost_price_type').length > 0
-    $(event.target).find('.request_costs_cost_price_type').change (event) ->
-      if $(event.target).val() == 'one_time'
-        $(target).find('.request_costs_initial_cost').hide()
-      else
-        $(target).find('.request_costs_initial_cost').show()
+$(document).on('nested:fieldAdded', (e) ->
+  if $('.request-form').length
+    link = $(e.currentTarget.activeElement)
+    if (!link.data('limit'))
+      return
+    if (link.siblings('.fields:visible').length >= link.data('limit'))
+      link.hide()
+)
+
+$(document).on('nested:fieldRemoved', (e) -> 
+  if $('.request-form').length
+    link = $(e.target).siblings('a.add_nested_fields')
+    if (!link.data('limit'))
+      return
+    if (link.siblings('.fields:visible').length < link.data('limit'))
+      link.show()
 )

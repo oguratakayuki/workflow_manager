@@ -56,6 +56,9 @@ ja:
       audit_form:
         audit_type: データタイプ
         audit_id: ID
+      initial_money_cost:
+        cost_value: 費用
+        annotation: 注釈
   enumerize:
     role:
       operator: 'オペレーター'
@@ -118,3 +121,6 @@ ja:
           shop: ショップ
           user: ユーザー
         audit_id: id
+      initial_money_cost:
+        cost_value: 費用
+        annotation: 注釈
