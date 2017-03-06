@@ -11,6 +11,7 @@
   = f.simple_fields_for :initial_money_cost do |c|
     .panel.panel-default
       .panel-body
+        legend = RequestInitialMoneyCost.model_name.human
         p
           .input-group
             = c.input  :id, as: :hidden
@@ -26,6 +27,7 @@
   = f.simple_fields_for :monthly_money_cost do |c|
     .panel.panel-default
       .panel-body
+        legend = RequestMonthlyMoneyCost.model_name.human
         p
           .input-group
             = c.input  :id, as: :hidden
@@ -40,6 +42,7 @@
   = f.simple_fields_for :annual_money_cost do |c|
     .panel.panel-default
       .panel-body
+        legend = RequestAnnualMoneyCost.model_name.human
         p
           .input-group
             = c.input  :id, as: :hidden
@@ -54,6 +57,7 @@
   = f.simple_fields_for :initial_human_cost do |c|
     .panel.panel-default
       .panel-body
+        legend = RequestInitialHumanCost.model_name.human
         p
           .input-group
             = c.input  :id, as: :hidden
@@ -71,6 +75,7 @@
   = f.simple_fields_for :monthly_human_cost do |c|
     .panel.panel-default
       .panel-body
+        legend = RequestMonthlyHumanCost.model_name.human
         p
           .input-group
             = c.input  :id, as: :hidden
@@ -88,6 +93,7 @@
   = f.simple_fields_for :annual_human_cost do |c|
     .panel.panel-default
       .panel-body
+        legend = RequestAnnualHumanCost.model_name.human
         p
           .input-group
             = c.input  :id, as: :hidden
