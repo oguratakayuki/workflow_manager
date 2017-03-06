@@ -12,4 +12,9 @@ jQuery ($) ->
     )
     console.log selectbox
 
-
+$(document).on 'ready turbolinks:load', ->
+  url = window.location.pathname
+  urlRegExp = new RegExp(url.replace(/\/$/,'') + "$")
+  $('ul.sidebar-nav-menu li  a').each ->
+      if(urlRegExp.test(this.href.replace(/\/$/,'')))
+        $(@).parent('li').addClass('active')
