@@ -15,7 +15,10 @@
               collection: FlowCondition.related_model.options
           .col-md-4
             |  比較方法
-            = fc.input :compare_type, as: :select, label: false, input_html: {class: 'flow_condition_group_compare_type' }
+            = fc.input :compare_type, as: :select, 
+              label: false,
+              input_html: {class: 'flow_condition_group_compare_type' },
+              collection: FlowCondition.compare_type.options
         .row
           .col-md-12
             = fc.simple_fields_for :flow_condition_options do |o|

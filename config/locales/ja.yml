@@ -125,6 +125,15 @@ ja:
         sub_category: 'サブカテゴリ'
         price: '価格'
         initial_cost: '初期費用'
+        time_required: 人的コスト(時間)
+        personal_number: 人員
+      compare_type:
+        eq: 等しい
+        not_eq: 等しくない
+        lt_eq: 以下
+        gt_eq: 以上
+        in: いずれか
+        not_in: 以外
   devise:
     sessions:
       user:
