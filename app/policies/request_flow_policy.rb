@@ -107,17 +107,18 @@ class RequestFlowPolicy
   end
 
   def find_flow(root_flow_condition_groups)
-    unless flow = root_flow_condition_groups.detect {|root_flow_condition_group| scan_flow_conditions root_flow_condition_group}.try(:flow)
-      flow = Flow.default.first
-    end
+    flow = root_flow_condition_groups.detect {|root_flow_condition_group| scan_flow_conditions root_flow_condition_group}.try(:flow)
+    flow = Flow.default.first unless flow.present?
+    flow
   end
   #matchしなければ次へ次へと
   def scan_flow_conditions(flow_condition_group)
     if conditions_matched?(flow_condition_group.flow_conditions, flow_condition_group.relation_type)
       Rails.logger.debug 'Policy: conditions matched'
-      if flow_condition_group.childs
+      if flow_condition_group.childs.present?
         #子レコードがあればチェック
         Rails.logger.debug "Policy:  flow_condition_group has childs: id =  #{flow_condition_group.id}"
+        Rails.logger.debug "Policy:  flow_condition_group has childs: id =  #{flow_condition_group.childs.ids}"
         #if scan_flow_conditions(flow_condition_group.childs, flow_condition_group.relation_type)
         flow_condition_group.childs.each do |flow_condition_group|
           return false if scan_flow_conditions(flow_condition_group) == false
@@ -135,7 +136,6 @@ class RequestFlowPolicy
   def conditions_matched? flow_conditions, and_or
     matched_count = 0
     flow_conditions.each do |flow_condition|
-
       if const = Object.const_get(flow_condition.related_model.camelize) rescue nil 
         Rails.logger.debug "Policy: in condition_matched?: const = #{const.inspect}"
         #categoryが
@@ -198,19 +198,29 @@ class RequestFlowPolicy
             ret = @request.associated_value(related_type).in?(values)
             Rails.logger.debug "Policy: in condition_matched?: type not in, ret  = #{ret}"
             ret
+          when 'gt_eq' then
+            ret = @request.associated_value(related_type) >= values.first
+            Rails.logger.debug "Policy: in condition_matched?: type [gt_eq], ret  = #{ret}"
+            ret
+          when 'lt_eq' then
+            ret = @request.associated_value(related_type) <= values.first
+            Rails.logger.debug "Policy: in condition_matched?: type [lt_eq], ret  = #{ret}"
+            ret
           else
             Rails.logger.debug "Policy: in condition_matched?: type undefined return false"
             false
           end
         end
         #Rails.logger.debug "Policy: in condition_matched?: under construction"
-        #debugger
         ##price,initial_cost
         ##under construction
         #is_matched = true
       end
       matched_count = matched_count + 1 if is_matched
     end
+    Rails.logger.debug "and or: #{and_or}"
+    Rails.logger.debug "matched_count = #{matched_count}"
+    Rails.logger.debug "flow_conditions.count = #{flow_conditions.count}"
     return true if and_or == 'and' && matched_count == flow_conditions.count
     return true if and_or == 'or' && matched_count > 0
     return false

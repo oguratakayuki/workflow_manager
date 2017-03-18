@@ -28,7 +28,7 @@ class FlowsController < ApplicationController
 
     respond_to do |format|
       if @flow.save
-        format.html { redirect_to @flow, notice: 'Flow was successfully created.' }
+        format.html { redirect_to @flow, notice: '申請フロー適用条件を追加しました' }
         format.json { render :show, status: :created, location: @flow }
       else
         format.html { render :new }

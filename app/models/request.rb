@@ -38,8 +38,8 @@ class Request < ApplicationRecord
   end
 
   def associated_value(name)
-    case name
-    when :initial_money_cost then
+    case 
+    when name.in?(%i(initial_money_cost initial_human_cost monthly_human_cost annual_human_cost initial_money_cost monthly_money_cost annual_money_cost price )) then
       initial_money_cost.try(:cost_value)
     end
   end
