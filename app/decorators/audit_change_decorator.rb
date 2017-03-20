@@ -2,6 +2,8 @@ class AuditChangeDecorator
   include ActiveModel::Model
   attr_accessor :column, :raw_before_after, :audit, :before, :after
   def initialize *params
+    @raw_before  = nil
+    @raw_after = nil
     if params.first[:raw_before_after].is_a?(Array)
       @raw_before = params.first[:raw_before_after][0]
       @raw_after = params.first[:raw_before_after][1]
@@ -19,9 +21,9 @@ class AuditChangeDecorator
     Object.const_get(@audit.auditable_type).human_attribute_name(@column) 
   end
   def update_info?
-    @raw_before && @raw_after
+    @audit.action == 'update'
   end
-  def associated?
+  def info_with_enumerize?
     Object.const_get(@audit.auditable_type).try(@column)
   end
   def association_options

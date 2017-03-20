@@ -11,21 +11,19 @@ table.table.table-hover
         td= audit.created_at
         td= audit.try(:user).try(:name)
         td
-          - audit2 = AuditDecorator.new(object: audit)
-          - audit2.audited_changes.each_with_index do |v,k|
+          - AuditDecorator.new(object: audit).audited_changes.each_with_index do |v,k|
             - if v.info_exists?
               b= v.subject_column_name
               br
               - if v.update_info?
-                - if v.associated?
-                  - if options = v.association_options
-                    - ret = v.associated_before_after
-                    b= ret.first || '未設定'
-                    '
-                    i.fa.fa-arrow-right.fa-lg
-                    '
-                    b= ret.last || '未設定'
-                    br
+                - if v.info_with_enumerize?
+                  - ret = v.associated_before_after
+                  b= ret.first || '未設定'
+                  '
+                  i.fa.fa-arrow-right.fa-lg
+                  '
+                  b= ret.last || '未設定'
+                  br
                 - else
                   b= v.before
                   '
