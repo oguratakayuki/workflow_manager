@@ -16,4 +16,4 @@
 - if RequestFlowPolicy.new(request: @request).reviewable?(current_user)
   == render 'form'
 
-= link_to 'Back', requests_path
+= link_to 'Back', requests_path, class: 'btn btn-primary'

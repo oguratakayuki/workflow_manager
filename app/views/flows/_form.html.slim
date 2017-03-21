@@ -10,7 +10,7 @@
   .list-group.sortable
     = f.simple_fields_for :approval_flows, @flow.approval_flows.order(:position) do |a|
       .list-group-item.item[data-position="#{a.object.position}"]
-        = a.select :role, User.role.options
+        = a.select :authenticatable_role, User.role.options
         '
         = a.input :position, as: :hidden, input_html: {class: 'approval_flow_positions'}
         '

@@ -17,13 +17,15 @@ class Request < ApplicationRecord
   audited associated_with: :category
   has_associated_audits
 
-  has_many :evidences
-  scope :reviewable_by_role, ->(role) { joins(:request_grants).merge(RequestGrant.with_role(role).with_status('reviewing')) }
+  has_many :execution_evidences
+  has_many :finishing_evidences
+  scope :reviewable_by_role, ->(role) { joins(:request_grants).merge(RequestGrant.where(authenticatable_role: role).with_status('reviewing')) }
   scope :executable, ->(user) { where(status: :wait_for_execution).joins(flow: :executors).merge(FlowExecutor.by_user(user)) }
   scope :displayable_by_user, ->(user) { by_user(user).where.not(status: :finished) }
   scope :by_user, ->(user) { where(user: user) }
-  enumerize :status, in: [:not_submitted, :flow_not_defined, :reviewing, :rejected, :executable, :executed, :finished], scope: true
-  accepts_nested_attributes_for :evidences, allow_destroy: true
+  enumerize :status, in: [:not_submitted, :flow_not_defined, :reviewing, :rejected, :executable, :executed, :finished, :wait_for_execution], scope: true
+  accepts_nested_attributes_for :finishing_evidences, allow_destroy: true
+  accepts_nested_attributes_for :execution_evidences, allow_destroy: true
   accepts_nested_attributes_for :costs, allow_destroy: true
 
   accepts_nested_attributes_for :initial_human_cost, allow_destroy: true
@@ -57,7 +59,7 @@ class Request < ApplicationRecord
     reviewable_request_grant(user)
   end
   def reviewable_request_grant(user)
-    request_grants.with_role(user.role).with_status('reviewing').first
+    request_grants.where(authenticatable_role: user.role).with_status('reviewing').first
   end
 
 end

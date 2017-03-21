@@ -1,3 +1,9 @@
+h1 =Request.model_name.human + t('actions.index')
+- breadcrumb :request_audit, @request
+br
+
+
+
 table.table.table-hover
   thead
     tr
@@ -34,3 +40,4 @@ table.table.table-hover
               - else
                 b= v.first_value_for_created_record
                 br
+= link_to 'Back', requests_path, class: 'btn btn-default'

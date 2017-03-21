@@ -12,6 +12,11 @@ crumb :request do |request|
   parent :requests
 end
 
+crumb :request_audit do |request|
+  link request.title, request_path(request)
+  parent :requests
+end
+
 crumb :flows do
   link "承認フロー一覧", flows_path
   parent :root

@@ -1,0 +1,2 @@
+class FinishingEvidence < Evidence
+end

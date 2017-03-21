@@ -60,7 +60,11 @@ html[lang="en"]
               li
                 = link_to '申請(進行中)', requests_path
               li
-                = link_to '作業依頼', executable_requests_path
+                = link_to executable_requests_path do
+                  | 作業依頼
+                  - if @user_executable_count > 0
+                    '
+                    span.badge = @user_executable_count
               - if can? :define_flow, Flow
                 li
                   = link_to '承認フロー未設定申請', flow_not_defined_requests_path

@@ -14,7 +14,7 @@ class RequestGrantsController < ApplicationController
 
   def update 
     @request_grant.assign_attributes(request_grant_params)
-    if RequestFlowPolicy.new(request: @request).update_request_grant(@request_grant)
+    if RequestFlowPolicy.new(request: @request).update_request_grant(@request_grant, current_user.id)
       redirect_to requests_path, notice: '承認処理が完了しました'
     else
       render :show

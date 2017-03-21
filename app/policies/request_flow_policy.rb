@@ -35,6 +35,14 @@ class RequestFlowPolicy
     end
   end
 
+  def executed!
+    Request.transaction do
+      @request.assign_attributes(status: :executed)
+      @request.save
+      #TODO notifier
+    end
+  end
+
   def finish!
     Request.transaction do
       @request.assign_attributes(status: :finished)
@@ -43,8 +51,9 @@ class RequestFlowPolicy
     end
   end
 
-  def update_request_grant(request_grant)
+  def update_request_grant(request_grant, user_id)
     Request.transaction do
+      request_grant.authenticated_user_id = user_id
       request_grant.save
       @request.status = request_grant.status if request_grant.status == 'rejected'
       pass_next
@@ -53,7 +62,7 @@ class RequestFlowPolicy
 
   #以下cancancanに移行予定?
   def flow_editable?(user)
-    true if approval_flow_not_defined? && user.role.in?(%w!system admin manager president!)
+    true if approval_flow_not_defined? && user.authenticatable_role.in?(%w!system admin manager president!)
   end
 
   def editable?(user)
@@ -84,14 +93,14 @@ class RequestFlowPolicy
       @request.next_request_grant.update_attributes(status: :reviewing)
     elsif approval_flow_not_defined?
       #do nothing.wait for defining flow
-    elsif has_execution_flow?
+    elsif has_executable_flow?
       @request.update_attributes(status: :wait_for_execution)
     else
       @request.update_attributes(status: :executable)
     end
   end
 
-  def has_execution_flow?
+  def has_executable_flow?
     @request.flow.executors.present?
   end
   def next_flow_step_exists?

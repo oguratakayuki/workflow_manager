@@ -1,5 +1,5 @@
 class RequestsController < ApplicationController
-  before_action :set_request, only: [:show, :edit, :update, :destroy, :reject, :grant, :review, :report, :define_flow, :update_flow, :withdraw, :submit, :audit]
+  before_action :set_request, only: [:show, :edit, :update, :destroy, :reject, :grant, :review, :define_flow, :update_flow, :withdraw, :submit, :audit, :report, :execution_report]
   #load_and_authorize_resource
 
   # GET /requests
@@ -79,11 +79,22 @@ class RequestsController < ApplicationController
     @request = Request.new
   end
 
+  def execution_report
+    if request.patch?
+      @request.assign_attributes(request_params)
+      if RequestFlowPolicy.new(request: @request).executed!
+        redirect_to @request, notice: '申請者に通知しました'
+      else
+        render :report
+      end
+    end
+  end
+
   def report
-    if request.put?
-      @request.assign_attributes(request_finish_report_params)
+    if request.patch?
+      @request.assign_attributes(request_params)
       if RequestFlowPolicy.new(request: @request).finish!
-        redirect_to @request, notice: 'Request was successfully updated.'
+        redirect_to @request, notice: '管理部に通知しました'
       else
         render :report
       end
@@ -136,53 +147,67 @@ class RequestsController < ApplicationController
     def request_params
       params.require(:request).permit(:flow_id, :user_id, :category_id, :sub_category_id, :title, :description,
         costs_attributes: [
-        :_destroy,
-        :initial_cost,
-        :price,
-        :time_required,
-        :person_number, 
-        :cost_price_type
+          :_destroy,
+          :initial_cost,
+          :price,
+          :time_required,
+          :person_number, 
+          :cost_price_type
         ], 
         initial_money_cost_attributes: [
-        :id,
-        :request_id,
-        :_destroy,
-        :cost_value,
-        :annotation,
+          :id,
+          :request_id,
+          :_destroy,
+          :cost_value,
+          :annotation,
         ], 
         monthly_money_cost_attributes: [
-        :id,
-        :_destroy,
-        :cost_value,
-        :annotation,
+          :id,
+          :_destroy,
+          :cost_value,
+          :annotation,
         ], 
         annual_money_cost_attributes: [
-        :id,
-        :_destroy,
-        :cost_value,
-        :annotation,
+          :id,
+          :_destroy,
+          :cost_value,
+          :annotation,
         ], 
         initial_human_cost_attributes: [
-        :id,
-        :_destroy,
-        :time_required,
-        :number_of_people,
-        :annotation,
+          :id,
+          :_destroy,
+          :time_required,
+          :number_of_people,
+          :annotation,
         ], 
         monthly_human_cost_attributes: [
-        :id,
-        :_destroy,
-        :time_required,
-        :number_of_people,
-        :annotation,
+          :id,
+          :_destroy,
+          :time_required,
+          :number_of_people,
+          :annotation,
         ], 
         annual_human_cost_attributes: [
-        :id,
-        :_destroy,
-        :time_required,
-        :number_of_people,
-        :annotation,
+          :id,
+          :_destroy,
+          :time_required,
+          :number_of_people,
+          :annotation,
         ], 
+        finishing_evidences_attributes: [
+          :_destroy,
+          :id,
+          :comment,
+          :file_name,
+          :remove_file_name,
+        ],
+        execution_evidences_attributes: [
+          :_destroy,
+          :id,
+          :comment,
+          :file_name,
+          :remove_file_name,
+        ],
       )
     end
 
@@ -190,16 +215,5 @@ class RequestsController < ApplicationController
       params.require(:request).permit(:flow_id)
     end
 
-
-
-    def request_finish_report_params
-      params.require(:request).permit(:status, evidences_attributes: [
-        :_destroy,
-        :id,
-        :comment,
-        :file_name,
-        :remove_file_name,
-        ])
-    end
 end
 

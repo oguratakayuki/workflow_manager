@@ -63,9 +63,9 @@
         .list-group-item
           = request_grant.position
           '
-          = request_grant.role_text
+          = request_grant.authenticatable_role_text
           '
-          = request_grant.user.try(:name)
+          = request_grant.authenticated_user.try(:name)
           '
           span[class="#{request_grant.status_label_class}"]
             = request_grant.status_text

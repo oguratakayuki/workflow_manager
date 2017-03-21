@@ -10,15 +10,31 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170213003705) do
+ActiveRecord::Schema.define(version: 20170321080357) do
+
+  create_table "activities", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "trackable_type"
+    t.integer  "trackable_id"
+    t.string   "owner_type"
+    t.integer  "owner_id"
+    t.string   "key"
+    t.text     "parameters",     limit: 65535
+    t.string   "recipient_type"
+    t.integer  "recipient_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.index ["owner_id", "owner_type"], name: "index_activities_on_owner_id_and_owner_type", using: :btree
+    t.index ["recipient_id", "recipient_type"], name: "index_activities_on_recipient_id_and_recipient_type", using: :btree
+    t.index ["trackable_id", "trackable_type"], name: "index_activities_on_trackable_id_and_trackable_type", using: :btree
+  end
 
   create_table "approval_flows", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "flow_id"
     t.integer  "position"
-    t.string   "role"
-    t.integer  "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string   "authenticatable_role"
+    t.integer  "authenticatable_user_id"
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
   end
 
   create_table "audits", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -51,10 +67,12 @@ ActiveRecord::Schema.define(version: 20170213003705) do
 
   create_table "evidences", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "request_id"
-    t.text     "comment",    limit: 65535
+    t.integer  "upload_user_id"
+    t.string   "type"
+    t.text     "comment",        limit: 65535
     t.string   "file_name"
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
   end
 
   create_table "flow_condition_groups", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -89,12 +107,33 @@ ActiveRecord::Schema.define(version: 20170213003705) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "flow_flow_grants", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "flow_id"
+    t.integer  "flow_grant_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  create_table "flow_grants", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "order"
+    t.string   "grant_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "flows", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.text     "name",          limit: 65535
     t.boolean  "need_evidence"
     t.boolean  "is_default"
     t.datetime "created_at",                  null: false
     t.datetime "updated_at",                  null: false
+  end
+
+  create_table "jobs", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.text     "name",       limit: 65535
+    t.integer  "flow_id"
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
   end
 
   create_table "request_costs", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -111,12 +150,13 @@ ActiveRecord::Schema.define(version: 20170213003705) do
   create_table "request_grants", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "approval_flow_id"
     t.integer  "position"
-    t.string   "role"
-    t.integer  "user_id"
+    t.string   "authenticatable_role"
+    t.integer  "authenticatable_user_id"
+    t.integer  "authenticated_user_id"
     t.string   "status"
     t.string   "comment"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
     t.integer  "request_id"
   end
 

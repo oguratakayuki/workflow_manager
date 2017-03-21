@@ -5,11 +5,8 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception, prepend: true
 
   def request_status
-    @user_reviewable_count = if current_user
-      RequestGrant.user_reviewable(current_user).count
-    else
-      0
-    end
+    @user_reviewable_count = current_user ?  RequestGrant.user_reviewable(current_user).count : 0
+    @user_executable_count = current_user ?  Request.executable(current_user).count : 0
   end
 
   rescue_from CanCan::AccessDenied do |exception|

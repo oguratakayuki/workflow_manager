@@ -23,7 +23,10 @@ Rails.application.routes.draw do
     get 'flow_not_defined', on: :collection
     put 'submit', on: :member
     get 'report', on: :member
-    put 'report', on: :member
+    patch 'report', on: :member
+    get 'execution_report', on: :member
+    patch 'execution_report', on: :member
+    patch 'execution_report', on: :member
     get 'audit', on: :member
     get 'define_flow', on: :member
     put 'update_flow', on: :member

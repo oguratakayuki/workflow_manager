@@ -84,6 +84,9 @@ ja:
         time_required: 所要時間
         number_of_people: 所用人員
         annotation: 注釈
+      request_grant:
+        status: 承認ステータス
+        comment: コメント
   enumerize:
     role:
       operator: 'オペレーター'
@@ -91,6 +94,13 @@ ja:
       manager: 'マネージャー'
       president: '社長'
       admin: '管理者'
+    authenticatable_role:
+      operator: 'オペレーター'
+      system: 'システム'
+      manager: 'マネージャー'
+      president: '社長'
+      admin: '管理者'
+
     audit_form:
       audit_type:
         request: リクエスト
@@ -106,6 +116,7 @@ ja:
         granted: '承認'
         wait_for_execution: '承認済み(作業待ち)'
         executable: '実行可能'
+        executed: '購入完了/業務実行完了'
         finished: '完了'
     request_grant:
       status:
