@@ -16,6 +16,7 @@ $(document).on('nested:fieldAdded', (event) ->
     else
       next_position = Math.max.apply(null, positions) + 1
     $(event.target).find('input:hidden.approval_flow_positions').val(next_position)
+    $('.sortable').sortable('option', 'update');
 )
 
 $(document).on('nested:fieldRemoved', (event) ->
@@ -23,7 +24,7 @@ $(document).on('nested:fieldRemoved', (event) ->
     $(element).val(index+1)
 )
 $(document).on('turbolinks:load', (e) ->
-  if $('#flow-edit').length > 0
+  if $('#flow-form').length > 0
     $('.sortable').sortable
       items: '.item'
       update: (e, ui) ->
