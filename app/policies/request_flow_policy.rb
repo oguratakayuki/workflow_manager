@@ -61,8 +61,9 @@ class RequestFlowPolicy
   end
 
   #以下cancancanに移行予定?
+  #特権ユーザーのみ直接flowを決定できる
   def flow_editable?(user)
-    true if approval_flow_not_defined? && user.authenticatable_role.in?(%w!system admin manager president!)
+    true if approval_flow_not_defined? && user.role.in?(%w!system admin manager president!)
   end
 
   def editable?(user)
@@ -84,6 +85,12 @@ class RequestFlowPolicy
   def submitable?(user)
     @request.status == 'not_submitted' && user == @request.user
   end
+
+  def deletable?(user)
+    !@request.status.in? %i(executed finished)
+  end
+
+
 
   private
   def pass_next

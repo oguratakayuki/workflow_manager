@@ -13,13 +13,13 @@ table.table.table-striped.table-hover
       tr[class="#{class_name}"]
         td = flow.name
         td
-          = link_to 'Show', flow, class: 'btn btn-default'
-          = link_to 'Edit', edit_flow_path(flow), class: 'btn btn-default'
+          = link_to t('actions.show'), flow, class: 'btn btn-default'
+          = link_to t('actions.edit'), edit_flow_path(flow), class: 'btn btn-default'
           - if flow.flow_condition_group
             = link_to '適用条件編集', edit_flow_flow_condition_group_path(flow, flow.flow_condition_group), class: 'btn btn-default'
           - else
             = link_to '適用条件追加', new_flow_flow_condition_group_path(flow), class: 'btn btn-default'
-          = link_to 'Destroy', flow, data: { confirm: 'Are you sure?' }, method: :delete, class: 'btn btn-default'
+          = link_to t('actions.destroy'), flow, data: { confirm: 'Are you sure?' }, method: :delete, class: 'btn btn-default'
           - unless flow.is_default?
             = link_to 'デフォルトフローに設定', change_default_flow_path(flow), method: :post, class: 'btn btn-default'
           - else

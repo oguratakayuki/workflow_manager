@@ -41,10 +41,13 @@ class Request < ApplicationRecord
 
   def associated_value(name)
     case 
-    when name.in?(%i(initial_money_cost initial_human_cost monthly_human_cost annual_human_cost initial_money_cost monthly_money_cost annual_money_cost price )) then
-      initial_money_cost.try(:cost_value)
+    when name.in?(%i(initial_money_cost initial_human_cost monthly_human_cost annual_human_cost monthly_money_cost annual_money_cost)) then
+      self.__send__(name).try(:cost_value).to_i
+    when name.in?(%i(price)) then
+      total_money_cost
     end
   end
+
 
   def next_request_grant
     request_grants.with_status(:not_judged).order(:position).first
@@ -61,5 +64,10 @@ class Request < ApplicationRecord
   def reviewable_request_grant(user)
     request_grants.where(authenticatable_role: user.role).with_status('reviewing').first
   end
+  private
+    def total_money_cost
+      initial_money_cost.try(:cost_value).to_i + monthly_money_cost.try(:cost_value).to_i + annual_money_cost.try(:cost_value).to_i
+    end
+
 
 end

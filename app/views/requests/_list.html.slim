@@ -36,4 +36,6 @@ table.table.table-striped.table-hover
             = link_to '提出', submit_request_path(request), class: 'btn btn-default', method: :put
           - if RequestFlowPolicy.new(request: request).flow_editable?(current_user)
             = link_to '申請フローを選択する', define_flow_request_path(request), class: 'btn btn-default'
+          - if RequestFlowPolicy.new(request: request).deletable?(current_user)
+            = link_to t('actions.destroy'), request, data: { confirm: '削除してもよろしいですか?' }, method: :delete, class: 'btn btn-default'
 
