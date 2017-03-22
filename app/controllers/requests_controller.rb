@@ -5,7 +5,8 @@ class RequestsController < ApplicationController
   # GET /requests
   # GET /requests.json
   def index
-    @requests = RequestFlowPolicy.displayable_requests_by_user(current_user)
+    with_finished = params[:with_finished]
+    @requests = RequestFlowPolicy.displayable_requests_by_user(current_user, with_finished)
   end
 
   def audit
@@ -82,7 +83,7 @@ class RequestsController < ApplicationController
   def execution_report
     if request.patch?
       @request.assign_attributes(request_params)
-      if RequestFlowPolicy.new(request: @request).executed!
+      if RequestFlowPolicy.new(request: @request).executed!(current_user.id)
         redirect_to @request, notice: '申請者に通知しました'
       else
         render :report

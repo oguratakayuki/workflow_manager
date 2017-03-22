@@ -1,9 +1,9 @@
 module RequestDecorator
   def status_message
-    if self.status.reviewing? && role = current_request_grant.try(:role)
+    if self.status.try(:reviewing?) && role = current_request_grant.try(:role)
       "#{role.text}の承認待ち"
     elsif status
-      t('enumerize.request_grant.status')[status.to_sym]
+      t('enumerize.request.status')[status.to_sym]
     end
   end
 end

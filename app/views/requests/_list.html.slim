@@ -27,9 +27,6 @@ table.table.table-striped.table-hover
             '
           - if request.status == 'executed'
             = link_to '作業完了報告', report_request_path(request), class: 'btn btn-default'
-          - if request.status == 'wait_for_execution'
-            = link_to '購入/実行完了報告', execution_report_request_path(request), class: 'btn btn-default'
-
           - if RequestFlowPolicy.new(request: request).editable?(current_user)
             = link_to '編集', edit_request_path(request), class: 'btn btn-default'
           - if RequestFlowPolicy.new(request: request).submitable?(current_user)

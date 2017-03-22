@@ -17,6 +17,26 @@ span.help-block 必要に応じて証明資料を添付してください
     p.list-group-item-text
       = @request.description
 
+- if @request.execution_evidences.present?
+  h3 購入者(作業者)資料
+  .list-group
+    - @request.execution_evidences.each do |execution_evidence|
+      a.list-group-item
+        h4.list-group-item-heading
+          | 画像
+        p.list-group-item-text
+          = image_tag execution_evidence.file_name
+        h4.list-group-item-heading
+          | コメント
+        p.list-group-item-text
+          = execution_evidence.comment
+        h4.list-group-item-heading
+          | 作業者
+        p.list-group-item-text
+          = execution_evidence.upload_user.try(:name)
+ 
+
+
 = simple_nested_form_for(@request, url: report_request_path(@request)  ) do |f|
   = f.simple_fields_for :finishing_evidences do |e_f|
     .panel.panel-default

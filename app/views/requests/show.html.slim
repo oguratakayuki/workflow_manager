@@ -70,7 +70,42 @@
           span[class="#{request_grant.status_label_class}"]
             = request_grant.status_text
 
+- if @request.execution_evidences.present?
+  h3 購入者(作業者)資料
+  .list-group
+    - @request.execution_evidences.each do |execution_evidence|
+      a.list-group-item
+        h4.list-group-item-heading
+          | 画像
+        p.list-group-item-text
+          = image_tag execution_evidence.file_name
+        h4.list-group-item-heading
+          | コメント
+        p.list-group-item-text
+          = execution_evidence.comment
+        h4.list-group-item-heading
+          | 作業者
+        p.list-group-item-text
+          = execution_evidence.upload_user.try(:name)
 
+- if @request.finishing_evidences.present?
+  h3 申請者提出資料
+  .list-group
+    - @request.finishing_evidences.each do |finishing_evidence|
+      a.list-group-item
+        h4.list-group-item-heading
+          | 画像
+        p.list-group-item-text
+          = image_tag finishing_evidence.file_name
+        h4.list-group-item-heading
+          | コメント
+        p.list-group-item-text
+          = finishing_evidence.comment
+        h4.list-group-item-heading
+          | 作業者
+        p.list-group-item-text
+          = finishing_evidence.upload_user.try(:name)
+ 
 
 - if RequestFlowPolicy.new(request: @request).reviewable?(current_user)
 

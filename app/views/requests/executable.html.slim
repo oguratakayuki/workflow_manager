@@ -1,5 +1,26 @@
-h2 作業依頼一覧
+h2 (承認済み)物品購入依頼,作業依頼一覧
 
-= render 'list'
+table.table.table-striped.table-hover
+  thead
+    tr
+      th Id
+      th Title
+      th = t Request.human_attribute_name(:user)
+      th 申請フロー
+      th = t Request.human_attribute_name(:status)
+      th Action
+  tbody
+    - @requests.each do |request|
+      tr
+        td = request.id
+        td = request.title
+        td = request.user.name
+        td = request.flow.try(:name)
+        td = request.status_message
+        td 
+          '
+          - if request.status == 'wait_for_execution'
+            = link_to '購入/実行完了報告', execution_report_request_path(request), class: 'btn btn-default'
+
 br
 

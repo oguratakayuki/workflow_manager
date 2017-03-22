@@ -1,6 +1,6 @@
-h2 購入/作業報告
-span.help-block 以下の内容について作業が完了していれば送信ボタンを押してステータスを終了に更新できます
-span.help-block 必要に応じて証明資料を添付してください
+h2 (承認済み)物品購入依頼,作業依頼に対する購入/作業報告
+span.help-block 以下の内容について物品購入などの作業が完了していれば送信ボタンを押してステータスを終了に更新できます
+span.help-block 必要に応じて資料を添付してください
 
 .list-group
   a.list-group-item
@@ -16,6 +16,21 @@ span.help-block 必要に応じて証明資料を添付してください
       | Description:
     p.list-group-item-text
       = @request.description
+
+- if @request.request_grants.present?
+  h2 承認状況
+  .list-group
+    - @request.request_grants.order(:position).each do |request_grant|
+      - request_grant = ActiveDecorator::Decorator.instance.decorate(request_grant)
+      .list-group-item
+        = request_grant.position
+        '
+        = request_grant.authenticatable_role_text
+        '
+        = request_grant.authenticated_user.try(:name)
+        '
+        span[class="#{request_grant.status_label_class}"]
+          = request_grant.status_text
 
 = simple_nested_form_for(@request, url: execution_report_request_path(@request)) do |f|
   = f.simple_fields_for :execution_evidences do |e_f|
@@ -34,12 +49,11 @@ span.help-block 必要に応じて証明資料を添付してください
         br
         = e_f.link_to_remove "削除", class: 'btn btn-warning'
   '
-  = f.link_to_add "資料追加", :execution_evidences, class: 'btn btn-primary'
+  = f.link_to_add "資料追加", :execution_evidences, class: 'btn btn-default'
   br
   br
   .form-actions
-    = f.button :submit, class: 'btn btn-primary', value: '送信', data: { confirm: 'この申請を完了ステータスにしてよろしいですか?' }
-
-br
-= link_to 'Back', requests_path, class: 'btn btn-primary'
+    = f.button :submit, class: 'btn btn-default', value: '送信', data: { confirm: 'この申請を完了ステータスにしてよろしいですか?' }
+    '
+    = link_to t('actions.back'), requests_path, class: 'btn btn-default'
 

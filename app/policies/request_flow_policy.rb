@@ -35,7 +35,8 @@ class RequestFlowPolicy
     end
   end
 
-  def executed!
+  def executed!(executed_user_id)
+    @request.execution_evidences.each{|t| t.upload_user_id = executed_user_id }
     Request.transaction do
       @request.assign_attributes(status: :executed)
       @request.save
@@ -70,8 +71,12 @@ class RequestFlowPolicy
     @request.status == 'not_submitted' && user == @request.user
   end
 
-  def self.displayable_requests_by_user(user)
-    Request.displayable_by_user(user)
+  def self.displayable_requests_by_user(user, with_finished=false)
+    if with_finished
+      Request.by_user(user)
+    else
+      Request.displayable_by_user(user)
+    end
   end
 
   def reviewable?(user)
@@ -89,8 +94,6 @@ class RequestFlowPolicy
   def deletable?(user)
     !@request.status.in? %i(executed finished)
   end
-
-
 
   private
   def pass_next

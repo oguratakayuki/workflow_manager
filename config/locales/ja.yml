@@ -8,7 +8,7 @@ ja:
     edit: 編集
     update: 更新
     destroy: 削除
-    back: '戻る'
+    back: 戻る
   activerecord:
     models:
       request: '申請'
@@ -120,10 +120,10 @@ ja:
         finished: '完了'
     request_grant:
       status:
-        not_judged: '未審査'
-        reviewing: '審査中'
-        rejected: '却下'
-        granted: '承認済み'
+        not_judged: 未審査
+        reviewing: 審査中
+        rejected: 却下
+        granted: 承認
     request_cost:
       cost_price_type:
         one_time: '一回払い'
