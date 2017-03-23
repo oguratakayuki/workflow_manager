@@ -12,6 +12,16 @@ ja:
     submit: 送信
     add: 追加
   activerecord:
+    errors:
+      models:
+        request:
+          attributes:
+            title:
+              blank: 必須項目です
+        flow:
+          attributes:
+            name:
+              blank: 必須項目です
     models:
       request: '申請'
       request_grant: '承認依頼'
@@ -45,7 +55,11 @@ ja:
         status: 'ステータス'
         description: '詳細'
       flow:
+        name: 名前
         need_evidence: '証明資料提出'
+      approval_flow:
+        authenticatable_role: 役職
+        authenticatable_user: ユーザー
       evidence:
         file_name: '証明資料'
         comment: '資料脚注'
@@ -161,6 +175,8 @@ ja:
         unauthenticated: 'ログインしないと実行できません'
         not_found_in_database: 'ログインに失敗しました。アカウント情報をご確認ください'
   simple_form:
+    error_notification:
+      default_message: '入力項目に誤りがあります'
     labels:
       audit_form:
         audit_type: データタイプ

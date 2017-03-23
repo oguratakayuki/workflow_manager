@@ -35,8 +35,13 @@ class Request < ApplicationRecord
   accepts_nested_attributes_for :initial_money_cost, allow_destroy: true
   accepts_nested_attributes_for :monthly_money_cost, allow_destroy: true
   accepts_nested_attributes_for :annual_money_cost,  allow_destroy: true
-  accepts_nested_attributes_for :money_cost,  allow_destroy: true
+  accepts_nested_attributes_for :money_cost,  allow_destroy: true, reject_if: :all_blank
 
+  validates :title, presence: :true
+
+  def is_empty_form?(attributes)
+    debugger
+  end
   def unsaved_initial_costs
     initial_human_cost.select{|t| t if  t.new_record? }
   end

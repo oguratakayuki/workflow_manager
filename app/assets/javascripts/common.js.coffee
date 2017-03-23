@@ -14,6 +14,7 @@ jQuery ($) ->
 
 $(document).on 'ready turbolinks:load', ->
   url = window.location.pathname
+  return if url == '/'
   urlRegExp = new RegExp(url.replace(/\/$/,'') + "$")
   $('ul.sidebar-nav-menu li  a').each ->
       if(urlRegExp.test(this.href.replace(/\/$/,'')))

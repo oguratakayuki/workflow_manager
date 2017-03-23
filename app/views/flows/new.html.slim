@@ -1,19 +1,2 @@
-h1#flow-form New flow
-
+h2 = Flow.model_name.human + t('actions.new')
 == render 'form'
-
-/= nested_form_for(@flow) do |f|
-  .form-inputs
-    = f.select :status, Request.status.options
-  = f.fields_for :evidences do |e_f|
-    .form-inputs
-      = e_f.file_field :file_name
-    .form-inputs
-      = e_f.text_field :comment
-    .form-actions
-      = e_f.link_to_remove "削除"
-  .form-inputs
-    = f.link_to_add "資料追加", :evidences
-
-
-= link_to 'Back', flows_path

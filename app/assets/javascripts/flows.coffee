@@ -16,7 +16,20 @@ $(document).on('nested:fieldAdded', (event) ->
     else
       next_position = Math.max.apply(null, positions) + 1
     $(event.target).find('input:hidden.approval_flow_positions').val(next_position)
-    $('.sortable').sortable('option', 'update');
+    console.log('hoge')
+    $('.sortable').sortable
+      items: '.item'
+      update: (e, ui) ->
+        $('input:hidden.approval_flow_positions').each (index,b) ->
+          $(b).val(index+1)
+    $('.sortable').sortable('option', 'update')
+  # 初期状態でroleで選択
+  $(event.target).find('.auth_type').val('auth_by_role')
+  $(event.target).find('.auth_by_user').closest('.form-group').hide()
+  $(event.target).find('.auth_type').on('change', (e) =>
+    $(e.target).closest('.row').find( '.auth_pattern').closest('.form-group').toggle()
+  )
+
 )
 
 $(document).on('nested:fieldRemoved', (event) ->

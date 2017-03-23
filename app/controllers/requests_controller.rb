@@ -147,6 +147,13 @@ class RequestsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def request_params
       params.require(:request).permit(:flow_id, :user_id, :category_id, :sub_category_id, :title, :description,
+        money_cost_attributes: [
+          :id,
+          :request_id,
+          :_destroy,
+          :cost_value,
+          :annotation,
+        ], 
         costs_attributes: [
           :_destroy,
           :initial_cost,

@@ -12,10 +12,10 @@ table.table.table-striped.table-hover
     - @flow_condition_groups.each do |flow_condition_group|
       tr
         td = flow_condition_group.id
-        td = flow_condition_group.flow.name
+        td = flow_condition_group.flow.try(:name)
         td = flow_condition_group.relation_type
         td
-          = link_to 'Show', flow_condition_group, class: 'btn btn-default'
+          = link_to 'Show', flow_flow_condition_groups, class: 'btn btn-default'
           '
           = link_to 'Edit', edit_flow_condition_group_path(flow_condition_group), class: 'btn btn-default'
           '

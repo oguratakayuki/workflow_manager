@@ -26,13 +26,14 @@ html[lang="en"]
       |  #view-source { position: fixed; display: block; right: 0; bottom: 0; margin-right: 40px; margin-bottom: 40px; z-index: 900; } 
   body
     .container
-      .row
-        .page-header
-          h1
-            | 承認管理
-            '
-            small 
-              | ガンガン行こうぜ
+      = link_to root_path do
+        .row
+          .page-header
+            h1
+              | 承認管理
+              '
+              small 
+                | ガンガン行こうぜ
       .row
         - breadcrumbs.tap do |links|
           - if links.any?
