@@ -22,7 +22,7 @@
             = c.input :annotation
         br
         = c.link_to_remove "削除", class: 'btn btn-warning'
-  = f.link_to_add "初期費用追加", :initial_money_cost, class: 'btn btn-primary', data: {limit: 1}
+  = f.link_to_add RequestInitialMoneyCost.model_name.human + t('actions.add'), :initial_money_cost, class: 'btn btn-primary', data: {limit: 1}
   br
   = f.simple_fields_for :monthly_money_cost do |c|
     .panel.panel-default
@@ -37,7 +37,7 @@
             = c.input :annotation
         br
         = c.link_to_remove "削除", class: 'btn btn-warning'
-  = f.link_to_add "月間費用追加", :monthly_money_cost, class: 'btn btn-primary', data: {limit: 1}
+  = f.link_to_add RequestMonthlyMoneyCost.model_name.human + t('actions.add'), :monthly_money_cost, class: 'btn btn-primary', data: {limit: 1}
   br
   = f.simple_fields_for :annual_money_cost do |c|
     .panel.panel-default
@@ -52,7 +52,7 @@
             = c.input :annotation
         br
         = c.link_to_remove "削除", class: 'btn btn-warning'
-  = f.link_to_add "年間費用追加", :annual_money_cost, class: 'btn btn-primary', data: {limit: 1}
+  = f.link_to_add RequestAnnualMoneyCost.model_name.human + t('actions.add'), :annual_money_cost, class: 'btn btn-primary', data: {limit: 1}
   br
   = f.simple_fields_for :initial_human_cost do |c|
     .panel.panel-default
@@ -70,7 +70,7 @@
             = c.input :annotation
         br
         = c.link_to_remove "削除", class: 'btn btn-warning'
-  = f.link_to_add "初期人的費用追加", :initial_human_cost, class: 'btn btn-primary', data: {limit: 1}
+  = f.link_to_add RequestInitialHumanCost.model_name.human + t('actions.add'), :initial_human_cost, class: 'btn btn-primary', data: {limit: 1}
   br
   = f.simple_fields_for :monthly_human_cost do |c|
     .panel.panel-default
@@ -88,7 +88,7 @@
             = c.input :annotation
         br
         = c.link_to_remove "削除", class: 'btn btn-warning'
-  = f.link_to_add "月間人的費用追加", :monthly_human_cost, class: 'btn btn-primary', data: {limit: 1}
+  = f.link_to_add RequestMonthlyHumanCost.model_name.human + t('actions.add'), :monthly_human_cost, class: 'btn btn-primary', data: {limit: 1}
   br
   = f.simple_fields_for :annual_human_cost do |c|
     .panel.panel-default
@@ -106,13 +106,26 @@
             = c.input :annotation
         br
         = c.link_to_remove "削除", class: 'btn btn-warning'
-  = f.link_to_add "年間人的費用追加", :annual_human_cost, class: 'btn btn-primary', data: {limit: 1}
+  = f.link_to_add RequestAnnualHumanCost.model_name.human + t('actions.add'), :annual_human_cost, class: 'btn btn-primary', data: {limit: 1}
   br
-
-
-
-
+  = f.simple_fields_for :money_cost do |c|
+    .panel.panel-default
+      .panel-body
+        legend = RequestMoneyCost.model_name.human
+        p
+          .input-group
+            = c.input  :id, as: :hidden
+            = c.input  :request_id, as: :hidden
+            = c.input :cost_value
+        p
+          .input-group
+            = c.input :annotation
+        br
+        = c.link_to_remove "削除", class: 'btn btn-warning'
+  = f.link_to_add RequestMoneyCost.model_name.human + t('actions.add'), :money_cost, class: 'btn btn-primary', data: {limit: 1}
+ 
   br
 
   .form-actions
-    = f.button :submit, class: 'btn btn-primary'
+    = f.button :submit, t('actions.submit'), class: 'btn btn-default'
+    = link_to t('actions.back'), requests_path, class: 'btn btn-default'

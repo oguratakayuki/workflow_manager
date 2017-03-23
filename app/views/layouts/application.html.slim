@@ -62,16 +62,20 @@ html[lang="en"]
               li
                 = link_to executable_requests_path do
                   | (承認済み)物品購入依頼,作業依頼
-                  - if @user_executable_count > 0
+                  - if @user_executable_count
                     '
                     span.badge = @user_executable_count
-              - if can? :define_flow, Flow
+              - if can?(:define_flow, Flow) &&  @flow_not_defined_request_count > 0
                 li
-                  = link_to '承認フロー未設定申請', flow_not_defined_requests_path
+                  = link_to  flow_not_defined_requests_path do
+                    | 承認フロー未設定申請
+                    - if @flow_not_defined_request_count
+                      '
+                      span.badge = @flow_not_defined_request_count
               li
                 = link_to  request_grants_path do
                   = t(RequestGrant.model_name.human)
-                  - if @user_reviewable_count > 0
+                  - if @user_reviewable_count
                     '
                     span.badge = @user_reviewable_count
               - if can? :create, Flow
@@ -79,7 +83,7 @@ html[lang="en"]
                   = link_to  t(Flow.model_name.human), flows_path
               - if can? :read, AuditForm
                 li
-                  = link_to  '照査ログ' , audits_path
+                  = link_to  '証跡ログ' , audits_path
               - if can? :read, Category
                 li
                   = link_to t(Category.model_name.human), categories_path

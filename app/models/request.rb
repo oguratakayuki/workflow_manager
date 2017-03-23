@@ -13,6 +13,7 @@ class Request < ApplicationRecord
   has_one :initial_money_cost, class_name: 'RequestInitialMoneyCost'
   has_many :monthly_money_cost, class_name: 'RequestMonthlyMoneyCost'
   has_many :annual_money_cost,  class_name: 'RequestAnnualMoneyCost'
+  has_many :money_cost,  class_name: 'RequestMoneyCost'
 
   audited associated_with: :category
   has_associated_audits
@@ -34,6 +35,7 @@ class Request < ApplicationRecord
   accepts_nested_attributes_for :initial_money_cost, allow_destroy: true
   accepts_nested_attributes_for :monthly_money_cost, allow_destroy: true
   accepts_nested_attributes_for :annual_money_cost,  allow_destroy: true
+  accepts_nested_attributes_for :money_cost,  allow_destroy: true
 
   def unsaved_initial_costs
     initial_human_cost.select{|t| t if  t.new_record? }

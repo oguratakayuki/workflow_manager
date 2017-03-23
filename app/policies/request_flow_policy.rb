@@ -79,6 +79,15 @@ class RequestFlowPolicy
     end
   end
 
+  def self.flow_not_defined_requests_by_user(user)
+    if user.role == 'admin'
+      Request.where(status: :flow_not_defined)
+    else
+      []
+    end
+  end
+
+
   def reviewable?(user)
     @request.reviewable?(user)
   end

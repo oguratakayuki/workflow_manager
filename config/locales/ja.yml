@@ -9,6 +9,8 @@ ja:
     update: 更新
     destroy: 削除
     back: 戻る
+    submit: 送信
+    add: 追加
   activerecord:
     models:
       request: '申請'
@@ -22,6 +24,7 @@ ja:
       request_cost: '経費情報'
       audit_form: '証跡'
       shop: 店舗
+      request_money_cost: 費用
       request_initial_money_cost: 初期費用
       request_monthly_money_cost: 月額費用
       request_annual_money_cost:  年間費用
@@ -63,6 +66,9 @@ ja:
       audit_form:
         audit_type: データタイプ
         audit_id: ID
+      request_money_cost:
+        cost_value: 費用
+        annotation: 注釈
       request_initial_money_cost:
         cost_value: 費用
         annotation: 注釈

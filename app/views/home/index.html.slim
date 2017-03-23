@@ -1,8 +1,14 @@
-h1 Home#index
-p Find me in app/views/home/index.html.slim
-- if user_signed_in?
-  | Logged in as
-  strong = current_user.email
-  = link_to "Settings", edit_user_registration_path, :class => "navbar-link"
-- else
-  = link_to "Login", new_user_session_path, :class => 'navbar-link'
+h2 お知らせ
+
+table.table.table-striped.table-hover
+  tbody
+    - if @user_reviewable_count > 0
+      tr
+        td = link_to "承認依頼が#{@user_reviewable_count}件届いています", request_grants_path
+    - if @user_executable_count > 0
+      tr
+        td = link_to "作業依頼が#{@user_executable_count}件届いています", executable_requests_path
+    - if @flow_not_defined_request_count > 0
+      tr
+        td = link_to "承認フロー未設定状態の申請が#{@flow_not_defined_request_count}件あります", executable_requests_path
+ 

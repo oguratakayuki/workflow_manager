@@ -6,6 +6,6 @@
     = f.input :comment
 
   .form-actions
-    = f.button :submit, class: 'btn btn-primary'
-br
-'
+    = f.button :submit, '送信', class: 'btn btn-default'
+    '
+    = link_to t('actions.back'), request_grants_path, class: 'btn btn-default'
