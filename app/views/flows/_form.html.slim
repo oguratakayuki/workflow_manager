@@ -1,3 +1,4 @@
+.flow-form
 = simple_nested_form_for(@flow) do |f|
   = f.error_notification
   = f.input :name
@@ -7,17 +8,15 @@
 
   h2 = ApprovalFlow.model_name.human
   .list-group.sortable
-    = f.simple_fields_for :approval_flows, @flow.approval_flows.order(:position) do |a|
+    = f.simple_fields_for :approval_flows, @flow.approval_flows.sort_by {|t| t.position } do |a|
       .list-group-item.item[data-position="#{a.object.position}"]
         .row
           .col-md-4
-            .form-group.select.optional
-              = label_tag :auth_type, '単位(役職、ユーザー)'
-              = select_tag :auth_type,  options_for_select({'ユーザー'=> 'auth_by_user', '役職'=>'auth_by_role'}), class: 'auth_type form-control'
+            = a.input :authenticatable_type, as: :select, collection: ApprovalFlow.authenticatable_type.options, input_html: {class: 'authenticatable_type'}, include_blank: false
           .col-md-6
             = a.input :authenticatable_role, as: :select, collection: User.role.options, input_html: {class: 'auth_by_role auth_pattern'}
             '
-            = a.input :authenticatable_user, as: :select, collection: User.all.map{|t| [t.name,t.id]}, input_html: {class: 'auth_by_user auth_pattern'}
+            = a.input :authenticatable_user_id, as: :select, collection: User.all.map{|t| [t.name,t.id]}, input_html: {class: 'auth_by_user auth_pattern'}
             '
             = a.input :position, as: :hidden, input_html: {class: 'approval_flow_positions'}
             '

@@ -22,6 +22,12 @@ ja:
           attributes:
             name:
               blank: 必須項目です
+        approval_flow:
+          attributes:
+            authenticatable_user_id:
+              blank: 必須項目です
+            authenticatable_role:
+              blank: 必須項目です
     models:
       request: '申請'
       request_grant: '承認依頼'
@@ -60,6 +66,8 @@ ja:
       approval_flow:
         authenticatable_role: 役職
         authenticatable_user: ユーザー
+        authenticatable_user_id: ユーザー
+        authenticatable_type: 単位
       evidence:
         file_name: '証明資料'
         comment: '資料脚注'
@@ -120,6 +128,9 @@ ja:
       manager: 'マネージャー'
       president: '社長'
       admin: '管理者'
+    authenticatable_type:
+      auth_by_user: ユーザー
+      auth_by_role: 役職
 
     audit_form:
       audit_type:

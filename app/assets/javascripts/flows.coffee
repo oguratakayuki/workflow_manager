@@ -1,7 +1,16 @@
 # Place all the behaviors and hooks related to the matching controller here.
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
-jQuery ($) ->
+$(document).on 'ready turbolinks:load', ->
+  if $('.flow-form').length
+    $('.authenticatable_type').each (index,elem) ->
+      if $(elem).val() == 'auth_by_user'
+        $(elem).closest('.row').find('.auth_by_role').closest('.form-group').hide()
+      else
+        $(elem).closest('.row').find('.auth_by_user').closest('.form-group').hide()
+      $(elem).on('change', (e) =>
+        $(e.target).closest('.row').find( '.auth_pattern').closest('.form-group').toggle()
+      )
 
 $(document).on('nested:fieldAdded', (event) ->
   if $('.sortable').length > 0
@@ -24,9 +33,9 @@ $(document).on('nested:fieldAdded', (event) ->
           $(b).val(index+1)
     $('.sortable').sortable('option', 'update')
   # 初期状態でroleで選択
-  $(event.target).find('.auth_type').val('auth_by_role')
+  $(event.target).find('.authenticatable_type').val('auth_by_role')
   $(event.target).find('.auth_by_user').closest('.form-group').hide()
-  $(event.target).find('.auth_type').on('change', (e) =>
+  $(event.target).find('.authenticatable_type').on('change', (e) =>
     $(e.target).closest('.row').find( '.auth_pattern').closest('.form-group').toggle()
   )
 
