@@ -31,6 +31,7 @@ Rails.application.routes.draw do
     get 'define_flow', on: :member
     put 'update_flow', on: :member
     put 'withdraw', on: :member
+    put 'hide', on: :member
     resources :request_grants do
       get 'review', on: :member
     end

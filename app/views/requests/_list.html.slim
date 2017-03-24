@@ -10,7 +10,8 @@ table.table.table-striped.table-hover
 
   tbody
     - @requests.each do |request|
-      tr
+      - tr_class = request.status_color
+      tr[class="#{tr_class}"]
         td = request.id
         td = request.title
         td = request.user.name
@@ -21,18 +22,25 @@ table.table.table-striped.table-hover
           '
           = link_to 'log', audit_request_path(request), class: 'btn btn-default'
           '
-          - if RequestFlowPolicy.new(request: request).withdrawable?(current_user)
+          - if RequestFlowPolicy.accesible_request?(request, current_user, :withdraw)
             '
-            = link_to '申請を取り消す', withdraw_request_path(request), data: { confirm: '申請を取り消すと今までの承認がリセットされますがよろしいですか?' }, method: :put, class: 'btn btn-danger'
+            = link_to '申請を取り消す', withdraw_request_path(request), 
+              data: { confirm: '申請を取り消すと今までの承認がリセットされますがよろしいですか?' },
+              method: :put, class: 'btn btn-danger'
             '
           - if request.status == 'executed'
             = link_to '作業完了報告', report_request_path(request), class: 'btn btn-default'
-          - if RequestFlowPolicy.new(request: request).editable?(current_user)
+            '
+          - if RequestFlowPolicy.accesible_request?(request, current_user, :edit)
             = link_to '編集', edit_request_path(request), class: 'btn btn-default'
-          - if RequestFlowPolicy.new(request: request).submitable?(current_user)
+            '
+          - if RequestFlowPolicy.accesible_request?(request, current_user, :submit)
             = link_to '提出', submit_request_path(request), class: 'btn btn-default', method: :put
-          - if RequestFlowPolicy.new(request: request).flow_editable?(current_user)
+            '
+          = link_to '非表示', hide_request_path(request), class: 'btn btn-default', method: :put
+          '
+          - if RequestFlowPolicy.accesible_request?(request, current_user, :define_flow)
             = link_to '申請フローを選択する', define_flow_request_path(request), class: 'btn btn-default'
-          - if RequestFlowPolicy.new(request: request).deletable?(current_user)
+          - if RequestFlowPolicy.accesible_request?(request, current_user, :delete)
             = link_to t('actions.destroy'), request, data: { confirm: '削除してもよろしいですか?' }, method: :delete, class: 'btn btn-default'
 

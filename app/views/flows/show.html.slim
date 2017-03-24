@@ -19,7 +19,7 @@ h1 =Flow.model_name.human + t('actions.show')
         .list-group-item
           = approval_flow.position
           '
-          = approval_flow.authenticatable_role_text
+          = approval_flow.authenticatable_role_text || approval_flow.authenticatable_user.try(:name)
   - if @flow.executors.present?
     h2 = FlowExecutor.model_name.human
     .list-group

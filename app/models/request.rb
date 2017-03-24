@@ -20,9 +20,9 @@ class Request < ApplicationRecord
 
   has_many :execution_evidences
   has_many :finishing_evidences
-  scope :reviewable_by_role, ->(role) { joins(:request_grants).merge(RequestGrant.where(authenticatable_role: role).with_status('reviewing')) }
+  #scope :reviewable, ->(user) { joins(:request_grants).merge(RequestGrant.user_reviewable(user)) }
   scope :executable, ->(user) { where(status: :wait_for_execution).joins(flow: :executors).merge(FlowExecutor.by_user(user)) }
-  scope :displayable_by_user, ->(user) { by_user(user).where.not(status: :finished) }
+  scope :displayable, ->(displayable) { where(displayable: displayable) }
   scope :by_user, ->(user) { where(user: user) }
   enumerize :status, in: [:not_submitted, :flow_not_defined, :reviewing, :rejected, :executable, :executed, :finished, :wait_for_execution], scope: true
   accepts_nested_attributes_for :finishing_evidences, allow_destroy: true
@@ -39,9 +39,6 @@ class Request < ApplicationRecord
 
   validates :title, presence: :true
 
-  def is_empty_form?(attributes)
-    debugger
-  end
   def unsaved_initial_costs
     initial_human_cost.select{|t| t if  t.new_record? }
   end
@@ -55,7 +52,6 @@ class Request < ApplicationRecord
     end
   end
 
-
   def next_request_grant
     request_grants.with_status(:not_judged).order(:position).first
   end
@@ -64,13 +60,6 @@ class Request < ApplicationRecord
     request_grants.with_status(:reviewing).order(:position).first
   end
 
-
-  def reviewable?(user)
-    reviewable_request_grant(user)
-  end
-  def reviewable_request_grant(user)
-    request_grants.where(authenticatable_role: user.role).with_status('reviewing').first
-  end
   private
     def total_money_cost
       initial_money_cost.try(:cost_value).to_i + monthly_money_cost.try(:cost_value).to_i + annual_money_cost.try(:cost_value).to_i

@@ -3,10 +3,8 @@ class RequestGrantsController < ApplicationController
   before_action :set_request_grant, only: [:review, :update]
 
   def index
-    @request_grants = RequestGrant.user_reviewable(current_user)
+    @request_grants = RequestFlowPolicy.accessible_request_grants(current_user, :review)
   end
-
-
 
   def review
     render :show

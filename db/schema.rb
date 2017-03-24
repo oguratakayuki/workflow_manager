@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170323165149) do
+ActiveRecord::Schema.define(version: 20170324095909) do
 
   create_table "approval_flows", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "flow_id"
@@ -151,8 +151,9 @@ ActiveRecord::Schema.define(version: 20170323165149) do
     t.integer  "sub_category_id"
     t.string   "title"
     t.text     "description",     limit: 65535
-    t.datetime "created_at",                    null: false
-    t.datetime "updated_at",                    null: false
+    t.boolean  "displayable",                   default: true, null: false
+    t.datetime "created_at",                                   null: false
+    t.datetime "updated_at",                                   null: false
     t.string   "status"
   end
 

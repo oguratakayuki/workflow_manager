@@ -9,7 +9,15 @@ class Flow < ApplicationRecord
   validates :name, presence: :true
 
   def copy_need_grants
-    approval_flows.map{|approval_flow| approval_flow.request_grants.build(position: approval_flow.position, authenticatable_role: approval_flow.authenticatable_role, authenticatable_user_id: approval_flow.authenticatable_user_id, status: :not_judged) }
+    approval_flows.map do |approval_flow|
+      approval_flow.request_grants.build(
+        position: approval_flow.position, 
+        authenticatable_type: approval_flow.authenticatable_type, 
+        authenticatable_role: approval_flow.authenticatable_role, 
+        authenticatable_user_id: approval_flow.authenticatable_user_id, 
+        status: :not_judged
+      )
+    end
   end
 
 end

@@ -59,11 +59,11 @@ html[lang="en"]
                   = link_to  'logout', destroy_user_session_path, method: :delete, class: 'button btn btn-danger btn-sm', type: "button"
             ul.nav.sidebar-nav-menu
               li
-                = link_to '申請(進行中)', requests_path
+                = link_to '申請', requests_path
               li
                 = link_to executable_requests_path do
                   | (承認済み)物品購入依頼,作業依頼
-                  - if @user_executable_count
+                  - if @user_executable_count > 0
                     '
                     span.badge = @user_executable_count
               - if can?(:define_flow, Flow) &&  @flow_not_defined_request_count > 0
@@ -76,7 +76,7 @@ html[lang="en"]
               li
                 = link_to  request_grants_path do
                   = t(RequestGrant.model_name.human)
-                  - if @user_reviewable_count
+                  - if @user_reviewable_count > 0
                     '
                     span.badge = @user_reviewable_count
               - if can? :create, Flow

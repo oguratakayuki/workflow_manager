@@ -1,17 +1,20 @@
 
 Flow.seed do |j|
   j.name = '物品の購入(2000円以下)'
+  j.is_default = true
 end
 
 ApprovalFlow.seed do |a|
   a.position = 1
-  a.role = 'system'
-  a.flow = Flow.find(1)
+  a.authenticatable_type = 'auth_by_role'
+  a.authenticatable_role = 'system'
+  a.flow_id = 1
 end
 ApprovalFlow.seed do |a|
   a.position = 2
-  a.role = 'manager'
-  a.flow = Flow.find(1)
+  a.authenticatable_type = 'auth_by_role'
+  a.authenticatable_role = 'manager'
+  a.flow_id = 1
 end
 
 
@@ -21,18 +24,21 @@ end
 
 ApprovalFlow.seed do |a|
   a.position = 1
-  a.role = 'system'
-  a.flow = Flow.find(2)
+  a.authenticatable_type = 'auth_by_role'
+  a.authenticatable_role = 'system'
+  a.flow_id = 2
 end
 ApprovalFlow.seed do |a|
   a.position = 2
-  a.role = 'manager'
-  a.flow = Flow.find(2)
+  a.authenticatable_type = 'auth_by_role'
+  a.authenticatable_role = 'manager'
+  a.flow_id = 2
 end
 ApprovalFlow.seed do |a|
   a.position = 3
-  a.role = 'president'
-  a.flow = Flow.find(2)
+  a.authenticatable_type = 'auth_by_role'
+  a.authenticatable_role = 'president'
+  a.flow_id = 2
 end
 
 (1..3).to_a.each do |index|
@@ -47,9 +53,9 @@ end
   end
 end
 
-(1..3).to_a.each do |index|
+%w(物品の購入 データ修正 レッスン受講).to_a.each do |name|
   Category.seed do |category|
-    category.name = "カテゴリ#{index}"
+    category.name = name
   end
 end
 (1..3).to_a.each do |index|

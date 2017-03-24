@@ -1,12 +1,12 @@
 class RequestsController < ApplicationController
-  before_action :set_request, only: [:show, :edit, :update, :destroy, :reject, :grant, :review, :define_flow, :update_flow, :withdraw, :submit, :audit, :report, :execution_report]
+  before_action :set_request, only: [:show, :edit, :update, :destroy, :reject, :grant, :review, :define_flow, :update_flow, :withdraw, :submit, :audit, :report, :execution_report, :hide]
   #load_and_authorize_resource
 
   # GET /requests
   # GET /requests.json
   def index
-    with_finished = params[:with_finished]
-    @requests = RequestFlowPolicy.displayable_requests_by_user(current_user, with_finished)
+    with_undisplayable = params[:with_undisplayable]
+    @requests = RequestFlowPolicy.accessible_requests(current_user, :show, options={with_undisplayable: with_undisplayable})
   end
 
   def audit
@@ -14,23 +14,15 @@ class RequestsController < ApplicationController
   end
 
   def executable
-    @requests = if current_user.role.in? %w!admin manager system!
-      Request.executable(current_user)
-    else
-      []
-    end
+    @requests = RequestFlowPolicy.accessible_requests(current_user, :execute)
   end
 
   def flow_not_defined
-    @requests = if current_user.role.in? %w!admin manager system!
-      Request.where(status: :flow_not_defined)
-    else
-      []
-    end
+    @requests = RequestFlowPolicy.accessible_requests(current_user, :define_flow)
   end
 
   def edit
-    unless RequestFlowPolicy.new(request: @request).editable?(current_user)
+    unless RequestFlowPolicy.accesible_request?(@request, current_user, :edit)
       redirect_to @request, notice: '一度申請を取り消さないと編集できません'
     end
   end
@@ -56,6 +48,10 @@ class RequestsController < ApplicationController
     render :show
   end
 
+  def hide
+    RequestFlowPolicy.new(request: @request).hide!(current_user)
+    redirect_to requests_path, notice: '非表示にしました'
+  end
 
   def withdraw
     RequestFlowPolicy.new(request: @request).withdraw!(current_user)
@@ -63,17 +59,14 @@ class RequestsController < ApplicationController
   end
 
   def submit
-    RequestFlowPolicy.new(request: @request).save_request_and_select_flow
-    redirect_to requests_path, notice: '申請を提出しました'
+    if RequestFlowPolicy.accesible_request?(@request, current_user, :submit)
+      RequestFlowPolicy.new(request: @request).save_request_and_select_flow
+      redirect_to requests_path, notice: '申請を提出しました'
+    else
+      raise StandardError
+    end
   end
 
-  def reject
-    RequestFlowPolicy.new(request: @request).reject_by(current_user)
-  end
-
-  def grant
-    RequestFlowPolicy.new(request: @request).reject_by(current_user)
-  end
 
   # GET /requests/new
   def new

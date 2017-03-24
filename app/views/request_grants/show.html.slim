@@ -13,6 +13,6 @@
     p.list-group-item-text
       = @request.description
 
-- if RequestFlowPolicy.new(request: @request).reviewable?(current_user)
+- if RequestFlowPolicy.accesible_request_grant?(@request_grant, current_user, :review)
   == render 'form'
 

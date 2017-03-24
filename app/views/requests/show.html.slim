@@ -63,12 +63,19 @@
         .list-group-item
           = request_grant.position
           '
-          = request_grant.authenticatable_role_text
+          = request_grant.authenticatable_role_text || request_grant.authenticatable_user.try(:name)
           '
           = request_grant.authenticated_user.try(:name)
           '
           span[class="#{request_grant.status_label_class}"]
             = request_grant.status_text
+          - if request_grant.comment
+            br
+            | comment:
+            '
+            = request_grant.comment
+
+
 
 - if @request.execution_evidences.present?
   h3 購入者(作業者)資料
@@ -106,7 +113,5 @@
         p.list-group-item-text
           = finishing_evidence.upload_user.try(:name)
  
-
-- if RequestFlowPolicy.new(request: @request).reviewable?(current_user)
 
 = link_to 'Back', requests_path, class: 'btn btn-default'

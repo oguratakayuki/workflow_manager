@@ -21,14 +21,14 @@ class RequestFlowPolicy
   end
 
   def submit!
-    raise UnpermittedRequest unless submitable?
+    #raise UnpermittedRequest unless submitable?
     #setup_request_grants
     save_request_and_select_flow
     #TODO notifier
   end
 
   def withdraw!(user)
-    raise UnpermittedRequest unless withdrawable?(user)
+    #raise UnpermittedRequest unless withdrawable?(user)
     Request.transaction do
       @request.update_attributes(flow: nil, status: :not_submitted)
       @request.request_grants.destroy_all
@@ -38,10 +38,14 @@ class RequestFlowPolicy
   def executed!(executed_user_id)
     @request.execution_evidences.each{|t| t.upload_user_id = executed_user_id }
     Request.transaction do
-      @request.assign_attributes(status: :executed)
+      @request.assign_attributes(status: :finished)
       @request.save
       #TODO notifier
     end
+  end
+
+  def hide!(user)
+    @request.update_attributes(displayable: false)
   end
 
   def finish!
@@ -63,45 +67,87 @@ class RequestFlowPolicy
 
   #以下cancancanに移行予定?
   #特権ユーザーのみ直接flowを決定できる
-  def flow_editable?(user)
-    true if approval_flow_not_defined? && user.role.in?(%w!system admin manager president!)
-  end
-
-  def editable?(user)
-    @request.status == 'not_submitted' && user == @request.user
-  end
-
-  def self.displayable_requests_by_user(user, with_finished=false)
-    if with_finished
-      Request.by_user(user)
-    else
-      Request.displayable_by_user(user)
-    end
-  end
-
-  def self.flow_not_defined_requests_by_user(user)
-    if user.role == 'admin'
-      Request.where(status: :flow_not_defined)
+  def self.accessible_request_grants(user, action, options={})
+    if user
+      case action
+      when :review
+        RequestGrant.reviewable(user)
+      else
+        raise StandardError
+      end
     else
       []
     end
   end
 
-
-  def reviewable?(user)
-    @request.reviewable?(user)
+  def self.accesible_request_grant?(request_grant, user, action)
+    return [] unless user
+    request_grants = case action
+    when :review
+      self.accessible_request_grants(user, action, options={})
+    else
+      raise StandardError
+    end
+    request_grant.in?(request_grants)
   end
 
-  def withdrawable?(user)
-    @request.status.in?(%w!flow_not_defined reviewing!) && user == @request.user
+
+
+
+  def self.accessible_requests(user, action, options={})
+    if user
+      case action
+      when :execute
+        if user.role.in?(%w!admin manager system operator!)
+          Request.executable(user)
+        else
+          []
+        end
+      when :show
+        if options[:with_undisplayable]
+          Request.by_user(user)
+        else
+          Request.by_user(user).displayable(true)
+        end
+      when :define_flow
+        if user.role.in?(%w!admin manager system operator!)
+          Request.where(status: :flow_not_defined)
+        else
+          []
+        end
+      when :edit
+        Request.with_status(:not_submitted).by_user(user)
+      when :submit
+        Request.with_status(:not_submitted).by_user(user)
+      when :delete
+        Request.where(status: %i(finished rejected)).by_user(user)
+      when :withdraw
+        Request.where(status: %i(flow_not_defined reviewing)).by_user(user)
+      else
+        raise StandardError
+      end
+    else
+      []
+    end
   end
 
-  def submitable?(user)
-    @request.status == 'not_submitted' && user == @request.user
-  end
-
-  def deletable?(user)
-    !@request.status.in? %i(executed finished)
+  def self.accesible_request?(request, user, action)
+    return [] unless user
+    requests = case action
+    when :edit
+      self.accessible_requests(user, action, options={})
+    when :submit
+      self.accessible_requests(user, action, options={})
+    when :delete
+      self.accessible_requests(user, action, options={})
+    when :withdraw
+      self.accessible_requests(user, action, options={})
+    when :define_flow
+      self.accessible_requests(user, action, options={})
+    else
+      raise StandardError
+    end
+    request.in?(requests)
   end
 
   private
@@ -115,7 +161,7 @@ class RequestFlowPolicy
     elsif has_executable_flow?
       @request.update_attributes(status: :wait_for_execution)
     else
-      @request.update_attributes(status: :executable)
+      @request.update_attributes(status: :finished)
     end
   end
 
