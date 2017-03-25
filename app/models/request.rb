@@ -13,7 +13,7 @@ class Request < ApplicationRecord
   has_one :initial_money_cost, class_name: 'RequestInitialMoneyCost'
   has_many :monthly_money_cost, class_name: 'RequestMonthlyMoneyCost'
   has_many :annual_money_cost,  class_name: 'RequestAnnualMoneyCost'
-  has_many :money_cost,  class_name: 'RequestMoneyCost'
+  has_one :money_cost,  class_name: 'RequestMoneyCost'
 
   audited associated_with: :category
   has_associated_audits
@@ -44,8 +44,9 @@ class Request < ApplicationRecord
   end
 
   def associated_value(name)
+    Rails.logger.debug name
     case 
-    when name.in?(%i(initial_money_cost initial_human_cost monthly_human_cost annual_human_cost monthly_money_cost annual_money_cost)) then
+    when name.in?(%i(initial_money_cost initial_human_cost monthly_human_cost annual_human_cost monthly_money_cost annual_money_cost money_cost)) then
       self.__send__(name).try(:cost_value).to_i
     when name.in?(%i(price)) then
       total_money_cost

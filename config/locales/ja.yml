@@ -115,7 +115,15 @@ ja:
       request_grant:
         status: 承認ステータス
         comment: コメント
+      flow_condition_group:
+        relation_type: 条件を複数選択した時の判定方法
   enumerize:
+    flow_condition_group:
+      relation_type:
+        and: 且つ
+        or: または
+      related_model:
+        money_cost: 価格
     role:
       operator: 'オペレーター'
       system: 'システム'
@@ -165,7 +173,7 @@ ja:
         shop: '店舗'
         category: 'カテゴリ'
         sub_category: 'サブカテゴリ'
-        price: '価格'
+        money_cost: '価格'
         initial_cost: '初期費用'
         time_required: 人的コスト(時間)
         personal_number: 人員

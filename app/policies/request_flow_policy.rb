@@ -91,9 +91,6 @@ class RequestFlowPolicy
     request_grant.in?(request_grants)
   end
 
-
-
-
   def self.accessible_requests(user, action, options={})
     if user
       case action
@@ -249,7 +246,8 @@ class RequestFlowPolicy
         end
       else
         related_type = flow_condition.related_model.to_sym
-        if related_type.in?(%i(price initial_cost))
+        Rails.logger.debug "related_type = #{related_type}"
+        if related_type.in?(%i(money_cost initial_cost))
           values = flow_condition.flow_condition_options.pluck(:compare_value).map(&:to_i)
           Rails.logger.debug "Policy: in condition_matched?: values  = #{values.inspect}"
           is_matched = case flow_condition.compare_type
@@ -275,10 +273,15 @@ class RequestFlowPolicy
           when 'gt_eq' then
             ret = @request.associated_value(related_type) >= values.first
             Rails.logger.debug "Policy: in condition_matched?: type [gt_eq], ret  = #{ret}"
+            Rails.logger.debug "Policy: in condition_matched?: type [gt_eq], ret  = #{ret}"
+            Rails.logger.debug "Policy: in condition_matched?: type [gt_eq], params value  = #{@request.associated_value(related_type)}"
+            Rails.logger.debug "Policy: in condition_matched?: type [gt_eq], defined value  = #{values.first}"
             ret
           when 'lt_eq' then
             ret = @request.associated_value(related_type) <= values.first
             Rails.logger.debug "Policy: in condition_matched?: type [lt_eq], ret  = #{ret}"
+            Rails.logger.debug "Policy: in condition_matched?: type [lt_eq], params value  = #{@request.associated_value(related_type)}"
+            Rails.logger.debug "Policy: in condition_matched?: type [lt_eq], defined value  = #{values.first}"
             ret
           else
             Rails.logger.debug "Policy: in condition_matched?: type undefined return false"
@@ -297,6 +300,7 @@ class RequestFlowPolicy
     Rails.logger.debug "flow_conditions.count = #{flow_conditions.count}"
     return true if and_or == 'and' && matched_count == flow_conditions.count
     return true if and_or == 'or' && matched_count > 0
+    return true if and_or.nil? && matched_count > 0
     return false
   end
 

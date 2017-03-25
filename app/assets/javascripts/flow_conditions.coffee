@@ -18,7 +18,7 @@ $(document).on 'ready turbolinks:load', ->
         #既存レコードをチェックして使わない項目は非表示に
         if $.inArray($(@).find('.flow_condition_related_model').val(),  ['category', 'sub_category']) > -1
           $(@).find('.flow_condition_compare_value').hide()
-        if $.inArray($(@).find('.flow_condition_related_model').val(), ['price','initial_cost', 'time_required', 'personal_number']) != -1
+        if $.inArray($(@).find('.flow_condition_related_model').val(), ['money_cost','initial_cost', 'time_required', 'personal_number']) != -1
           $(@).find('.flow_condition_group_flow_conditions_relation_id select').hide()
 
 
@@ -35,7 +35,7 @@ $(document).on('nested:fieldAdded', (event) ->
           if $(@).closest('.row').find('.flow_condition_related_model').val() && $(@).closest('.row').find('.flow_condition_group_compare_type').val()
             if $.inArray($(@).closest('.row').find('.flow_condition_related_model').val(),  ['category', 'sub_category','shop']) > -1
               $(@).closest('.panel-body').find('.flow_condition_option_add_button').show()
-            else if $.inArray($(@).closest('.row').find('.flow_condition_related_model').val(), ['price','initial_cost', 'time_required', 'personal_number']) != -1
+            else if $.inArray($(@).closest('.row').find('.flow_condition_related_model').val(), ['money_cost','initial_cost', 'time_required', 'personal_number']) != -1
               #input boxを出す条件
               $(@).closest('.panel-body').find('.flow_condition_option_add_button').show()
           else if $(@).closest('.row').find('.flow_condition_related_model').val() == '' \
@@ -90,7 +90,7 @@ $(document).on('nested:fieldAdded', (event) ->
                 console.log("AJAX Error: #{textStatus}")
               success: (data, textStatus, jqXHR) =>
                 update_select_box_option(parent.find('.flow_condition_group_flow_conditions_relation_id select').last(), data)
-          if $.inArray(parent.find('.flow_condition_related_model').val(), ['price','initial_cost', 'time_required', 'personal_number']) != -1
+          if $.inArray(parent.find('.flow_condition_related_model').val(), ['money_cost','initial_cost', 'time_required', 'personal_number']) != -1
             #price,initial_constなどのときはtextボックスを出す
             console.log('here')
             parent.find('.flow_condition_group_flow_conditions_relation_id select').val(null).hide()

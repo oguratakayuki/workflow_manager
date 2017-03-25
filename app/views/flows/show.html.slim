@@ -17,7 +17,8 @@ h1 =Flow.model_name.human + t('actions.show')
     .list-group
       - @flow.approval_flows.order(:position).each do |approval_flow|
         .list-group-item
-          = approval_flow.position
+          span.badge[style='float: left; margin-right: 10px;']
+            = approval_flow.position
           '
           = approval_flow.authenticatable_role_text || approval_flow.authenticatable_user.try(:name)
   - if @flow.executors.present?
