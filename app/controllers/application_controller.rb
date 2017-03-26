@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   before_action :authenticate_user!, :request_status
+  before_action :configure_permitted_parameters, if: :devise_controller?
   #http://stackoverflow.com/questions/38331496/rails-5-actioncontrollerinvalidauthenticitytoken-error
 
   protect_from_forgery with: :exception, prepend: true
@@ -20,6 +21,12 @@ class ApplicationController < ActionController::Base
     params[resource] &&= send(method) if respond_to?(method, true)
   end
 
+  protected
+  def configure_permitted_parameters
+    added_attrs = [:login_id, :email, :password, :password_confirmation, :remember_me]
+    devise_parameter_sanitizer.permit :sign_up, keys: added_attrs
+    devise_parameter_sanitizer.permit :account_update, keys: added_attrs
+  end
 
 
 end

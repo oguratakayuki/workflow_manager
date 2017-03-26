@@ -5,7 +5,8 @@
         | Login to Your Account
       br
       = simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
-        = f.input :email, required: false, autofocus: true
+        /= f.input :email, required: false, autofocus: true
+        = f.input :login_id, required: false, autofocus: true
         = f.input :password, required: false
         = f.button :submit, "Log in", class: 'login loginmodal-submit'
       .login-help
