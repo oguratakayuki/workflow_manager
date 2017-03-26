@@ -91,14 +91,24 @@ class RequestFlowPolicy
     request_grant.in?(request_grants)
   end
 
+  def self.accessible_request(id, user, action, options={})
+    request = self.accessible_requests(user, action, options).where(id: id).first
+    raise RequestFlowPolicy::UnpermittedRequest if request.nil?
+    request
+  end
+
   def self.accessible_requests(user, action, options={})
     if user
       case action
+      when :destroy
+        Request.by_user(user)
+      when :hide
+        Request.by_user(user).displayable(true)
       when :execute
         if user.role.in?(%w!admin manager system operator!)
           Request.executable(user)
         else
-          []
+          Request.none
         end
       when :show
         if options[:with_undisplayable]
@@ -110,7 +120,7 @@ class RequestFlowPolicy
         if user.role.in?(%w!admin manager system operator!)
           Request.where(status: :flow_not_defined)
         else
-          []
+          Request.none
         end
       when :edit
         Request.with_status(:not_submitted).by_user(user)
@@ -124,7 +134,7 @@ class RequestFlowPolicy
         raise StandardError
       end
     else
-      []
+      Request.none
     end
   end
 

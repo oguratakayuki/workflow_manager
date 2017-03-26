@@ -73,7 +73,7 @@ class RequestsController < ApplicationController
   def execution_report
     @request  = RequestFlowPolicy.accessible_request(params[:id], current_user, :execute)
     if request.patch?
-      @request.assign_attributes(request_params)
+      @request.assign_attributes(request_params) if params[:request].present?
       if RequestFlowPolicy.new(request: @request).executed!(current_user.id)
         redirect_to @request, notice: '申請者に通知しました'
       else
@@ -139,7 +139,7 @@ class RequestsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def request_params
-      params.require(:request).permit(:flow_id, :user_id, :category_id, :sub_category_id, :title, :description,
+      params.require(:request).permit(:id, :flow_id, :user_id, :category_id, :sub_category_id, :title, :description,
         money_cost_attributes: [
           :id,
           :request_id,
