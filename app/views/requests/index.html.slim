@@ -3,20 +3,6 @@ h1 =Request.model_name.human + t('actions.index')
 = render 'list'
 br
 
-#bulk_insert_bookmarks_modal.modal.fade[role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"]
- .modal-dialog[role="document"]
-   .modal-content
-     .modal-header
-       button.close[type="button" data-dismiss="modal" aria-hidden="true" aria-labelledby="myModalLabel"]
-         | ×
-       h4.modal-title
-         | エクスポートしたファイルを選択してください
-     .modal-body
-       = file_field_tag 'bookmark_bulk_insert[file]'
-     .modal-footer
-       button.btn.btn-default[type="button" data-dismiss="modal"]
-         | Close
-
 = link_to '新規申請を出す', new_request_path, class: 'btn btn-default'
 '
 = link_to '完了した申請を表示', requests_path(with_undisplayable: true), class: 'btn btn-default'

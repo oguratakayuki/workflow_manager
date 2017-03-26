@@ -24,8 +24,25 @@ class ShopsController < ApplicationController
     if request.post?
       file = params[:file]
       CSV.foreach(file.path, headers: true) do |row|
-        shop = Shop.find_or_create_by(external_id: row['external_id'])
-        shop.update_attributes(name: row['name'])
+        #ブランド情報,店舗情報、ユーザー情報
+        #shop_id,shop_name,user_login_id,user_name,brand_id,brand_name
+        #shop差分確認
+        brand = Brand.find_or_create_by(external_id: row['brand_id'])
+        brand.assign_attributes(name: row['brand_name'])
+        brand.save if brand.changed?
+
+        shop = Shop.find_or_create_by(external_id: row['shop_id'])
+        shop.assign_attributes(name: row['shop_name'])
+        shop.save if shop.changed?
+
+        user = User.find_or_create_by(login_id: row['user_login_id'])
+        user.name = row['user_name'])
+        #userがshopに未所属なら反映
+        if user.changed? || shop.in?(user.shops)
+          user.password_confirmation =  user.password = SecureRandom.hex(6)
+          user.save
+        end
+
       end
       redirect_to shops_path, notice: 'Importに成功しました'
     end

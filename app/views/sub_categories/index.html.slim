@@ -1,24 +1,20 @@
-h1 =SubCategory.model_name.human + t('actions.index')
+h2 = @category.name + 'の' + SubCategory.model_name.human + t('actions.index')
 - breadcrumb :sub_categories
 
-table
+table.table.table-striped.table-hover
   thead
     tr
-      th SubCategory
       th Name
-      th
-      th
-      th
+      th Actions
 
   tbody
     - @sub_categories.each do |sub_category|
       tr
-        td = sub_category.category_id
         td = sub_category.name
-        td = link_to 'Show', sub_category
-        td = link_to 'Edit', edit_sub_category_path(sub_category)
-        td = link_to 'Destroy', sub_category, data: { confirm: 'Are you sure?' }, method: :delete
+        td = link_to t('actions.show'), category_sub_category_path(@category, sub_category), class: 'btn btn-default'
+        td = link_to t('actions.edit'), edit_category_sub_category_path(@category, sub_category), class: 'btn btn-default'
+        td = link_to t('actions.destroy'), category_sub_category_path(@category, sub_category), data: { confirm: 'Are you sure?' }, method: :delete, class: 'btn btn-default'
 
 br
 
-= link_to 'New Sub category', new_sub_category_path
+= link_to t('actions.new'), new_category_sub_category_path(@category), class: 'btn btn-default'

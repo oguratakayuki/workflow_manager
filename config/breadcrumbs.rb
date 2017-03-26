@@ -31,12 +31,19 @@ crumb :shops do
   parent :root
 end
 crumb :categories do
-  link I18n.t('activerecord.models.category'), categories_path
+  link I18n.t('activerecord.models.category') + t('actions.index'), categories_path
   parent :root
 end
 
+crumb :category do |category|
+  link I18n.t('activerecord.models.category') + t('actions.index'), category_path(category)
+  parent :categories
+end
 
-
+crumb :sub_categories do
+  link I18n.t('activerecord.models.sub_category') + t('actions.index'), categories_path
+  parent :categories
+end
 
 crumb :flow do |flow|
   link flow.name, flow_path(flow)

@@ -6,7 +6,10 @@ class SubCategoriesController < ApplicationController
   # GET /sub_categories.json
   def index
     @sub_categories = @category.sub_categories
-    render json: @sub_categories.map {|t| [t.id,t.name] }
+    respond_to do |format|
+      format.json { @sub_categories.map {|t| [t.id,t.name] } }
+      format.html
+    end
   end
 
   def list
