@@ -44,7 +44,7 @@ end
 (1..3).to_a.each do |index|
   User.role.values.each do |role|
     User.seed do |u|
-      u.email = "#{role}#{index}@example.com"
+      u.login_id = "#{role}#{index}"
       u.name = "#{role}#{index}太郎"
       u.role = role
       u.password = "111111"

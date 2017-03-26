@@ -7,9 +7,8 @@ Things you may want to cover:
 
 * TODO
 
-user_login_idでログインできるように
+csvインポート機能(test code,パスワードを一時的に保存する処理)
 
-csvインポート機能
 
 期日を指定できるように
 

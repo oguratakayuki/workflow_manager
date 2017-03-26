@@ -25,7 +25,7 @@ class ShopsController < ApplicationController
       file = params[:file]
       CSV.foreach(file.path, headers: true) do |row|
         #ブランド情報,店舗情報、ユーザー情報
-        #shop_id,shop_name,user_login_id,user_name,brand_id,brand_name
+        #brand_id,brand_name,shop_id,shop_name,user_name,user_login_id
         #shop差分確認
         brand = Brand.find_or_create_by(external_id: row['brand_id'])
         brand.assign_attributes(name: row['brand_name'])
@@ -35,10 +35,11 @@ class ShopsController < ApplicationController
         shop.assign_attributes(name: row['shop_name'])
         shop.save if shop.changed?
 
-        user = User.find_or_create_by(login_id: row['user_login_id'])
+        user = User.find_or_initialize_by(login_id: row['user_login_id'])
         user.name = row['user_name'])
         #userがshopに未所属なら反映
-        if user.changed? || shop.in?(user.shops)
+        #changed?は新規レコードでもtrueになる
+        if user.changed? || !shop.in?(user.shops)
           user.password_confirmation =  user.password = SecureRandom.hex(6)
           user.save
         end
