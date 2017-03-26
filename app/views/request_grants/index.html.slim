@@ -5,7 +5,6 @@ table.table.table-striped.table-hover
     tr
       th = t Request.human_attribute_name(:title)
       th = t Request.human_attribute_name(:user)
-      th = t Request.human_attribute_name(:description)
       th = t Request.human_attribute_name(:status)
       th Action
 
@@ -14,8 +13,7 @@ table.table.table-striped.table-hover
       tr
         td = request_grant.request.title
         td = request_grant.request.user.name
-        td = request_grant.request.description
-        td = request_grant.request.status
+        td = request_grant.request.status_text
         td 
           = link_to '承認操作', review_request_request_grant_path(request_grant.request, request_grant), class: 'btn btn-default'
 

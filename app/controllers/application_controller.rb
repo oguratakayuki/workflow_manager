@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
     @flow_not_defined_request_count = RequestFlowPolicy.accessible_requests(current_user, :define_flow).count
   end
 
-  rescue_from CanCan::AccessDenied do |exception|
+  rescue_from CanCan::AccessDenied, RequestFlowPolicy::UnpermittedRequest do |exception|
     redirect_to :root, alert: 'アクセス権がありません'
   end
 

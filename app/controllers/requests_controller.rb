@@ -1,7 +1,4 @@
 class RequestsController < ApplicationController
-  before_action :set_request, only: [:show, :edit, :update, :destroy, :reject, :grant, :review, :define_flow, :update_flow, :withdraw, :submit, :audit, :report, :execution_report, :hide]
-  #load_and_authorize_resource
-
   # GET /requests
   # GET /requests.json
   def index
@@ -10,6 +7,7 @@ class RequestsController < ApplicationController
   end
 
   def audit
+    @request = RequestFlowPolicy.accessible_request(params[:id], current_user, :show, options={with_undisplayable: true})
     @audits = @request.audits.order(:created_at)
   end
 
@@ -22,15 +20,15 @@ class RequestsController < ApplicationController
   end
 
   def edit
-    unless RequestFlowPolicy.accesible_request?(@request, current_user, :edit)
-      redirect_to @request, notice: '一度申請を取り消さないと編集できません'
-    end
+    @request = RequestFlowPolicy.accessible_request(params[:id], current_user, :edit)
   end
 
   def define_flow
+    @request = RequestFlowPolicy.accessible_request(params[:id], current_user, :define_flow)
   end
 
   def update_flow
+    @request = RequestFlowPolicy.accessible_request(params[:id], current_user, :define_flow)
     @request.assign_attributes(define_flow_params)
     if RequestFlowPolicy.new(request: @request).save_request_and_select_flow
       redirect_to @request, notice: 'Request was successfully updated.'
@@ -42,18 +40,17 @@ class RequestsController < ApplicationController
   # GET /requests/1
   # GET /requests/1.json
   def show
-  end
-
-  def review
-    render :show
+    @request = RequestFlowPolicy.accessible_request(params[:id], current_user, :show)
   end
 
   def hide
+    @request = RequestFlowPolicy.accessible_request(params[:id], current_user, :hide)
     RequestFlowPolicy.new(request: @request).hide!(current_user)
     redirect_to requests_path, notice: '非表示にしました'
   end
 
   def withdraw
+    @request = RequestFlowPolicy.accessible_request(params[:id], current_user, :withdraw)
     RequestFlowPolicy.new(request: @request).withdraw!(current_user)
     redirect_to requests_path, notice: '申請を取り消しました'
   end
@@ -74,6 +71,7 @@ class RequestsController < ApplicationController
   end
 
   def execution_report
+    @request  = RequestFlowPolicy.accessible_request(params[:id], current_user, :execute)
     if request.patch?
       @request.assign_attributes(request_params)
       if RequestFlowPolicy.new(request: @request).executed!(current_user.id)
@@ -110,6 +108,7 @@ class RequestsController < ApplicationController
   # PATCH/PUT /requests/1
   # PATCH/PUT /requests/1.json
   def update
+    @request = RequestFlowPolicy.accessible_request(params[:id], current_user, :edit)
     respond_to do |format|
       if @request.update(request_params)
         format.html { redirect_to @request, notice: 'Request was successfully updated.' }
@@ -124,6 +123,7 @@ class RequestsController < ApplicationController
   # DELETE /requests/1
   # DELETE /requests/1.json
   def destroy
+    @request = RequestFlowPolicy.accessible_request(params[:id], current_user, :destroy)
     @request.destroy
     respond_to do |format|
       format.html { redirect_to requests_url, notice: 'Request was successfully destroyed.' }
