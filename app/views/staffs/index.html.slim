@@ -1,6 +1,13 @@
 h1 = 'スタッフ一覧'
 - breadcrumb :root
 
+= simple_form_for User.new, url: staffs_path, method: :get, name: :q do |f|
+  = f.association :brands
+  = f.association :shops
+  = f.input :login_id
+  = f.input :name
+  = f.button :submit, '検索'
+
 table.table.table-striped.table-hover
   thead
     tr
