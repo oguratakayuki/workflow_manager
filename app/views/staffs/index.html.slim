@@ -1,0 +1,21 @@
+h1 = 'スタッフ一覧'
+- breadcrumb :root
+
+table.table.table-striped.table-hover
+  thead
+    tr
+      th Id
+      th = t User.human_attribute_name(:name)
+      th = t User.human_attribute_name(:role)
+      th = t User.human_attribute_name(:brand)
+      th = t User.human_attribute_name(:shops)
+
+  tbody
+    - @users.each do |user|
+      tr
+        td = user.id
+        td = user.name
+        td = user.role_text
+        td = user.shops.map{|t| t.brand.try(:name) }.join(',')
+        td = user.shops.map(&:name).join(',')
+'

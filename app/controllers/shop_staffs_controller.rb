@@ -2,7 +2,7 @@ class ShopStaffsController < ApplicationController
   before_action :set_shop
   before_action :set_user, only: [:show, :edit, :update, :destroy]
   def index
-    @users = User.all
+    @users = @shop.users
   end
 
   def show

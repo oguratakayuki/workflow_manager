@@ -7,6 +7,8 @@ Rails.application.routes.draw do
   end
   get '/sub_categories', to: 'sub_categories#list'
 
+  resources :staffs
+
   resources :shops do
     get 'csv_import', on: :collection
     post 'csv_import', on: :collection

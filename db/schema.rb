@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170326114515) do
+ActiveRecord::Schema.define(version: 20170402072010) do
 
   create_table "approval_flows", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "flow_id"
@@ -42,6 +42,13 @@ ActiveRecord::Schema.define(version: 20170326114515) do
     t.index ["created_at"], name: "index_audits_on_created_at", using: :btree
     t.index ["request_uuid"], name: "index_audits_on_request_uuid", using: :btree
     t.index ["user_id", "user_type"], name: "user_index", using: :btree
+  end
+
+  create_table "brands", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "name"
+    t.integer  "external_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
 
   create_table "categories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -166,6 +173,7 @@ ActiveRecord::Schema.define(version: 20170326114515) do
 
   create_table "shops", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name"
+    t.integer  "brand_id"
     t.text     "description", limit: 65535
     t.integer  "external_id"
     t.datetime "created_at",                null: false

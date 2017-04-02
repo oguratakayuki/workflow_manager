@@ -72,10 +72,13 @@ ja:
         file_name: '証明資料'
         comment: '資料脚注'
       user:
-        email: 'メールアドレス'
-        password: '新しいパスワード'
-        password_confirmation: '新しいパスワード(確認用)'
-        current_password: '現在のパスワード'
+        email: メールアドレス
+        password: 新しいパスワード
+        password_confirmation: 新しいパスワード(確認用)
+        current_password: 現在のパスワード
+        login_id: ログインID
+        brand: ブランド名
+        shops: 店舗名
       flow_executor:
         role: '担当部署'
         user: '担当者'

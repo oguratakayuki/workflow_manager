@@ -91,6 +91,9 @@ html[lang="en"]
               - if can? :read, Shop
                 li
                   = link_to t(Shop.model_name.human), shops_path
+              - if can? :read, User
+                li
+                  = link_to t(User.model_name.human), staffs_path
         .col-md-9
           .jumbotron
             - flash.each do |key, value|

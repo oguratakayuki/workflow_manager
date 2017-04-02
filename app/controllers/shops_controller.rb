@@ -33,17 +33,18 @@ class ShopsController < ApplicationController
 
         shop = Shop.find_or_create_by(external_id: row['shop_id'])
         shop.assign_attributes(name: row['shop_name'])
+        shop.brand = brand
         shop.save if shop.changed?
 
         user = User.find_or_initialize_by(login_id: row['user_login_id'])
-        user.name = row['user_name'])
+        user.name = row['user_name']
         #userがshopに未所属なら反映
         #changed?は新規レコードでもtrueになる
         if user.changed? || !shop.in?(user.shops)
-          user.password_confirmation =  user.password = SecureRandom.hex(6)
+          user.password_confirmation =  user.password = SecureRandom.hex(6) if user.new_record?
+          user.shops << shop if !shop.in?(user.shops)
           user.save
         end
-
       end
       redirect_to shops_path, notice: 'Importに成功しました'
     end
