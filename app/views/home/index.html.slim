@@ -12,3 +12,4 @@ table.table.table-striped.table-hover
       tr
         td = link_to "承認フロー未設定状態の申請が#{@flow_not_defined_request_count}件あります", executable_requests_path
  
+= link_to '申請を出す', new_request_path, class: 'btn btn-default'
