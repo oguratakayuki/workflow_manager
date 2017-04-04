@@ -1,7 +1,7 @@
 h1 = 'スタッフ一覧'
 - breadcrumb :root
 
-= simple_form_for User.new, url: staffs_path, method: :get, name: :q do |f|
+= simple_form_for(@user_form, url: staffs_path, html: { method: :get, class: 'form-horizontal', role: 'form', name: :q }) do |f|
   .row
     .col-md-3
       = f.association :brands

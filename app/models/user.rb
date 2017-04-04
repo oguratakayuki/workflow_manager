@@ -11,6 +11,9 @@ class User < ApplicationRecord
   validates_uniqueness_of :login_id
   validates_presence_of :login_id
 
+  scope :by_brands, ->(brand_ids){ joins(:shops).merge(Shop.by_brands(brand_ids)) }
+  scope :by_shops, ->(shop_ids){ joins(:shop_users).merge(ShopUser.where(shop_id: shop_ids)) }
+
   # user_idを仕様してログインするようオーバーライド
   def self.find_first_by_auth_conditions(warden_conditions)
     conditions = warden_conditions.dup
