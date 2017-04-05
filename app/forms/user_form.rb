@@ -4,12 +4,12 @@ class UserForm
 
   attr_accessor :brand_ids, :shop_ids, :login_id, :name
   def search
-    @query = User.where
-    @query = @query.by_brands(@brand_ids) if @brand_ids.present?
-    @query = @query.by_shops(@shopids) if @shop_ids.present?
-    @query = @query.where(login_id: @login_id) if @login_id
-    @query = @query.where(name: @name) if @name
-    @query
+    @queries = []
+    @queries << User.by_brands(@brand_ids) if @brand_ids.present?
+    @queries << User.by_shops(@shop_ids) if @shop_ids.present?
+    @queries << User.where(login_id: @login_id) if @login_id
+    @queries << User.where(name: @name) if @name
+    @queries.reduce(:+) || User.all
   end
 end
 

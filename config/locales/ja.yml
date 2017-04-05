@@ -49,6 +49,9 @@ ja:
       request_annual_human_cost:  年間人件費
 
     attributes:
+      user_form:
+        brand_ids: ブランド
+        shop_ids: 店舗
       request:
         user: '申請者'
         user_id: '申請者'

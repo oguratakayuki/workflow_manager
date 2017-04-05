@@ -1,12 +1,12 @@
 h1 = 'スタッフ一覧'
 - breadcrumb :root
 
-= simple_form_for(@user_form, url: staffs_path, html: { method: :get, class: 'form-horizontal', role: 'form', name: :q }) do |f|
+= simple_form_for(@user_form, url: staffs_path, html: { method: :get, class: 'form-horizontal', role: 'form' }) do |f|
   .row
     .col-md-3
-      = f.association :brands
+      = f.input :brand_ids, as: :select, collection: Brand.all.map{|t| [t.name, t.id] }, input_html: { multiple: true }
     .col-md-3
-      = f.association :shops
+      = f.input :shop_ids, as: :select, collection: Shop.all.map{|t| [t.name, t.id] }, input_html: { multiple: true }
     .col-md-3
       = f.input :login_id
     .col-md-3
