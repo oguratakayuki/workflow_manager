@@ -103,7 +103,7 @@ class RequestFlowPolicy
       when :destroy
         Request.by_user(user)
       when :hide
-        Request.by_user(user).displayable(true)
+        Request.by_user(user).displayable_status(true)
       when :execute
         if user.role.in?(%w!admin manager system operator!)
           Request.executable(user)
@@ -114,7 +114,7 @@ class RequestFlowPolicy
         if options[:with_undisplayable]
           Request.by_user(user)
         else
-          Request.by_user(user).displayable(true)
+          Request.by_user(user).displayable_status(true)
         end
       when :define_flow
         if user.role.in?(%w!admin manager system operator!)

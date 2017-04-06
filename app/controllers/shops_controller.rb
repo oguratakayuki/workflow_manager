@@ -23,6 +23,7 @@ class ShopsController < ApplicationController
   def csv_import
     if request.post?
       file = params[:file]
+      new_users = []
       CSV.foreach(file.path, headers: true) do |row|
         #ブランド情報,店舗情報、ユーザー情報
         #brand_id,brand_name,shop_id,shop_name,user_name,user_login_id
@@ -41,10 +42,18 @@ class ShopsController < ApplicationController
         #userがshopに未所属なら反映
         #changed?は新規レコードでもtrueになる
         if user.changed? || !shop.in?(user.shops)
-          user.password_confirmation =  user.password = SecureRandom.hex(6) if user.new_record?
+          if user.new_record?
+            #一時的に固定のパスワードにして、最初のログイン後に変更を強制するというのでも
+            pass = SecureRandom.hex(6)
+            user.password_confirmation =  user.password = pass 
+            new_users << {login_id: user.login_id, user_name: user.name, password: pass}
+          end
           user.shops << shop if !shop.in?(user.shops)
           user.save
         end
+      end
+      if new_users.present?
+        #csv export
       end
       redirect_to shops_path, notice: 'Importに成功しました'
     end

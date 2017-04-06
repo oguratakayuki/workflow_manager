@@ -52,6 +52,8 @@ ja:
       user_form:
         brand_ids: ブランド
         shop_ids: 店舗
+        login_id: ログインID
+        name: ユーザー名
       request:
         user: '申請者'
         user_id: '申請者'

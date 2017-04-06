@@ -22,7 +22,7 @@ class Request < ApplicationRecord
   has_many :finishing_evidences
   #scope :reviewable, ->(user) { joins(:request_grants).merge(RequestGrant.user_reviewable(user)) }
   scope :executable, ->(user) { where(status: :wait_for_execution).joins(flow: :executors).merge(FlowExecutor.by_user(user)) }
-  scope :displayable, ->(displayable) { where(displayable: displayable) }
+  scope :displayable_status, ->(displayable) { where(displayable: displayable) }
   scope :by_user, ->(user) { where(user: user) }
   enumerize :status, in: [:not_submitted, :flow_not_defined, :reviewing, :rejected, :executable, :executed, :finished, :wait_for_execution], scope: true
   accepts_nested_attributes_for :finishing_evidences, allow_destroy: true
