@@ -50,6 +50,7 @@ test:
 #
 production:
   <<: *default
-  database: workflow_manager_production
-  username: workflow_manager
-  password: <%= ENV['WORKFLOW_MANAGER_DATABASE_PASSWORD'] %>
+  #database: workflow_manager_production
+  #username: workflow_manager
+  #password: <%= ENV['WORKFLOW_MANAGER_DATABASE_PASSWORD'] %>
+  url: postgres://fjjdsbjcgslreu:fd8b950afbd7f0a2e0f8b37e28cb17ee7172ee4974e1ca50c38a6964985f8da1@ec2-107-20-195-181.compute-1.amazonaws.com:5432/dett6mp95ub6s6
