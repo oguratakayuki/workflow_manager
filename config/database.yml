@@ -15,7 +15,7 @@ default: &default
   pool: 5
   username: root
   password: root # docker-compose.ymlのMYSQL_ROOT_PASSWORD
-  host: db       # docker-compose.ymlのサービス名
+  #host: db       # docker-compose.ymlのサービス名
 
 
 development:
