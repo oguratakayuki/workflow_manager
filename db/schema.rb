@@ -12,7 +12,7 @@
 
 ActiveRecord::Schema.define(version: 20170402072010) do
 
-  create_table "approval_flows", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "approval_flows", force: :cascade do |t|
     t.integer  "flow_id"
     t.integer  "position"
     t.string   "authenticatable_type"
@@ -22,7 +22,7 @@ ActiveRecord::Schema.define(version: 20170402072010) do
     t.datetime "updated_at",              null: false
   end
 
-  create_table "audits", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "audits", force: :cascade  do |t|
     t.integer  "auditable_id"
     t.string   "auditable_type"
     t.integer  "associated_id"
@@ -44,20 +44,20 @@ ActiveRecord::Schema.define(version: 20170402072010) do
     t.index ["user_id", "user_type"], name: "user_index", using: :btree
   end
 
-  create_table "brands", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "brands", force: :cascade do |t|
     t.string   "name"
     t.integer  "external_id"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
   end
 
-  create_table "categories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "categories", force: :cascade do |t|
     t.string   "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "evidences", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "evidences", force: :cascade do |t|
     t.integer  "request_id"
     t.integer  "upload_user_id"
     t.string   "type"
@@ -67,7 +67,7 @@ ActiveRecord::Schema.define(version: 20170402072010) do
     t.datetime "updated_at",                   null: false
   end
 
-  create_table "flow_condition_groups", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "flow_condition_groups", force: :cascade do |t|
     t.integer  "flow_id"
     t.integer  "parent_id"
     t.string   "relation_type"
@@ -75,7 +75,7 @@ ActiveRecord::Schema.define(version: 20170402072010) do
     t.datetime "updated_at",    null: false
   end
 
-  create_table "flow_condition_options", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "flow_condition_options", force: :cascade do |t|
     t.integer  "flow_condition_id"
     t.string   "relation_id"
     t.integer  "compare_value"
@@ -83,7 +83,7 @@ ActiveRecord::Schema.define(version: 20170402072010) do
     t.datetime "updated_at",        null: false
   end
 
-  create_table "flow_conditions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "flow_conditions", force: :cascade do |t|
     t.integer  "flow_condition_group_id"
     t.string   "related_model"
     t.string   "compare_type"
@@ -91,7 +91,7 @@ ActiveRecord::Schema.define(version: 20170402072010) do
     t.datetime "updated_at",              null: false
   end
 
-  create_table "flow_executors", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "flow_executors", force: :cascade do |t|
     t.integer  "flow_id"
     t.integer  "user_id"
     t.string   "role"
@@ -99,7 +99,7 @@ ActiveRecord::Schema.define(version: 20170402072010) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "flows", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "flows", force: :cascade do |t|
     t.text     "name",          limit: 65535
     t.boolean  "need_evidence"
     t.boolean  "is_default"
@@ -107,7 +107,7 @@ ActiveRecord::Schema.define(version: 20170402072010) do
     t.datetime "updated_at",                  null: false
   end
 
-  create_table "request_costs", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "request_costs", force: :cascade do |t|
     t.integer  "request_id"
     t.integer  "price"
     t.integer  "time_required"
@@ -118,7 +118,7 @@ ActiveRecord::Schema.define(version: 20170402072010) do
     t.integer  "initial_cost"
   end
 
-  create_table "request_grants", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "request_grants", force: :cascade do |t|
     t.integer  "approval_flow_id"
     t.integer  "position"
     t.string   "authenticatable_type"
@@ -132,7 +132,7 @@ ActiveRecord::Schema.define(version: 20170402072010) do
     t.integer  "request_id"
   end
 
-  create_table "request_human_costs", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "request_human_costs", force: :cascade do |t|
     t.integer  "request_id"
     t.string   "type"
     t.integer  "time_required"
@@ -142,7 +142,7 @@ ActiveRecord::Schema.define(version: 20170402072010) do
     t.datetime "updated_at",                     null: false
   end
 
-  create_table "request_money_costs", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "request_money_costs", force: :cascade do |t|
     t.integer  "request_id"
     t.string   "type"
     t.integer  "cost_value"
@@ -151,7 +151,7 @@ ActiveRecord::Schema.define(version: 20170402072010) do
     t.datetime "updated_at",               null: false
   end
 
-  create_table "requests", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "requests", force: :cascade do |t|
     t.integer  "flow_id"
     t.integer  "user_id"
     t.integer  "category_id"
@@ -164,14 +164,14 @@ ActiveRecord::Schema.define(version: 20170402072010) do
     t.string   "status"
   end
 
-  create_table "shop_users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "shop_users", force: :cascade do |t|
     t.integer  "shop_id"
     t.integer  "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "shops", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "shops", force: :cascade do |t|
     t.string   "name"
     t.integer  "brand_id"
     t.text     "description", limit: 65535
@@ -180,14 +180,14 @@ ActiveRecord::Schema.define(version: 20170402072010) do
     t.datetime "updated_at",                null: false
   end
 
-  create_table "sub_categories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "sub_categories", force: :cascade do |t|
     t.integer  "category_id"
     t.string   "name"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
   end
 
-  create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
     t.string   "name"
     t.string   "login_id"
