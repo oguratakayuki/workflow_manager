@@ -53,6 +53,19 @@ end
   end
 end
 
+%w(kaneko patrick takehiro kanako).to_a.each do |name|
+  User.seed do |u|
+    u.login_id = name
+    u.name = name
+    u.role = 'admin'
+    u.password = "111111"
+    u.password_confirmation = "111111"
+  end
+end
+
+
+
+
 %w(物品の購入 データ修正 レッスン受講).to_a.each do |name|
   Category.seed do |category|
     category.name = name
