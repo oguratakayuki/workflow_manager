@@ -4,6 +4,8 @@
 
   .form-inputs
     = f.input :user_id, as: :hidden, input_html: { value: current_user.id }
+    - if @request.has_client
+    = f.input  :client_user_id,  as: :select, collection: User.all.map{|t| [t.name, t.id] }
     = f.input :title
     = f.input :description
     = f.association :category

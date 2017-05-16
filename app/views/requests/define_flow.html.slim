@@ -7,6 +7,11 @@ span.help-block この申請は承認フローが選択されていません。�
       = Request.human_attribute_name(:user)
     p.list-group-item-text
       = @request.user.name
+    - if @request.client_user
+      h4.list-group-item-heading
+        = Request.human_attribute_name(:client_user)
+      p.list-group-item-text
+        = @request.client_user.name
     h4.list-group-item-heading
       = Request.human_attribute_name(:title)
     p.list-group-item-text

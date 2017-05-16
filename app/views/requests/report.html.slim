@@ -8,6 +8,11 @@ span.help-block 必要に応じて証明資料を添付してください
       | User
     p.list-group-item-text
       = @request.user.name
+    - if @request.client_user
+      h4.list-group-item-heading
+        | 申請依頼者
+      p.list-group-item-text
+        = @request.client_user.name
     h4.list-group-item-heading
       | Title
     p.list-group-item-text

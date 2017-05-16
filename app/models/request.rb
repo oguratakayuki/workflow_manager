@@ -2,6 +2,7 @@ class Request < ApplicationRecord
   extend Enumerize
   belongs_to :flow
   belongs_to :user
+  belongs_to :client_user, class_name: 'User'
   belongs_to :category
   belongs_to :sub_category
   has_many :request_grants
@@ -38,6 +39,8 @@ class Request < ApplicationRecord
   accepts_nested_attributes_for :money_cost,  allow_destroy: true, reject_if: :all_blank
 
   validates :title, presence: :true
+
+  attr_accessor :has_client
 
   def unsaved_initial_costs
     initial_human_cost.select{|t| t if  t.new_record? }

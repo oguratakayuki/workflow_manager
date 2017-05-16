@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170402072010) do
+ActiveRecord::Schema.define(version: 20170515225843) do
 
   create_table "approval_flows", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "flow_id"
@@ -154,6 +154,7 @@ ActiveRecord::Schema.define(version: 20170402072010) do
   create_table "requests", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "flow_id"
     t.integer  "user_id"
+    t.integer  "client_user_id"
     t.integer  "category_id"
     t.integer  "sub_category_id"
     t.string   "title"
